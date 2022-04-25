@@ -8,9 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout project
-      - uses: actions/checkout@v2
-          with:
-            persist-credentials: false
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
 
       - name: Install Node v14
         uses: actions/setup-node@v2
