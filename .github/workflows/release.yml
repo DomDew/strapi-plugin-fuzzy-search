@@ -7,7 +7,10 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout project
       - uses: actions/checkout@v2
+      with:
+        persist-credentials: false
 
       - name: Install Node v14
         uses: actions/setup-node@v2
@@ -22,6 +25,6 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Release to NPM
+        run: yarn semantic-release
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npx semantic-release
