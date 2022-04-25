@@ -10,7 +10,7 @@ jobs:
       - name: Checkout project
         uses: actions/checkout@v2
         with:
-          persist-credentials: false
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Install Node v14
         uses: actions/setup-node@v2
