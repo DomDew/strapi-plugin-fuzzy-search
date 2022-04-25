@@ -9,8 +9,8 @@ jobs:
     steps:
       - name: Checkout project
       - uses: actions/checkout@v2
-      with:
-        persist-credentials: false
+        with:
+          persist-credentials: false
 
       - name: Install Node v14
         uses: actions/setup-node@v2
