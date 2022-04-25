@@ -1,6 +1,6 @@
 {
-  "name": "strapi-fuzzy-search",
-  "version": "0.1.0",
+  "name": "strapi-plugin-fuzzy-search",
+  "version": "0.0.0-development",
   "description": "A plugin for Strapi Headless CMS that provides the ability to add a weighted fuzzy search to any content type.",
   "strapi": {
     "displayName": "Fuzzy Search",
@@ -11,23 +11,42 @@
   "dependencies": {
     "fuzzysort": "^1.2.1"
   },
-  "author": {
-    "name": "@DomDew",
-    "url": "https://github.com/DomDew"
+  "peerDependencies": {
+    "@strapi/strapi": "^4.0.8",
+    "@strapi/utils": "^4.0.8",
+    "lodash": "^4.17.21",
+    "yup": "^0.32.9"
   },
+  "author": "@DomDew (https://github.com/DomDew)",
   "maintainers": [
-    {
-      "name": "@DomDew",
-      "url": "https://github.com/DomDew"
-    },
-    {
-      "name": "@wfproductions",
-      "url": "https://github.com/wfproductions"
-    }
+    "@DomDew (https://github.com/DomDew)",
+    "@wfproductions (https://github.com/wfproductions)"
   ],
   "engines": {
     "node": ">=12.x.x <=16.x.x",
     "npm": ">=6.0.0"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "main": "strapi-server.js",
+  "devDependencies": {
+    "semantic-release": "^19.0.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "semantic-release": "semantic-release"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DomDew/strapi-plugin-fuzzy-search.git"
+  },
+  "keywords": [
+    "strapi",
+    "fuzzysort",
+    "fuzzysearch",
+    "search"
+  ],
+  "bugs": {
+    "url": "https://github.com/DomDew/strapi-plugin-fuzzy-search/issues"
+  },
+  "homepage": "https://github.com/DomDew/strapi-plugin-fuzzy-search#readme"
 }
