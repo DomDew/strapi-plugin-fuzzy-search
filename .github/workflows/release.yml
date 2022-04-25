@@ -8,15 +8,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout project
-        uses: actions/checkout@v2
-        with:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        uses: actions/checkout@v1
 
       - name: Install Node v14
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v1
         with:
           node-version: "14.x"
-          registry-url: "https://registry.npmjs.org"
+          registry-url: "https://registry.npmjs.org/"
 
       - name: Install Yarn
         run: npm install -g yarn
@@ -28,3 +26,4 @@ jobs:
         run: yarn semantic-release
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
