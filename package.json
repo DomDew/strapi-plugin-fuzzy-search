@@ -1,6 +1,6 @@
 {
   "name": "strapi-fuzzy-search",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "A plugin for Strapi Headless CMS that provides the ability to add a weighted fuzzy search to any content type.",
   "strapi": {
     "displayName": "Fuzzy Search",
@@ -9,7 +9,7 @@
     "kind": "plugin"
   },
   "dependencies": {
-    "fuse.js": "^6.5.3"
+    "fuzzysort": "^1.2.1"
   },
   "author": {
     "name": "@DomDew",

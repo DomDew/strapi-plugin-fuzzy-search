@@ -4,7 +4,8 @@ A plugin for Strapi Headless CMS that provides the ability to add a weighted fuz
 
 ## How to use
 
-Enable the fuzzy-search plugin in the `./config/plugins.js` of your Strapi project.
+Enable the fuzzy-search plugin in the `./config/plugins.js` of your Strapi project.  
+Uses `fuzzysort` under the hood.
 
 ```
 module.exports = ({ env }) => ({
