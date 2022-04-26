@@ -28,6 +28,16 @@ module.exports = ({ env }) => ({
         {
           uid: "api::author.author",
           modelName: "project",
+          whereConstraints: {
+             $and: [
+               {
+                 featured: true',
+               },
+               {
+                 createdAt: { $gt: '2002-11-17T14:28:25.843Z' },
+               },
+             ],
+           },
           fuzzysortOptions: {
             characterLimit: 300,
             threshold: -600,
