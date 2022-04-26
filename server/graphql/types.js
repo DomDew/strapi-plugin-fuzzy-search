@@ -1,7 +1,3 @@
-const fuzzysort = require("fuzzysort");
-const _ = require("lodash");
-const { fuzzySearchService } = require("../services");
-const { getLocalizedEntries } = require("../utils/getLocalizedEntries");
 const { getPluginService } = require("../utils/getPluginService");
 
 const getCustomTypes = (strapi, nexus) => {
@@ -51,7 +47,6 @@ const getCustomTypes = (strapi, nexus) => {
               "fuzzySearchService"
             ).getResults(query, locale);
 
-            console.log(results);
             /**
              * Error handling
              * TODO: Implement error handling

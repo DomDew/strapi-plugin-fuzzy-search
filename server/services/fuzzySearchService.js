@@ -1,6 +1,6 @@
 const fuzzysort = require("fuzzysort");
 const _ = require("lodash");
-const { getLocalizedEntries } = require("../utils/getLocalizedEntries");
+const { getFilteredEntries } = require("../utils/getFilteredEntries");
 const { getPluginService } = require("../utils/getPluginService");
 
 module.exports = ({ strapi }) => ({
@@ -12,14 +12,14 @@ module.exports = ({ strapi }) => ({
     ).returnTypes;
     const { contentTypes } = getPluginService(strapi, "settingsService").get();
 
-    // Get all projects, news and articles for a given locale, to be able to filter through them
+    // Get all projects, news and articles for a given locale and query filter, to be able to filter through them
     // Doing this in the resolver so we always have the newest entries
-    const localizedEntries = await Promise.all(
+    const filteredEntries = await Promise.all(
       contentTypes.map(async (contentType) => {
         return {
           pluralName: contentType.model.info.pluralName,
           fuzzysortOptions: contentType.fuzzysortOptions,
-          [contentType.model.info.pluralName]: await getLocalizedEntries(
+          [contentType.model.info.pluralName]: await getFilteredEntries(
             locale,
             contentType.model.uid
           ),
@@ -27,7 +27,7 @@ module.exports = ({ strapi }) => ({
       })
     );
 
-    const searchResults = localizedEntries.map((model) => {
+    const searchResults = filteredEntries.map((model) => {
       const keys = model.fuzzysortOptions.keys.map((key) => key.name);
 
       // Splice strings to search if characterLimit has been passed
@@ -73,5 +73,7 @@ module.exports = ({ strapi }) => ({
         res.fuzzysort.map((fuzzyRes) => fuzzyRes.obj)
       );
     });
+
+    return results;
   },
 });
