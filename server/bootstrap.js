@@ -1,7 +1,6 @@
 "use strict";
 
 const _ = require("lodash");
-const { SUPPORTED_LIFECYCLES } = require("./utils/constants");
 const { getPluginService } = require("./utils/getPluginService");
 
 module.exports = ({ strapi }) => {
