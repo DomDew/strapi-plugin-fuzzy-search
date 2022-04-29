@@ -11,7 +11,7 @@ module.exports = {
   bootstrap,
   register,
   config,
-  services,
   controllers,
   routes,
+  services,
 };

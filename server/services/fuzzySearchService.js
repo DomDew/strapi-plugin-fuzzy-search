@@ -1,5 +1,4 @@
 const fuzzysort = require("fuzzysort");
-const _ = require("lodash");
 const { getFilteredEntries } = require("../utils/getFilteredEntries");
 const { getPluginService } = require("../utils/getPluginService");
 

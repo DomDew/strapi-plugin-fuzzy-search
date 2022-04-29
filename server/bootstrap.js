@@ -1,6 +1,5 @@
 "use strict";
 
-const _ = require("lodash");
 const { getPluginService } = require("./utils/getPluginService");
 
 module.exports = ({ strapi }) => {
@@ -12,7 +11,7 @@ module.exports = ({ strapi }) => {
   settingsService.set(normalizedSettings);
   // set up lifecycles
   const subscribe = {
-    models: _.map(normalizedSettings.models, (m) => m.uid),
+    models: normalizedSettings.models.map((model) => model.uid),
   };
 
   strapi.db.lifecycles.subscribe(subscribe);

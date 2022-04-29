@@ -1,6 +1,5 @@
 "use strict";
 
-const _ = require("lodash");
 const { pluginId } = require("../utils/pluginId");
 
 module.exports = ({ strapi }) => ({
