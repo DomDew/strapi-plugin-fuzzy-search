@@ -1,4 +1,5 @@
 const { getPluginService } = require("../utils/getPluginService");
+const { buildGraphqlResponse } = require("../utils/buildGraphqlResponse");
 
 const getCustomTypes = (strapi, nexus) => {
   const { naming } = getPluginService(strapi, "utils", "graphql");
@@ -42,18 +43,22 @@ const getCustomTypes = (strapi, nexus) => {
             // Destructure the args to get query value
             const { query, locale } = args;
 
-            const results = await getPluginService(
+            const searchResults = await getPluginService(
               strapi,
               "fuzzySearchService"
             ).getResults(query, locale);
 
+            const resultsResponse = await buildGraphqlResponse(
+              searchResults,
+              auth
+            );
             /**
              * Error handling
              * TODO: Implement error handling
              * TODO: Locale==null Handling
              */
-            if (results) {
-              return results;
+            if (resultsResponse) {
+              return resultsResponse;
             } else {
               throw new Error(ctx.koaContext.response.message);
             }
