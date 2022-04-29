@@ -4,18 +4,14 @@ A plugin for Strapi Headless CMS that provides the ability to add a weighted fuz
 
 Uses [fuzzysort](https://github.com/farzher/fuzzysort) under the hood: Simple, quick and easy. No need to worry about setting up an instance for a complex search engine.
 
-Currently in early alpha.
-
 Roadmap:
 
-- Develop REST endpoints
-- Update Readme
 - Include more fuzzysort options
-- Add proper auth to endpoint
 
 ## How to use
 
-Enable the fuzzy-search plugin in the `./config/plugins.js` of your Strapi project.
+Enable the fuzzy-search plugin in the `./config/plugins.js` of your Strapi project.  
+Make sure to set the appropriate permissions in the `Permissions` tab of the `Users & Permission Plugin` for the Role you want to give access to the search feature.
 
 ```
 module.exports = ({ env }) => ({
@@ -27,7 +23,7 @@ module.exports = ({ env }) => ({
       contentTypes: [
         {
           uid: "api::author.author",
-          modelName: "project",
+          modelName: "author",
           whereConstraints: {
              $and: [
                {
@@ -57,7 +53,7 @@ module.exports = ({ env }) => ({
         },
         {
           uid: "api::article.article",
-          modelName: "newsentry",
+          modelName: "article",
           fuzzysortOptions: {
             characterLimit: 500,
             threshold: -800,
