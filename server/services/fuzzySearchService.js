@@ -4,11 +4,6 @@ const { getPluginService } = require("../utils/getPluginService");
 
 module.exports = ({ strapi }) => ({
   async getResults(query, locale) {
-    const { toEntityResponseCollection } = getPluginService(
-      strapi,
-      "format",
-      "graphql"
-    ).returnTypes;
     const { contentTypes } = getPluginService(strapi, "settingsService").get();
 
     // Get all projects, news and articles for a given locale and query filter, to be able to filter through them
@@ -64,15 +59,6 @@ module.exports = ({ strapi }) => ({
       };
     });
 
-    // Destructure search results and return them in appropriate format
-    const results = {};
-
-    searchResults.forEach((res) => {
-      results[res.pluralName] = toEntityResponseCollection(
-        res.fuzzysort.map((fuzzyRes) => fuzzyRes.obj)
-      );
-    });
-
-    return results;
+    return searchResults;
   },
 });
