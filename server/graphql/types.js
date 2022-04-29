@@ -11,7 +11,7 @@ const getCustomTypes = (strapi, nexus) => {
     type.model.responseName = getEntityResponseCollectionName(type.model);
   });
 
-  // Use to extend the SearchResponse type for each model
+  // Extend the SearchResponse type for each registered model
   const extendSearchType = (nexus, model) => {
     return nexus.extendType({
       type: "SearchResponse",
@@ -42,6 +42,7 @@ const getCustomTypes = (strapi, nexus) => {
           async resolve(_parent, args, ctx) {
             // Destructure the args to get query value
             const { query, locale } = args;
+            const { auth } = ctx.state;
 
             const searchResults = await getPluginService(
               strapi,
