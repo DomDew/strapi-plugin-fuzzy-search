@@ -11,7 +11,7 @@ module.exports = ({ strapi }) => {
   settingsService.set(normalizedSettings);
   // set up lifecycles
   const subscribe = {
-    models: normalizedSettings.contentType.map(
+    models: normalizedSettings.contentTypes.map(
       (contentType) => contentType.uid
     ),
   };
