@@ -11,7 +11,27 @@ Roadmap:
 ## How to use
 
 Enable the fuzzy-search plugin in the `./config/plugins.js` of your Strapi project.  
+
 Make sure to set the appropriate permissions in the `Permissions` tab of the `Users & Permission Plugin` for the Role you want to give access to the search feature.
+
+## Options/Config
+
+The plugin requires several configurations to be set in the `.config/plugins.js` file of your Strapi project to work.  
+List the content types you want to register for fuzzysort in the `contentTypes` array of objects. Each object requires the `uid: string` and `modelName: string` to be set for a content type.  
+Aditionally, optional `whereConstrains: { }` can be set. With these whereConstraints the db query that queries for the entries of a model can be manipulated, e.g. as to only select articles that have been published. These constraints are built with the [logical operators](https://docs.strapi.io/developer-docs/latest/developer-resources/database-apis-reference/query-engine/filtering.html#logical-operators) of [Strapis Query Engine API](https://docs.strapi.io/developer-docs/latest/developer-resources/database-apis-reference/query-engine-api.html).  
+
+The `fuzzysortOptions` allow for some finetuning of fuzzysorts searching algorithm to your needs.
+
+| Key            | Type            | # Notes                                                                                                      |
+|----------------|-----------------|--------------------------------------------------------------------------------------------------------------|
+| characterLimit | int (positive)  | Limits the length of characters the algorithm is searching through for any string of the content type        |
+| threshold      | int (negative)  | Sets the threshold for the score of the entries that will be returned. The lower, the "fuzzier" the results. |
+| limit          | int (positive)  | Limits the amount of entries returned from the search                                                        |
+| allowTypo      | boolean         | Whether the search algorithm should be exact (false) or not (true)                                           |
+| keys           | array of objects| Lists the fields of the models the algorithm should search `(name: string)` and a factor to weight them by `weight: int`. The higher the weight, the higher a match for a given field will be evaluated for a content type. |  
+
+
+### Full Example config
 
 ```
 module.exports = ({ env }) => ({
@@ -78,3 +98,8 @@ module.exports = ({ env }) => ({
   // ...
 });
 ```
+
+## A note on performance:
+
+A high `characterCount`, `threshold`, `limit` and `allowTypo: true` all hamper the performance of the search algorithm. We recommend that you start out with a `characterCount: 500`, `threshold: -1000`, `limit: 15` and work your way from there. The characterCount especially can be quite delicate, so make sure to test every scenario when dialing in it's value.
+
