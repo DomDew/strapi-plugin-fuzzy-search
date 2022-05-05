@@ -98,7 +98,7 @@ module.exports = ({ env }) => ({
                 weight: 200,
               },
               {
-                name: "intro",
+                name: "description",
                 weight: -200,
               },
             ],
