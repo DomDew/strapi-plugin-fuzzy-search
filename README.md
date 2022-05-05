@@ -1,3 +1,5 @@
+<img src="assets/logo.png" alt="fuzzy search logo" width="200"/>
+
 # Strapi plugin strapi-fuzzy-search
 
 A plugin for Strapi Headless CMS that provides the ability to add a weighted fuzzy search to any content type.
