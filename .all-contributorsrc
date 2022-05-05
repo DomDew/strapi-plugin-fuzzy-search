@@ -18,6 +18,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "wuestefeld",
+      "name": "wuestefeld",
+      "avatar_url": "https://avatars.githubusercontent.com/u/33458141?v=4",
+      "profile": "https://github.com/wuestefeld",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7
