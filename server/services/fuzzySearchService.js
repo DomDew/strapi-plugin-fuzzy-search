@@ -1,6 +1,7 @@
 const fuzzysort = require("fuzzysort");
 const { getFilteredEntries } = require("../utils/getFilteredEntries");
 const { getPluginService } = require("../utils/getPluginService");
+const { validateQuery } = require("../utils/validateQuery");
 
 module.exports = ({ strapi }) => ({
   async getResults(query, locale) {
@@ -10,15 +11,7 @@ module.exports = ({ strapi }) => ({
     // Doing this in the resolver so we always have the newest entries
     const filteredEntries = await Promise.all(
       contentTypes.map(async (contentType) => {
-        const isLocalizedContentType = await strapi.plugins.i18n.services[
-          "content-types"
-        ].isLocalizedContentType(contentType);
-
-        if (locale && !isLocalizedContentType) {
-          throw new ValidationError(
-            `A query for the locale: '${locale}' was found, however content-type: '${contentType.model.modelName}' is not a localized content type. Enable localization if you want to query or localized entries.`
-          );
-        }
+        await validateQuery(contentType, locale);
 
         return {
           pluralName: contentType.model.info.pluralName,
