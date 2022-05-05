@@ -4,7 +4,7 @@ A plugin for Strapi Headless CMS that provides the ability to add a weighted fuz
 
 Uses [fuzzysort](https://github.com/farzher/fuzzysort) under the hood: Simple, quick and easy. No need to worry about setting up an instance for a complex search engine.
 
-Roadmap:
+**Roadmap:**
 
 - Include more fuzzysort options
 - Return better errors
@@ -17,7 +17,7 @@ Strapi Version v4.x.x
 
 Enable the fuzzy-search plugin in the `./config/plugins.js` of your Strapi project.
 
-Make sure to set the appropriate permissions for the `search` Route in the `Permissions` tab of the `Users & Permission Plugin` for the Role to be able to access the search route.
+Make sure to set the appropriate permissions for the `search` route in the `Permissions` tab of the `Users & Permission Plugin` for the role to be able to access the search route.
 
 ## Options/Config
 
@@ -30,7 +30,7 @@ The plugin requires several configurations to be set in the `.config/plugins.js`
 | Key              | Type             | Notes                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | ---------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | contentTypes\*   | Array of Objects | List the content types you want to register for fuzzysort. Each object requires the `uid: string` and `modelName: string` to be set for a content type                                                                                                                                                                                                                                                                                                                    |
-| whereConstraints | Object           | Manipulate the db query that queries for the entries of a model, e.g. as to only select articles that have been published. These constraints are built with the [logical operators](https://docs.strapi.io/developer-docs/latest/developer-resources/database-apis-reference/query-engine/filtering.html#logical-operators) of [Strapis Query Engine API](https://docs.strapi.io/developer-docs/latest/developer-resources/database-apis-reference/query-engine-api.html) |
+| whereConstraints | Object           | Manipulate the db query that queries for the entries of a model, e.g. as to only select articles that have been published. These constraints to the underlying `findMany()` query are built with the [logical operators](https://docs.strapi.io/developer-docs/latest/developer-resources/database-apis-reference/query-engine/filtering.html#logical-operators) of [Strapis Query Engine API](https://docs.strapi.io/developer-docs/latest/developer-resources/database-apis-reference/query-engine-api.html) |
 
 ### Fuzzysort Options
 
@@ -223,3 +223,7 @@ query {
 # Why use fuzzysort and not something like Fuse.js?
 
 While [Fuse.js](https://github.com/krisk/Fuse) proofs to be an amazing library, it can yield unexpected results and what is to be perceived as "false positives" (by a human) when searching through longer strings. Fuzzysort aims to solve this problem by introducing the evaluation and scoring of exact matches. Since we had issues with Fuse.js and it's underlying algorithm, we opted for fuzzysearch to do the heavy lifting instead.
+
+# Found a bug?
+
+If you found a bug or have any questions please [submit an issue](https://github.com/DomDew/strapi-plugin-fuzzy-search/issues). If you think you found a way how to fix it, please feel free to create a pull request!
