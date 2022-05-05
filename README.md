@@ -139,7 +139,7 @@ await fetch(`${API_URL}/api/fuzzy-search/search?query=john&locale=en`);
 
 ```graphql
 query {
-  search(query: "john") {
+  search(query: "john", locale: "en") {
     authors {
       data {
         attributes {
