@@ -37,6 +37,7 @@
   "license": "MIT",
   "main": "strapi-server.js",
   "devDependencies": {
+    "all-contributors-cli": "^6.20.0",
     "semantic-release": "^19.0.2"
   },
   "scripts": {

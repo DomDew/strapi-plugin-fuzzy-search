@@ -1,4 +1,7 @@
 # Strapi plugin strapi-fuzzy-search
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-0-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 A plugin for Strapi Headless CMS that provides the ability to add a weighted fuzzy search to any content type.
 
@@ -227,3 +230,16 @@ While [Fuse.js](https://github.com/krisk/Fuse) proofs to be an amazing library, 
 # Found a bug?
 
 If you found a bug or have any questions please [submit an issue](https://github.com/DomDew/strapi-plugin-fuzzy-search/issues). If you think you found a way how to fix it, please feel free to create a pull request!
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
