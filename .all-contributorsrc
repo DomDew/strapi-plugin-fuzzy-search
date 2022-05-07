@@ -27,6 +27,18 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "DomDew",
+      "name": "Dominik",
+      "avatar_url": "https://avatars.githubusercontent.com/u/72755955?v=4",
+      "profile": "https://github.com/DomDew",
+      "contributions": [
+        "code",
+        "doc",
+        "ideas",
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 7
