@@ -1,6 +1,6 @@
 <img src="assets/logo.png" alt="fuzzy search logo" width="200"/>
 
-# Strapi plugin strapi-fuzzy-search
+# Strapi-plugin-fuzzy-search
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
