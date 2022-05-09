@@ -127,7 +127,9 @@ A high `characterCount`, `threshold`, `limit` and `allowTypo: true` all hamper t
 
 Hitting the `/api/fuzzy-search/search?query=<your-query-string>` will return an array of matched entries for each content type registered in the config. If no match could be found an empty array will be returned. The endpoint accepts an optional `locale=<your-locale>` query as well.
 
-Alternatively (and if the graphql plugin is installed), a search query is registered that accepts `query: String!` and `locale: String` (optional) as arguments.
+Alternatively (and if the graphql plugin is installed), a search query is registered that accepts `query: String!` and `locale: String` (optional) as arguments.  
+
+**IMPORTANT:** Please not that in order to query for the locale of a content type, localization must be enabled for the content type.
 
 # Examples
 
