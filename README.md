@@ -43,10 +43,10 @@ The `fuzzysortOptions` allow for some finetuning of fuzzysorts searching algorit
 
 | Key              | Type             | Notes                                                                                                                                                                                                                       |
 | ---------------- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| characterLimit\* | int (positive)   | Limits the length of characters the algorithm is searching through for any string of the content type                                                                                                                       |
-| threshold\*      | int (negative)   | Sets the threshold for the score of the entries that will be returned. The lower, the "fuzzier" the results.                                                                                                                |
-| limit\*          | int (positive)   | Limits the amount of entries returned from the search                                                                                                                                                                       |
-| allowTypo\*      | boolean          | Whether the search algorithm should be exact (false) or not (true)                                                                                                                                                          |
+| characterLimit | int (positive)   | Limits the length of characters the algorithm is searching through for any string of the content type                                                                                                                       |
+| threshold      | int (negative)   | Sets the threshold for the score of the entries that will be returned. The lower, the "fuzzier" the results.                                                                                                                |
+| limit       | int (positive)   | Limits the amount of entries returned from the search                                                                                                                                                                       |
+| allowTypo      | boolean          | Whether the search algorithm should be exact (false) or not (true)                                                                                                                                                          |
 | keys\*           | array of objects | Lists the fields of the models the algorithm should search `(name: string)` and a factor to weight them by `weight: int`. The higher the weight, the higher a match for a given field will be evaluated for a content type. |
 
 ### Full Example config
@@ -63,15 +63,12 @@ module.exports = ({ env }) => ({
           uid: "api::author.author",
           modelName: "author",
           whereConstraints: {
-             $and: [
-               {
-                 featured: true,
-               },
-               {
-                 createdAt: { $gt: '2002-11-17T14:28:25.843Z' },
-               },
-             ],
-           },
+            $and: [
+              {
+                publishedAt: { $notNull: true },
+              },
+            ],
+          },
           fuzzysortOptions: {
             characterLimit: 300,
             threshold: -600,
@@ -94,8 +91,6 @@ module.exports = ({ env }) => ({
           modelName: "book",
           fuzzysortOptions: {
             characterLimit: 500,
-            threshold: -800,
-            limit: 15,
             allowTypo: false,
             keys: [
               {
