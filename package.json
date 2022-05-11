@@ -1,11 +1,11 @@
 {
   "name": "strapi-plugin-fuzzy-search",
   "version": "0.0.0-development",
-  "description": "A plugin for Strapi Headless CMS that provides the ability to add a weighted fuzzy search to any content type.",
+  "description": "Register a weighted fuzzy search endpoint for Strapi Headless CMS you can add your content types to in no time.",
   "strapi": {
     "displayName": "Fuzzy Search",
     "name": "fuzzy-search",
-    "description": "A plugin for Strapi Headless CMS that provides the ability to add a weighted fuzzy search to any content type.",
+    "description": "Register a weighted fuzzy search endpoint for Strapi Headless CMS you can add your content types to in no time.",
     "kind": "plugin"
   },
   "publishConfig": {

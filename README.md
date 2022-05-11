@@ -1,11 +1,14 @@
 <img src="assets/logo.png" alt="fuzzy search logo" width="200"/>
 
 # Strapi-plugin-fuzzy-search
+
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-A plugin for Strapi Headless CMS that provides the ability to add a weighted fuzzy search to any content type.
+Register a weighted fuzzy search endpoint for Strapi Headless CMS you can add your content types to in no time.
 
 Uses [fuzzysort](https://github.com/farzher/fuzzysort) under the hood: Simple, quick and easy. No need to worry about setting up an instance for a complex search engine.
 
@@ -32,9 +35,9 @@ Mandatory settings are marked with `*`.
 
 The plugin requires several configurations to be set in the `.config/plugins.js` file of your Strapi project to work.
 
-| Key              | Type             | Notes                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| ---------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| contentTypes\*   | Array of Objects | List the content types you want to register for fuzzysort. Each object requires the `uid: string` and `modelName: string` to be set for a content type                                                                                                                                                                                                                                                                                                                    |
+| Key              | Type             | Notes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| ---------------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| contentTypes\*   | Array of Objects | List the content types you want to register for fuzzysort. Each object requires the `uid: string` and `modelName: string` to be set for a content type                                                                                                                                                                                                                                                                                                                                                         |
 | whereConstraints | Object           | Manipulate the db query that queries for the entries of a model, e.g. as to only select articles that have been published. These constraints to the underlying `findMany()` query are built with the [logical operators](https://docs.strapi.io/developer-docs/latest/developer-resources/database-apis-reference/query-engine/filtering.html#logical-operators) of [Strapis Query Engine API](https://docs.strapi.io/developer-docs/latest/developer-resources/database-apis-reference/query-engine-api.html) |
 
 ### Fuzzysort Options
@@ -122,7 +125,7 @@ A high `characterCount`, `threshold`, `limit` and `allowTypo: true` all hamper t
 
 Hitting the `/api/fuzzy-search/search?query=<your-query-string>` will return an array of matched entries for each content type registered in the config. If no match could be found an empty array will be returned. The endpoint accepts an optional `locale=<your-locale>` query as well.
 
-Alternatively (and if the graphql plugin is installed), a search query is registered that accepts `query: String!` and `locale: String` (optional) as arguments.  
+Alternatively (and if the graphql plugin is installed), a search query is registered that accepts `query: String!` and `locale: String` (optional) as arguments.
 
 **IMPORTANT:** Please not that in order to query for the locale of a content type, localization must be enabled for the content type.
 
