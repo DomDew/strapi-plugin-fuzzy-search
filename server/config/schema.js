@@ -8,6 +8,7 @@ const pluginConfigSchema = yup.object({
     yup.object({
       uid: yup.string().required(),
       modelName: yup.string().required(),
+      queryConstraints: yup.object(),
       fuzzysortOptions: yup
         .object({
           threshold: yup.number(),
