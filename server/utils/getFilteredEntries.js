@@ -9,7 +9,7 @@ const buildDbQuery = (locale, model) => {
     }
     return {...queryConstraints, where: {  locale: locale, } };
   }
-  return {};
+  return {...queryConstraints};
 };
 
 const getFilteredEntries = async (locale, model) => {

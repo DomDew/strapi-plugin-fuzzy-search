@@ -35,10 +35,10 @@ Mandatory settings are marked with `*`.
 
 The plugin requires several configurations to be set in the `.config/plugins.js` file of your Strapi project to work.
 
-| Key              | Type             | Notes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-|------------------| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| contentTypes\*   | Array of Objects | List the content types you want to register for fuzzysort. Each object requires the `uid: string` and `modelName: string` to be set for a content type                                                                                                                                                                                                                                                                                                                                                         |
-| queryConstraints | Object           | Manipulate the db query that queries for the entries of a model, e.g. as to only select articles that have been published. These constraints to the underlying `findMany()` query are built with the [logical operators](https://docs.strapi.io/developer-docs/latest/developer-resources/database-apis-reference/query-engine/filtering.html#logical-operators) of [Strapis Query Engine API](https://docs.strapi.io/developer-docs/latest/developer-resources/database-apis-reference/query-engine-api.html) |
+| Key               | Type             | Notes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+|-------------------| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| contentTypes\*    | Array of Objects | List the content types you want to register for fuzzysort. Each object requires the `uid: string` and `modelName: string` to be set for a content type                                                                                                                                                                                                                                                                                                                                                         |
+| queryConstraints  | Object           | Manipulate the db query that queries for the entries of a model, e.g. as to only select articles that have been published. These constraints to the underlying `findMany()` query are built with the [logical operators](https://docs.strapi.io/developer-docs/latest/developer-resources/database-apis-reference/query-engine/filtering.html#logical-operators) of [Strapis Query Engine API](https://docs.strapi.io/developer-docs/latest/developer-resources/database-apis-reference/query-engine-api.html) |
 
 ### Fuzzysort Options
 
@@ -67,11 +67,11 @@ module.exports = ({ env }) => ({
           modelName: "author",
           queryConstraints: {
             where: {
-                $and: [
-                    {
-                        publishedAt: { $notNull: true },
-                    },
-                ],
+              $and: [
+                {
+                  publishedAt: { $notNull: true },
+                },
+              ],
             },
           },
           fuzzysortOptions: {
