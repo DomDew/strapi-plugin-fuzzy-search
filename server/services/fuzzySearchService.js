@@ -54,8 +54,8 @@ module.exports = ({ strapi }) => ({
           keys: model.fuzzysortOptions.keys.map((key) => key.name),
           scoreFn: (a) =>
             Math.max(
-              ...model.fuzzysortOptions.keys.map((key) =>
-                a[0] ? a[0].score + key.weight : -1000
+              ...model.fuzzysortOptions.keys.map((key, index) =>
+                a[index] ? a[index].score + key.weight : -9999
               )
             ),
         }),
