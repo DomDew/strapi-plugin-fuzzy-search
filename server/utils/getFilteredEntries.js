@@ -3,13 +3,13 @@ const { getPluginService } = require("../utils/getPluginService");
 const buildDbQuery = (locale, model) => {
   const { contentTypes } = getPluginService(strapi, "settingsService").get();
   const { queryConstraints } = contentTypes.find(entry => entry.uid === model);
-  if (locale) {
-    if (queryConstraints.where) {
-      return {...queryConstraints, where: { ...queryConstraints.where, locale: locale, } };
-    }
-    return {...queryConstraints, where: {  locale: locale, } };
-  }
-  return {...queryConstraints};
+  return {
+    ...queryConstraints,
+    where: {
+      ...(queryConstraints?.where && { ...queryConstraints.where }),
+      ...(locale && { locale: locale }),
+    },
+  };
 };
 
 const getFilteredEntries = async (locale, model) => {
