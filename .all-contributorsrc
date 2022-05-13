@@ -40,7 +40,17 @@
         "ideas",
         "review"
       ]
+    },
+    {
+      "login": "rotarrares",
+      "name": "Rotar Rares",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17861353?v=4",
+      "profile": "http://www.me.com",
+      "contributions": [
+        "code"
+      ]
     }
   ],
-  "contributorsPerLine": 7
+  "contributorsPerLine": 7,
+  "skipCi": true
 }
