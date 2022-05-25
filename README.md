@@ -42,13 +42,12 @@ The plugin requires several configurations to be set in the `.config/plugins.js`
 
 The `fuzzysortOptions` allow for some finetuning of fuzzysorts searching algorithm to your needs.
 
-| Key              | Type             | Notes                                                                                                                                                                                                                       |
-| ---------------- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Key            | Type             | Notes                                                                                                                                                                                                                       |
+| -------------- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | characterLimit | int (positive)   | Limits the length of characters the algorithm is searching through for any string of the content type                                                                                                                       |
 | threshold      | int (negative)   | Sets the threshold for the score of the entries that will be returned. The lower, the "fuzzier" the results.                                                                                                                |
-| limit       | int (positive)   | Limits the amount of entries returned from the search                                                                                                                                                                       |
-| allowTypo      | boolean          | Whether the search algorithm should be exact (false) or not (true)                                                                                                                                                          |
-| keys\*           | array of objects | Lists the fields of the models the algorithm should search `(name: string)` and a factor to weight them by `weight: int`. The higher the weight, the higher a match for a given field will be evaluated for a content type. |
+| limit          | int (positive)   | Limits the amount of entries returned from the search                                                                                                                                                                       |
+| keys\*         | array of objects | Lists the fields of the models the algorithm should search `(name: string)` and a factor to weight them by `weight: int`. The higher the weight, the higher a match for a given field will be evaluated for a content type. |
 
 ### Full Example config
 
@@ -76,7 +75,6 @@ module.exports = ({ env }) => ({
             characterLimit: 300,
             threshold: -600,
             limit: 10,
-            allowTypo: true,
             keys: [
               {
                 name: "name",
@@ -94,7 +92,6 @@ module.exports = ({ env }) => ({
           modelName: "book",
           fuzzysortOptions: {
             characterLimit: 500,
-            allowTypo: false,
             keys: [
               {
                 name: "title",
@@ -117,7 +114,7 @@ module.exports = ({ env }) => ({
 
 ## A note on performance:
 
-A high `characterCount`, `threshold`, `limit` and `allowTypo: true` all hamper the performance of the search algorithm. We recommend that you start out with a `characterCount: 500`, `threshold: -1000`, `limit: 15` and work your way from there. The characterCount especially can be quite delicate, so make sure to test every scenario when dialing in it's value.
+A high `characterCount`, `threshold` and `limit` all hamper the performance of the search algorithm. We recommend that you start out with a `characterCount: 500`, `threshold: -1000`, `limit: 15` and work your way from there. The characterCount especially can be quite delicate, so make sure to test every scenario when dialing in it's value.
 
 # Usage
 

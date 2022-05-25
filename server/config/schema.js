@@ -13,7 +13,6 @@ const pluginConfigSchema = yup.object({
         .object({
           threshold: yup.number(),
           limit: yup.number(),
-          allowTypo: yup.boolean(),
           keys: yup.array().of(
             yup.object({
               name: yup.string().required(),

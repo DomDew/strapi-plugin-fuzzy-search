@@ -50,7 +50,6 @@ module.exports = ({ strapi }) => ({
         fuzzysort: fuzzysort.go(query, model[model.pluralName], {
           threshold: parseInt(model.fuzzysortOptions.threshold),
           limit: parseInt(model.fuzzysortOptions.limit),
-          allowTypo: model.fuzzysortOptions.allowTypo,
           keys: model.fuzzysortOptions.keys.map((key) => key.name),
           scoreFn: (a) =>
             Math.max(
