@@ -4,7 +4,7 @@ const { buildGraphqlResponse } = require("../utils/buildGraphqlResponse");
 const getCustomTypes = (strapi, nexus) => {
   const { naming } = getPluginService(strapi, "utils", "graphql");
   const { contentTypes } = getPluginService(strapi, "settingsService").get();
-  const { getEntityResponseCollectionName } = naming;
+  const { getEntityResponseCollectionName, getFindQueryName } = naming;
 
   // Get response names
   contentTypes.forEach((type) => {
@@ -16,7 +16,7 @@ const getCustomTypes = (strapi, nexus) => {
     return nexus.extendType({
       type: "SearchResponse",
       definition(t) {
-        t.field(model.info.pluralName, { type: model.responseName });
+        t.field(getFindQueryName(model), { type: model.responseName });
       },
     });
   };
