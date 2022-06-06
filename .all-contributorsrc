@@ -58,6 +58,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "ChrisMichaelPerezSantiago",
+      "name": "Chris Michael",
+      "avatar_url": "https://avatars.githubusercontent.com/u/21962584?v=4",
+      "profile": "https://chrismps.netlify.app/",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
