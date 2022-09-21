@@ -1,19 +1,13 @@
-"use strict";
-
-const { getPluginService } = require("./utils/getPluginService");
+'use strict';
+const { getPluginService } = require('./utils/getPluginService');
 
 module.exports = ({ strapi }) => {
-  const settingsService = getPluginService(strapi, "settingsService");
+  const settingsService = getPluginService(strapi, 'settingsService');
   const settings = settingsService.get();
-  // build settings structure
-  const normalizedSettings = settingsService.build(settings);
-  // reset plugin settings
-  settingsService.set(normalizedSettings);
+
   // set up lifecycles
   const subscribe = {
-    models: normalizedSettings.contentTypes.map(
-      (contentType) => contentType.uid
-    ),
+    models: settings.contentTypes.map((contentType) => contentType.uid),
   };
 
   strapi.db.lifecycles.subscribe(subscribe);
