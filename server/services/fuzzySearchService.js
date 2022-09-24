@@ -1,11 +1,12 @@
-const fuzzysort = require("fuzzysort");
-const { getFilteredEntries } = require("../utils/getFilteredEntries");
-const { getPluginService } = require("../utils/getPluginService");
-const { validateQuery } = require("../utils/validateQuery");
+const { getFilteredEntries } = require('../utils/getFilteredEntries');
+const { getPluginService } = require('../utils/getPluginService');
+const { validateQuery } = require('../utils/validateQuery');
+const buildResult = require('../utils/buildResult');
+const buildTransliteratedResult = require('../utils/buildTransliteratedResult');
 
 module.exports = ({ strapi }) => ({
   async getResults(query, locale) {
-    const { contentTypes } = getPluginService(strapi, "settingsService").get();
+    const { contentTypes } = getPluginService(strapi, 'settingsService').get();
 
     // Get all projects, news and articles for a given locale and query filter, to be able to filter through them
     // Doing this in the resolver so we always have the newest entries
@@ -15,6 +16,7 @@ module.exports = ({ strapi }) => ({
 
         return {
           pluralName: contentType.model.info.pluralName,
+          transliterate: contentType.transliterate,
           fuzzysortOptions: contentType.fuzzysortOptions,
           [contentType.model.info.pluralName]: await getFilteredEntries(
             locale,
@@ -24,43 +26,18 @@ module.exports = ({ strapi }) => ({
       })
     );
 
-    const searchResults = filteredEntries.map((model) => {
+    const searchResult = filteredEntries.map((model) => {
       const keys = model.fuzzysortOptions.keys.map((key) => key.name);
 
-      // Splice strings to search if characterLimit has been passed
-      if (model.fuzzysortOptions.characterLimit) {
-        model[model.pluralName].forEach((entry) => {
-          const entryKeys = Object.keys(entry);
+      let result = buildResult({ model, keys, query });
 
-          entryKeys.forEach((key) => {
-            if (!keys.includes(key)) return;
-
-            if (!entry[key]) return;
-
-            entry[key] = entry[key].slice(
-              0,
-              model.fuzzysortOptions.characterLimit
-            );
-          });
-        });
+      if (model.transliterate) {
+        result = buildTransliteratedResult({ model, keys, query, result });
       }
 
-      return {
-        pluralName: model.pluralName,
-        fuzzysort: fuzzysort.go(query, model[model.pluralName], {
-          threshold: parseInt(model.fuzzysortOptions.threshold),
-          limit: parseInt(model.fuzzysortOptions.limit),
-          keys: model.fuzzysortOptions.keys.map((key) => key.name),
-          scoreFn: (a) =>
-            Math.max(
-              ...model.fuzzysortOptions.keys.map((key, index) =>
-                a[index] ? a[index].score + key.weight : -9999
-              )
-            ),
-        }),
-      };
+      return result;
     });
 
-    return searchResults;
+    return searchResult;
   },
 });

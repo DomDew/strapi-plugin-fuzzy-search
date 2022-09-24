@@ -1,11 +1,11 @@
 // Destructure search results and return them in appropriate/sanitized format
 const buildGraphqlResponse = async (searchResults, auth) => {
-  const { sanitizeOutput } = require("../utils/sanitizeOutput");
-  const { getPluginService } = require("../utils/getPluginService");
+  const { sanitizeOutput } = require('../utils/sanitizeOutput');
+  const { getPluginService } = require('../utils/getPluginService');
   const { toEntityResponseCollection } = getPluginService(
     strapi,
-    "format",
-    "graphql"
+    'format',
+    'graphql'
   ).returnTypes;
 
   const resultsResponse = {};
@@ -15,7 +15,7 @@ const buildGraphqlResponse = async (searchResults, auth) => {
   await Promise.all(
     searchResults.map(async (res) => {
       resultsResponse[res.pluralName] = toEntityResponseCollection(
-        res.fuzzysort.map(async (fuzzyRes) => {
+        res.fuzzysortResults.map(async (fuzzyRes) => {
           const sanitizedEntity = await sanitizeOutput(
             fuzzyRes.obj,
             res.contentType,

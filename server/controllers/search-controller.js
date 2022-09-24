@@ -1,6 +1,6 @@
-const { getPluginService } = require("../utils/getPluginService");
-const { NotFoundError } = require("@strapi/utils/lib/errors");
-const { sanitizeOutput } = require("../utils/sanitizeOutput");
+const { getPluginService } = require('../utils/getPluginService');
+const { NotFoundError } = require('@strapi/utils/lib/errors');
+const { sanitizeOutput } = require('../utils/sanitizeOutput');
 
 module.exports = ({ strapi }) => ({
   async search(ctx) {
@@ -10,7 +10,7 @@ module.exports = ({ strapi }) => ({
 
     const searchResults = await getPluginService(
       strapi,
-      "fuzzySearchService"
+      'fuzzySearchService'
     ).getResults(query, locale);
 
     const resultsResponse = {};
@@ -19,7 +19,7 @@ module.exports = ({ strapi }) => ({
     // Since sanitizeOutput returns a promise --> Resolve all promises in async forEach so mapping works as expected
     searchResults.forEach(async (res) => {
       resultsResponse[res.pluralName] = await Promise.all(
-        res.fuzzysort.map(async (fuzzyRes) => {
+        res.fuzzysortResults.map(async (fuzzyRes) => {
           const sanitizedEntity = await sanitizeOutput(
             fuzzyRes.obj,
             res.contentType,
@@ -31,11 +31,6 @@ module.exports = ({ strapi }) => ({
       );
     });
 
-    /**
-     * Error handling
-     * TODO: Implement error handling
-     * TODO: Locale==null Handling
-     */
     if (resultsResponse) {
       return resultsResponse;
     } else {

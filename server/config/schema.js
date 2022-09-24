@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-const yup = require("yup");
+const yup = require('yup');
 
 const pluginConfigSchema = yup.object({
   fuseOptions: yup.object(),
@@ -9,6 +9,7 @@ const pluginConfigSchema = yup.object({
       uid: yup.string().required(),
       modelName: yup.string().required(),
       queryConstraints: yup.object(),
+      transliterate: yup.boolean(),
       fuzzysortOptions: yup
         .object({
           threshold: yup.number(),
