@@ -1,12 +1,12 @@
-const { getFilteredEntries } = require('../utils/getFilteredEntries');
-const { getPluginService } = require('../utils/getPluginService');
-const { validateQuery } = require('../utils/validateQuery');
-const buildResult = require('../utils/buildResult');
-const buildTransliteratedResult = require('../utils/buildTransliteratedResult');
+const { getFilteredEntries } = require("../utils/getFilteredEntries");
+const { getPluginService } = require("../utils/getPluginService");
+const { validateQuery } = require("../utils/validateQuery");
+const buildResult = require("../utils/buildResult");
+const buildTransliteratedResult = require("../utils/buildTransliteratedResult");
 
 module.exports = ({ strapi }) => ({
   async getResults(query, locale) {
-    const { contentTypes } = getPluginService(strapi, 'settingsService').get();
+    const { contentTypes } = getPluginService(strapi, "settingsService").get();
 
     // Get all projects, news and articles for a given locale and query filter, to be able to filter through them
     // Doing this in the resolver so we always have the newest entries
