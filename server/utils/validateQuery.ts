@@ -1,6 +1,7 @@
-const { ValidationError } = require("@strapi/utils/lib/errors");
+import { ValidationError } from "@strapi/utils/lib/errors";
+import { StringLocale } from "yup/lib/locale";
 
-const validateQuery = async (contentType, locale) => {
+const validateQuery = async (contentType, locale: string) => {
   contentType.fuzzysortOptions.keys.forEach((key) => {
     const attributeKeys = Object.keys(contentType.model.attributes);
 
@@ -23,6 +24,4 @@ const validateQuery = async (contentType, locale) => {
   }
 };
 
-module.exports = {
-  validateQuery,
-};
+export default validateQuery;

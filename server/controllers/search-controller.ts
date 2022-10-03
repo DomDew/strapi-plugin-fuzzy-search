@@ -1,17 +1,14 @@
-const { getPluginService } = require('../utils/getPluginService');
-const { NotFoundError } = require('@strapi/utils/lib/errors');
-const { sanitizeOutput } = require('../utils/sanitizeOutput');
+import { NotFoundError } from '@strapi/utils/lib/errors';
+import fuzzySearchService from '../services/fuzzySearchService';
+import sanitizeOutput from '../utils/sanitizeOutput';
 
-module.exports = ({ strapi }) => ({
+export default () => ({
   async search(ctx) {
     const query = ctx.query.query;
     const locale = ctx.query.locale;
     const { auth } = ctx.state;
 
-    const searchResults = await getPluginService(
-      strapi,
-      'fuzzySearchService'
-    ).getResults(query, locale);
+    const searchResults = await fuzzySearchService().getResults(query, locale);
 
     const resultsResponse = {};
 
@@ -20,9 +17,11 @@ module.exports = ({ strapi }) => ({
     searchResults.forEach(async (res) => {
       resultsResponse[res.pluralName] = await Promise.all(
         res.fuzzysortResults.map(async (fuzzyRes) => {
+          const schema = strapi.getModel(res.uid);
+
           const sanitizedEntity = await sanitizeOutput(
             fuzzyRes.obj,
-            res.contentType,
+            schema,
             auth
           );
 

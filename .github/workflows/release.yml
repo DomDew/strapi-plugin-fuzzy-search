@@ -17,7 +17,10 @@ jobs:
           registry-url: 'https://registry.npmjs.org/'
 
       - name: Install deps
-        run: npm i
+        run: npm ci
+
+      - name: Transpile Typescript
+        run: npm run build
 
       - name: Release to NPM
         env:

@@ -1,7 +1,5 @@
-"use strict";
-
 const SUPPORTED_LIFECYCLES = ["beforeCreate", "beforeUpdate"];
 
-module.exports = {
+export default {
   SUPPORTED_LIFECYCLES,
 };

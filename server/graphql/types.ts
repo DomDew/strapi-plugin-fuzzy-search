@@ -1,9 +1,10 @@
-const { getPluginService } = require("../utils/getPluginService");
-const { buildGraphqlResponse } = require("../utils/buildGraphqlResponse");
+import fuzzySearchService from "../services/fuzzySearchService";
+import settingsService from "../services/settingsService";
+import buildGraphqlResponse from "../utils/buildGraphqlResponse";
 
 const getCustomTypes = (strapi, nexus) => {
-  const { naming } = getPluginService(strapi, "utils", "graphql");
-  const { contentTypes } = getPluginService(strapi, "settingsService").get();
+  const { naming } = strapi.plugin("graphql").service("utils");
+  const { contentTypes } = settingsService().get();
   const { getEntityResponseCollectionName, getFindQueryName } = naming;
 
   // Get response names
@@ -44,10 +45,10 @@ const getCustomTypes = (strapi, nexus) => {
             const { query, locale } = args;
             const { auth } = ctx.state;
 
-            const searchResults = await getPluginService(
-              strapi,
-              "fuzzySearchService"
-            ).getResults(query, locale);
+            const searchResults = await fuzzySearchService().getResults(
+              query,
+              locale
+            );
 
             const resultsResponse = await buildGraphqlResponse(
               searchResults,
@@ -76,6 +77,4 @@ const getCustomTypes = (strapi, nexus) => {
   return returnTypes;
 };
 
-module.exports = {
-  getCustomTypes,
-};
+export default getCustomTypes;

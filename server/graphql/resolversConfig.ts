@@ -8,6 +8,4 @@ const getResolversConfig = () => {
   };
 };
 
-module.exports = {
-  getResolversConfig,
-};
+export default getResolversConfig;

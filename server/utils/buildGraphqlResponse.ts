@@ -1,12 +1,10 @@
+import sanitizeOutput from "./sanitizeOutput";
+
 // Destructure search results and return them in appropriate/sanitized format
 const buildGraphqlResponse = async (searchResults, auth) => {
-  const { sanitizeOutput } = require('../utils/sanitizeOutput');
-  const { getPluginService } = require('../utils/getPluginService');
-  const { toEntityResponseCollection } = getPluginService(
-    strapi,
-    'format',
-    'graphql'
-  ).returnTypes;
+  const { toEntityResponseCollection } = strapi
+    .plugin("graphql")
+    .service("format").returnTypes;
 
   const resultsResponse = {};
 
@@ -31,6 +29,4 @@ const buildGraphqlResponse = async (searchResults, auth) => {
   return resultsResponse;
 };
 
-module.exports = {
-  buildGraphqlResponse,
-};
+export default buildGraphqlResponse;

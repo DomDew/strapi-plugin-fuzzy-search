@@ -1,9 +1,6 @@
-'use strict';
-
-const yup = require('yup');
+import * as yup from "yup";
 
 const pluginConfigSchema = yup.object({
-  fuseOptions: yup.object(),
   contentTypes: yup.array().of(
     yup.object({
       uid: yup.string().required(),
@@ -26,6 +23,4 @@ const pluginConfigSchema = yup.object({
   ),
 });
 
-module.exports = {
-  pluginConfigSchema,
-};
+export default pluginConfigSchema;

@@ -41,13 +41,15 @@
   },
   "license": "MIT",
   "main": "strapi-server.js",
+  "types": "dist/index.d.ts",
   "devDependencies": {
     "all-contributors-cli": "^6.20.0",
     "semantic-release": "^19.0.2"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "develop": "tsc -w",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",

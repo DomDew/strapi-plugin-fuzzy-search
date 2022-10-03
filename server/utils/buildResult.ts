@@ -1,6 +1,17 @@
-const fuzzysort = require('fuzzysort');
+import fuzzysort from 'fuzzysort';
+import { ContentType, FilteredEntry } from '../interfaces/interfaces';
 
-module.exports = ({ model, keys, query }) => {
+export default ({
+  model,
+  keys,
+  query,
+}: {
+  model: FilteredEntry;
+  keys: string[];
+  query: string;
+}) => {
+  console.log('MODEL', model);
+
   if (model.fuzzysortOptions.characterLimit) {
     model[model.pluralName].forEach((entry) => {
       const entryKeys = Object.keys(entry);
@@ -17,9 +28,10 @@ module.exports = ({ model, keys, query }) => {
 
   return {
     pluralName: model.pluralName,
+    uid: model.uid,
     fuzzysortResults: fuzzysort.go(query, model[model.pluralName], {
-      threshold: parseInt(model.fuzzysortOptions.threshold),
-      limit: parseInt(model.fuzzysortOptions.limit),
+      threshold: model.fuzzysortOptions.threshold,
+      limit: model.fuzzysortOptions.limit,
       keys,
       scoreFn: (a) =>
         Math.max(
