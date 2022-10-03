@@ -6,11 +6,13 @@ module.exports = ({ strapi }) => ({
   async search(ctx) {
     const query = ctx.query.query;
     const locale = ctx.query.locale;
+    const limit = ctx.query.limit;
     const { auth } = ctx.state;
 
     const searchResults = await getPluginService(
       strapi,
-      "fuzzySearchService"
+      "fuzzySearchService",
+      limit
     ).getResults(query, locale);
 
     const resultsResponse = {};
