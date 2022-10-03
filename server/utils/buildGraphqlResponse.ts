@@ -1,10 +1,11 @@
-import sanitizeOutput from "./sanitizeOutput";
+import { ContentType, Result } from '../interfaces/interfaces';
+import sanitizeOutput from './sanitizeOutput';
 
 // Destructure search results and return them in appropriate/sanitized format
-const buildGraphqlResponse = async (searchResults, auth) => {
+const buildGraphqlResponse = async (searchResults: Result[], auth) => {
   const { toEntityResponseCollection } = strapi
-    .plugin("graphql")
-    .service("format").returnTypes;
+    .plugin('graphql')
+    .service('format').returnTypes;
 
   const resultsResponse = {};
 
@@ -14,9 +15,11 @@ const buildGraphqlResponse = async (searchResults, auth) => {
     searchResults.map(async (res) => {
       resultsResponse[res.pluralName] = toEntityResponseCollection(
         res.fuzzysortResults.map(async (fuzzyRes) => {
+          const schema = strapi.getModel(res.uid);
+
           const sanitizedEntity = await sanitizeOutput(
             fuzzyRes.obj,
-            res.contentType,
+            schema,
             auth
           );
 

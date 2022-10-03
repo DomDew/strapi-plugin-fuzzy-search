@@ -1,9 +1,9 @@
-import fuzzySearchService from "../services/fuzzySearchService";
-import settingsService from "../services/settingsService";
-import buildGraphqlResponse from "../utils/buildGraphqlResponse";
+import fuzzySearchService from '../services/fuzzySearchService';
+import settingsService from '../services/settingsService';
+import buildGraphqlResponse from '../utils/buildGraphqlResponse';
 
 const getCustomTypes = (strapi, nexus) => {
-  const { naming } = strapi.plugin("graphql").service("utils");
+  const { naming } = strapi.plugin('graphql').service('utils');
   const { contentTypes } = settingsService().get();
   const { getEntityResponseCollectionName, getFindQueryName } = naming;
 
@@ -15,7 +15,7 @@ const getCustomTypes = (strapi, nexus) => {
   // Extend the SearchResponse type for each registered model
   const extendSearchType = (nexus, model) => {
     return nexus.extendType({
-      type: "SearchResponse",
+      type: 'SearchResponse',
       definition(t) {
         t.field(getFindQueryName(model), { type: model.responseName });
       },
@@ -24,21 +24,21 @@ const getCustomTypes = (strapi, nexus) => {
 
   const returnTypes = [
     nexus.objectType({
-      name: "SearchResponse",
+      name: 'SearchResponse',
       definition() {},
     }),
     nexus.extendType({
-      type: "Query",
+      type: 'Query',
       definition(t) {
-        t.field("search", {
-          type: "SearchResponse",
+        t.field('search', {
+          type: 'SearchResponse',
           args: {
             query: nexus.nonNull(
               nexus.stringArg(
-                "The query string by which the models are searched"
+                'The query string by which the models are searched'
               )
             ),
-            locale: nexus.stringArg("The locale by which to filter the models"),
+            locale: nexus.stringArg('The locale by which to filter the models'),
           },
           async resolve(_parent, args, ctx) {
             // Destructure the args to get query value
@@ -54,11 +54,7 @@ const getCustomTypes = (strapi, nexus) => {
               searchResults,
               auth
             );
-            /**
-             * Error handling
-             * TODO: Implement error handling
-             * TODO: Locale==null Handling
-             */
+
             if (resultsResponse) {
               return resultsResponse;
             } else {

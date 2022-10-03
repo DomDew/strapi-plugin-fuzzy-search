@@ -1,5 +1,5 @@
 import fuzzysort from 'fuzzysort';
-import { ContentType, FilteredEntry } from '../interfaces/interfaces';
+import { Entity, FilteredEntry } from '../interfaces/interfaces';
 
 export default ({
   model,
@@ -10,8 +10,6 @@ export default ({
   keys: string[];
   query: string;
 }) => {
-  console.log('MODEL', model);
-
   if (model.fuzzysortOptions.characterLimit) {
     model[model.pluralName].forEach((entry) => {
       const entryKeys = Object.keys(entry);
@@ -29,7 +27,7 @@ export default ({
   return {
     pluralName: model.pluralName,
     uid: model.uid,
-    fuzzysortResults: fuzzysort.go(query, model[model.pluralName], {
+    fuzzysortResults: fuzzysort.go<Entity>(query, model[model.pluralName], {
       threshold: model.fuzzysortOptions.threshold,
       limit: model.fuzzysortOptions.limit,
       keys,

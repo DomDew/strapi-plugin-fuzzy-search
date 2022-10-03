@@ -1,6 +1,5 @@
-import { Strapi } from "@strapi/strapi";
-import { Config } from "../interfaces/interfaces";
-import pluginId from "../utils/pluginId";
+import { Config } from '../interfaces/interfaces';
+import pluginId from '../utils/pluginId';
 
 export interface SettingsService {
   get(): Config;

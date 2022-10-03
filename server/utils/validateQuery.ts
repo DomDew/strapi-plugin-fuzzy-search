@@ -1,7 +1,7 @@
-import { ValidationError } from "@strapi/utils/lib/errors";
-import { StringLocale } from "yup/lib/locale";
+import { ValidationError } from '@strapi/utils/lib/errors';
+import { ContentType } from '../interfaces/interfaces';
 
-const validateQuery = async (contentType, locale: string) => {
+const validateQuery = async (contentType: ContentType, locale: string) => {
   contentType.fuzzysortOptions.keys.forEach((key) => {
     const attributeKeys = Object.keys(contentType.model.attributes);
 
@@ -13,8 +13,8 @@ const validateQuery = async (contentType, locale: string) => {
 
   if (!locale) return;
 
-  const isLocalizedContentType = await strapi.plugins.i18n.services[
-    "content-types"
+  const isLocalizedContentType: boolean = await strapi.plugins.i18n.services[
+    'content-types'
   ].isLocalizedContentType(contentType.model);
 
   if (!isLocalizedContentType) {

@@ -1,7 +1,5 @@
-"use strict";
-
-const settingsService = require("./settingsService");
-const fuzzySearchService = require("./fuzzySearchService");
+import fuzzySearchService from './fuzzySearchService';
+import settingsService from './settingsService';
 
 export default {
   settingsService,

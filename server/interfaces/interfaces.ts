@@ -1,5 +1,7 @@
 import { Schema } from '@strapi/strapi';
 
+type Writeable<T> = { -readonly [P in keyof T]: T[P] };
+
 export interface Config {
   contentTypes: ContentType[];
 }
@@ -22,7 +24,7 @@ export interface ContentType {
   queryConstraints?: { where: {} };
   transliterate?: boolean;
   fuzzysortOptions: FuzzySortOptions;
-  model: Schema & { uid: string; responseName: string };
+  model: Schema & { uid: string; responseName: string; modelName: string };
 }
 
 export interface FilteredEntry {
@@ -30,5 +32,16 @@ export interface FilteredEntry {
   pluralName: string;
   transliterate: boolean;
   fuzzysortOptions: FuzzySortOptions;
+  [x: string]: any;
+}
+
+export interface Result {
+  pluralName: string;
+  uid: string;
+  fuzzysortResults: Writeable<Fuzzysort.KeysResults<Entity>>;
+}
+
+export interface Entity {
+  id: string | number;
   [x: string]: any;
 }
