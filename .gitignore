@@ -3,7 +3,4 @@
 server/.DS_Store
 .DS_Store
 /dist
-<<<<<<< HEAD
-=======
 yarn.lock
->>>>>>> 6227b71 (feat: add typescript support)
