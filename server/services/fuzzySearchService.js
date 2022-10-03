@@ -4,7 +4,7 @@ const { getPluginService } = require("../utils/getPluginService");
 const { validateQuery } = require("../utils/validateQuery");
 
 module.exports = ({ strapi }) => ({
-  async getResults(query, locale) {
+  async getResults(query, locale, limitP) {
     const { contentTypes } = getPluginService(strapi, "settingsService").get();
 
     // Get all projects, news and articles for a given locale and query filter, to be able to filter through them
@@ -26,6 +26,8 @@ module.exports = ({ strapi }) => ({
 
     const searchResults = filteredEntries.map((model) => {
       const keys = model.fuzzysortOptions.keys.map((key) => key.name);
+
+      const limit = limitP ? parseInt(limitP) : parseInt(model.fuzzysortOptions.limit);
 
       // Splice strings to search if characterLimit has been passed
       if (model.fuzzysortOptions.characterLimit) {
@@ -49,7 +51,7 @@ module.exports = ({ strapi }) => ({
         pluralName: model.pluralName,
         fuzzysort: fuzzysort.go(query, model[model.pluralName], {
           threshold: parseInt(model.fuzzysortOptions.threshold),
-          limit: parseInt(model.fuzzysortOptions.limit),
+          limit,
           keys: model.fuzzysortOptions.keys.map((key) => key.name),
           scoreFn: (a) =>
             Math.max(
