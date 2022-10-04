@@ -38,6 +38,7 @@ The plugin requires several configurations to be set in the `.config/plugins.js`
 | Key              | Type             | Notes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | ---------------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | contentTypes\*   | Array of Objects | List the content types you want to register for fuzzysort. Each object requires the `uid: string` and `modelName: string` to be set for a content type                                                                                                                                                                                                                                                                                                                                                         |
+| transliterate    | boolean          | If this is set to true the search will additionally run against transliterated versions of the content for the keys specified in the keys array for a given content type. E.g. `你好` will match for `ni hao`. Note that activating this feature for a content type comes at a performance cost and may increase the response time.                                                                                                                                                                            |
 | queryConstraints | Object           | Manipulate the db query that queries for the entries of a model, e.g. as to only select articles that have been published. These constraints to the underlying `findMany()` query are built with the [logical operators](https://docs.strapi.io/developer-docs/latest/developer-resources/database-apis-reference/query-engine/filtering.html#logical-operators) of [Strapis Query Engine API](https://docs.strapi.io/developer-docs/latest/developer-resources/database-apis-reference/query-engine-api.html) |
 
 ### Fuzzysort Options
@@ -64,6 +65,7 @@ module.exports = ({ env }) => ({
         {
           uid: "api::author.author",
           modelName: "author",
+          transliterate: true,
           queryConstraints: {
             where: {
               $and: [
@@ -116,7 +118,7 @@ module.exports = ({ env }) => ({
 
 ## A note on performance:
 
-A high `characterCount`, `threshold` and `limit` all hamper the performance of the search algorithm. We recommend that you start out with a `characterCount: 500`, `threshold: -1000`, `limit: 15` and work your way from there. The characterCount especially can be quite delicate, so make sure to test every scenario when dialing in it's value.
+A high `characterCount`, `threshold` and `limit` as well as setting `transliterate: true` all hamper the performance of the search algorithm. We recommend that you start out with a `characterCount: 500`, `threshold: -1000`, `limit: 15` and work your way from there. The characterCount especially can be quite delicate, so make sure to test every scenario when dialing in it's value.
 
 # Usage
 
@@ -135,7 +137,7 @@ Alternatively (and if the graphql plugin is installed), a search query is regist
 ### REST
 
 ```JavaScript
-await fetch(`${API_URL}/api/fuzzy-search/search?query=john&locale=en`);
+await fetch(`${API_URL}/api/fuzzy-search/search?query=deresh&locale=en`);
 // GET /api/fuzzy-search/search?query=john&locale=en
 ```
 
@@ -143,7 +145,7 @@ await fetch(`${API_URL}/api/fuzzy-search/search?query=john&locale=en`);
 
 ```graphql
 query {
-  search(query: "john", locale: "en") {
+  search(query: "deresh", locale: "en") {
     authors {
       data {
         attributes {
@@ -174,8 +176,8 @@ query {
   "authors": [
     {
       "id": 1,
-      "name": "John Doe",
-      "description": "John Doe ist an amazing author that is famous for his book \"The Rising Star\". In his works he likes to describe feelings of happiness and contempt using colorful metaphors.",
+      "name": "Любко Дереш",
+      "description": "As an author, Lyubko has had somewhat of a cult-like following among the younger generation in Ukraine since the appearance of his novel Cult at age eighteen, which was followed almost immediately by the publication of another novel, written in early high school.",
       "createdAt": "2022-05-05T13:08:19.312Z",
       "updatedAt": "2022-05-05T13:34:46.488Z",
       "publishedAt": "2022-05-05T13:22:17.310Z"
@@ -184,8 +186,8 @@ query {
   "books": [
     {
       "id": 1,
-      "title": "The Rising Star",
-      "description": "The Rising Star is a beautiful book written by John Doe.",
+      "title": "Jacob's Head",
+      "description": "Jacob’s Head by Lyubko Deresh is scheduled to be adapted into a movie in Ukraine in the near future.",
       "createdAt": "2022-05-05T13:08:43.816Z",
       "updatedAt": "2022-05-05T13:24:07.107Z",
       "publishedAt": "2022-05-05T13:22:23.764Z"
@@ -204,7 +206,7 @@ query {
         "data": [
           {
             "attributes": {
-              "name": "John Doe"
+              "name": "Любко Дереш"
             }
           }
         ]
@@ -213,8 +215,8 @@ query {
         "data": [
           {
             "attributes": {
-              "title": "The Rising Star",
-              "description": "The Rising Star is a beautiful book written by John Doe."
+              "title": "Jacob's Head",
+              "description": "Jacob’s Head by Lyubko Deresh is scheduled to be adapted into a movie in Ukraine in the near future."
             }
           }
         ]
