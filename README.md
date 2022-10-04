@@ -3,7 +3,9 @@
 # Strapi-plugin-fuzzy-search
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
+
+[![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors-)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Register a weighted fuzzy search endpoint for Strapi Headless CMS you can add your content types to in no time.
@@ -33,10 +35,10 @@ Mandatory settings are marked with `*`.
 
 The plugin requires several configurations to be set in the `.config/plugins.js` file of your Strapi project to work.
 
-| Key               | Type             | Notes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-|-------------------| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| contentTypes\*    | Array of Objects | List the content types you want to register for fuzzysort. Each object requires the `uid: string` and `modelName: string` to be set for a content type                                                                                                                                                                                                                                                                                                                                                         |
-| queryConstraints  | Object           | Manipulate the db query that queries for the entries of a model, e.g. as to only select articles that have been published. These constraints to the underlying `findMany()` query are built with the [logical operators](https://docs.strapi.io/developer-docs/latest/developer-resources/database-apis-reference/query-engine/filtering.html#logical-operators) of [Strapis Query Engine API](https://docs.strapi.io/developer-docs/latest/developer-resources/database-apis-reference/query-engine-api.html) |
+| Key              | Type             | Notes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| ---------------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| contentTypes\*   | Array of Objects | List the content types you want to register for fuzzysort. Each object requires the `uid: string` and `modelName: string` to be set for a content type                                                                                                                                                                                                                                                                                                                                                         |
+| queryConstraints | Object           | Manipulate the db query that queries for the entries of a model, e.g. as to only select articles that have been published. These constraints to the underlying `findMany()` query are built with the [logical operators](https://docs.strapi.io/developer-docs/latest/developer-resources/database-apis-reference/query-engine/filtering.html#logical-operators) of [Strapis Query Engine API](https://docs.strapi.io/developer-docs/latest/developer-resources/database-apis-reference/query-engine-api.html) |
 
 ### Fuzzysort Options
 
@@ -238,14 +240,17 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
 <table>
-  <tr>
-    <td align="center"><a href="https://github.com/felex0982"><img src="https://avatars.githubusercontent.com/u/14078988?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Felix Wagner</b></sub></a><br /><a href="https://github.com/DomDew/strapi-plugin-fuzzy-search/commits?author=felex0982" title="Documentation">📖</a> <a href="#design-felex0982" title="Design">🎨</a></td>
-    <td align="center"><a href="https://github.com/wuestefeld"><img src="https://avatars.githubusercontent.com/u/33458141?v=4?s=100" width="100px;" alt=""/><br /><sub><b>wuestefeld</b></sub></a><br /><a href="https://github.com/DomDew/strapi-plugin-fuzzy-search/commits?author=wuestefeld" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/DomDew"><img src="https://avatars.githubusercontent.com/u/72755955?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Dominik</b></sub></a><br /><a href="https://github.com/DomDew/strapi-plugin-fuzzy-search/commits?author=DomDew" title="Code">💻</a> <a href="https://github.com/DomDew/strapi-plugin-fuzzy-search/commits?author=DomDew" title="Documentation">📖</a> <a href="#ideas-DomDew" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/DomDew/strapi-plugin-fuzzy-search/pulls?q=is%3Apr+reviewed-by%3ADomDew" title="Reviewed Pull Requests">👀</a></td>
-    <td align="center"><a href="http://www.me.com"><img src="https://avatars.githubusercontent.com/u/17861353?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Rotar Rares</b></sub></a><br /><a href="https://github.com/DomDew/strapi-plugin-fuzzy-search/commits?author=rotarrares" title="Code">💻</a></td>
-    <td align="center"><a href="https://nhvu1988.com/"><img src="https://avatars.githubusercontent.com/u/13212737?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Nguyễn Hoàng Vũ</b></sub></a><br /><a href="https://github.com/DomDew/strapi-plugin-fuzzy-search/commits?author=nhvu1988" title="Code">💻</a></td>
-    <td align="center"><a href="https://chrismps.netlify.app/"><img src="https://avatars.githubusercontent.com/u/21962584?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Chris Michael</b></sub></a><br /><a href="https://github.com/DomDew/strapi-plugin-fuzzy-search/issues?q=author%3AChrisMichaelPerezSantiago" title="Bug reports">🐛</a></td>
-  </tr>
+  <tbody>
+    <tr>
+      <td align="center"><a href="https://github.com/felex0982"><img src="https://avatars.githubusercontent.com/u/14078988?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Felix Wagner</b></sub></a><br /><a href="https://github.com/DomDew/strapi-plugin-fuzzy-search/commits?author=felex0982" title="Documentation">📖</a> <a href="#design-felex0982" title="Design">🎨</a></td>
+      <td align="center"><a href="https://github.com/wuestefeld"><img src="https://avatars.githubusercontent.com/u/33458141?v=4?s=100" width="100px;" alt=""/><br /><sub><b>wuestefeld</b></sub></a><br /><a href="https://github.com/DomDew/strapi-plugin-fuzzy-search/commits?author=wuestefeld" title="Code">💻</a></td>
+      <td align="center"><a href="https://github.com/DomDew"><img src="https://avatars.githubusercontent.com/u/72755955?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Dominik</b></sub></a><br /><a href="https://github.com/DomDew/strapi-plugin-fuzzy-search/commits?author=DomDew" title="Code">💻</a> <a href="https://github.com/DomDew/strapi-plugin-fuzzy-search/commits?author=DomDew" title="Documentation">📖</a> <a href="#ideas-DomDew" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/DomDew/strapi-plugin-fuzzy-search/pulls?q=is%3Apr+reviewed-by%3ADomDew" title="Reviewed Pull Requests">👀</a></td>
+      <td align="center"><a href="http://www.me.com"><img src="https://avatars.githubusercontent.com/u/17861353?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Rotar Rares</b></sub></a><br /><a href="https://github.com/DomDew/strapi-plugin-fuzzy-search/commits?author=rotarrares" title="Code">💻</a></td>
+      <td align="center"><a href="https://nhvu1988.com/"><img src="https://avatars.githubusercontent.com/u/13212737?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Nguyễn Hoàng Vũ</b></sub></a><br /><a href="https://github.com/DomDew/strapi-plugin-fuzzy-search/commits?author=nhvu1988" title="Code">💻</a></td>
+      <td align="center"><a href="https://chrismps.netlify.app/"><img src="https://avatars.githubusercontent.com/u/21962584?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Chris Michael</b></sub></a><br /><a href="https://github.com/DomDew/strapi-plugin-fuzzy-search/issues?q=author%3AChrisMichaelPerezSantiago" title="Bug reports">🐛</a></td>
+      <td align="center"><a href="https://github.com/Sunny-Pirate"><img src="https://avatars.githubusercontent.com/u/109725967?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Luca Faccio</b></sub></a><br /><a href="https://github.com/DomDew/strapi-plugin-fuzzy-search/issues?q=author%3ASunny-Pirate" title="Bug reports">🐛</a></td>
+    </tr>
+  </tbody>
 </table>
 
 <!-- markdownlint-restore -->
