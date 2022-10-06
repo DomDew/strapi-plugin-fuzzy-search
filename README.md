@@ -3,7 +3,9 @@
 # Strapi-plugin-fuzzy-search
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Register a weighted fuzzy search endpoint for Strapi Headless CMS you can add your content types to in no time.
@@ -36,6 +38,7 @@ The plugin requires several configurations to be set in the `.config/plugins.js`
 | Key              | Type             | Notes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | ---------------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | contentTypes\*   | Array of Objects | List the content types you want to register for fuzzysort. Each object requires the `uid: string` and `modelName: string` to be set for a content type                                                                                                                                                                                                                                                                                                                                                         |
+| transliterate    | boolean          | If this is set to true the search will additionally run against transliterated versions of the content for the keys specified in the keys array for a given content type. E.g. `你好` will match for `ni hao`. Note that activating this feature for a content type comes at a performance cost and may increase the response time.                                                                                                                                                                            |
 | queryConstraints | Object           | Manipulate the db query that queries for the entries of a model, e.g. as to only select articles that have been published. These constraints to the underlying `findMany()` query are built with the [logical operators](https://docs.strapi.io/developer-docs/latest/developer-resources/database-apis-reference/query-engine/filtering.html#logical-operators) of [Strapis Query Engine API](https://docs.strapi.io/developer-docs/latest/developer-resources/database-apis-reference/query-engine-api.html) |
 
 ### Fuzzysort Options
@@ -62,6 +65,7 @@ module.exports = ({ env }) => ({
         {
           uid: "api::author.author",
           modelName: "author",
+          transliterate: true,
           queryConstraints: {
             where: {
               $and: [
