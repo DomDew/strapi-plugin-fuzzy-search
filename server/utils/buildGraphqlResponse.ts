@@ -2,7 +2,7 @@ import { ContentType, Result } from '../interfaces/interfaces';
 import sanitizeOutput from './sanitizeOutput';
 
 // Destructure search results and return them in appropriate/sanitized format
-const buildGraphqlResponse = async (searchResults: Result[], auth) => {
+const buildGraphqlResponse = async (searchResults: Result[], auth: any) => {
   const { toEntityResponseCollection } = strapi
     .plugin('graphql')
     .service('format').returnTypes;

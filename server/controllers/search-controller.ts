@@ -1,6 +1,6 @@
 import { NotFoundError } from '@strapi/utils/lib/errors';
 import fuzzySearchService from '../services/fuzzySearchService';
-import sanitizeOutput from '../utils/sanitizeOutput';
+import buildRestResponse from '../utils/buildRestResponse';
 
 export default () => ({
   async search(ctx) {
@@ -10,28 +10,10 @@ export default () => ({
 
     const searchResults = await fuzzySearchService().getResults(query, locale);
 
-    const resultsResponse = {};
+    const response = await buildRestResponse(searchResults, auth);
 
-    // Build resultsResponse with sanitized entities
-    // Since sanitizeOutput returns a promise --> Resolve all promises in async forEach so mapping works as expected
-    searchResults.forEach(async (res) => {
-      resultsResponse[res.pluralName] = await Promise.all(
-        res.fuzzysortResults.map(async (fuzzyRes) => {
-          const schema = strapi.getModel(res.uid);
-
-          const sanitizedEntity = await sanitizeOutput(
-            fuzzyRes.obj,
-            schema,
-            auth
-          );
-
-          return sanitizedEntity;
-        })
-      );
-    });
-
-    if (resultsResponse) {
-      return resultsResponse;
+    if (response) {
+      return response;
     } else {
       throw new NotFoundError();
     }
