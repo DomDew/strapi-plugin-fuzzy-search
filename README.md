@@ -8,6 +8,8 @@
 
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
+![Github CI](https://img.shields.io/github/workflow/status/domdew/strapi-plugin-fuzzy-search/CI) ![Npm release](https://img.shields.io/npm/v/strapi-plugin-fuzzy-search?label=release) ![Npm monthly downloads](https://img.shields.io/npm/dm/strapi-plugin-fuzzy-search) ![License](https://img.shields.io/github/license/domdew/strapi-plugin-fuzzy-search)
+
 Register a weighted fuzzy search endpoint for Strapi Headless CMS you can add your content types to in no time.
 
 Uses [fuzzysort](https://github.com/farzher/fuzzysort) under the hood: Simple, quick and easy. No need to worry about setting up an instance for a complex search engine.
