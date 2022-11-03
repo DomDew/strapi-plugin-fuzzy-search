@@ -3,9 +3,7 @@
 # Strapi-plugin-fuzzy-search
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-
-[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
-
+[![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ![Github CI](https://img.shields.io/github/workflow/status/domdew/strapi-plugin-fuzzy-search/CI) ![Npm release](https://img.shields.io/npm/v/strapi-plugin-fuzzy-search?label=release) ![Npm monthly downloads](https://img.shields.io/npm/dm/strapi-plugin-fuzzy-search) ![License](https://img.shields.io/github/license/domdew/strapi-plugin-fuzzy-search)
@@ -256,11 +254,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     </tr>
     <tr>
       <td align="center"><a href="https://github.com/aomalik"><img src="https://avatars.githubusercontent.com/u/44109070?v=4?s=100" width="100px;" alt="aomalik"/><br /><sub><b>aomalik</b></sub></a><br /><a href="https://github.com/DomDew/strapi-plugin-fuzzy-search/issues?q=author%3Aaomalik" title="Bug reports">🐛</a></td>
+      <td align="center"><a href="https://github.com/signorekai"><img src="https://avatars.githubusercontent.com/u/12168407?v=4?s=100" width="100px;" alt="Alfred Lau"/><br /><sub><b>Alfred Lau</b></sub></a><br /><a href="https://github.com/DomDew/strapi-plugin-fuzzy-search/issues?q=author%3Asignorekai" title="Bug reports">🐛</a></td>
     </tr>
   </tbody>
-  <tfoot>
-    
-  </tfoot>
 </table>
 
 <!-- markdownlint-restore -->
