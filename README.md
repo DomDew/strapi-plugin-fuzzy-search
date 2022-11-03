@@ -255,6 +255,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <tr>
       <td align="center"><a href="https://github.com/aomalik"><img src="https://avatars.githubusercontent.com/u/44109070?v=4?s=100" width="100px;" alt="aomalik"/><br /><sub><b>aomalik</b></sub></a><br /><a href="https://github.com/DomDew/strapi-plugin-fuzzy-search/issues?q=author%3Aaomalik" title="Bug reports">🐛</a></td>
       <td align="center"><a href="https://github.com/signorekai"><img src="https://avatars.githubusercontent.com/u/12168407?v=4?s=100" width="100px;" alt="Alfred Lau"/><br /><sub><b>Alfred Lau</b></sub></a><br /><a href="https://github.com/DomDew/strapi-plugin-fuzzy-search/issues?q=author%3Asignorekai" title="Bug reports">🐛</a></td>
+      <td align="center"><a href="https://github.com/philgran"><img src="https://avatars.githubusercontent.com/u/12853?v=4?s=100" width="100px;" alt="Phil Gran"/><br /><sub><b>Phil Gran</b></sub></a><br /><a href="https://github.com/DomDew/strapi-plugin-fuzzy-search/issues?q=author%3Aphilgran" title="Bug reports">🐛</a></td>
     </tr>
   </tbody>
 </table>

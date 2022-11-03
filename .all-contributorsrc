@@ -94,6 +94,15 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "philgran",
+      "name": "Phil Gran",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12853?v=4",
+      "profile": "https://github.com/philgran",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
