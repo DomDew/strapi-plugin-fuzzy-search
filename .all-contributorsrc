@@ -103,6 +103,15 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "ddazal",
+      "name": "David Daza",
+      "avatar_url": "https://avatars.githubusercontent.com/u/21014225?v=4",
+      "profile": "https://www.ddazal.com",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
