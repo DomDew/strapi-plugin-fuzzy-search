@@ -118,7 +118,7 @@ module.exports = ({ env }) => ({
 
 ## A note on performance:
 
-A high `characterCount`, `threshold` and `limit` as well as setting `transliterate: true` all hamper the performance of the search algorithm. We recommend that you start out with a `characterCount: 500`, `threshold: -1000`, `limit: 15` and work your way from there. The characterCount especially can be quite delicate, so make sure to test every scenario when dialing in it's value.
+A high `characterLimit`, `limit`, a low `threshold` (the lower the value the more matches) as well as setting `transliterate: true` all hamper the performance of the search algorithm. We recommend that you start out with a `characterLimit: 500`, `threshold: -1000`, `limit: 15` and work your way from there. The characterLimit especially can be quite delicate, so make sure to test every scenario when dialing in it's value.
 
 # Usage
 
