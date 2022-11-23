@@ -22,7 +22,7 @@
     ]
   },
   "dependencies": {
-    "fuzzysort": "2.0.3",
+    "fuzzysort": "2.0.4",
     "transliteration": "2.3.5"
   },
   "peerDependencies": {
