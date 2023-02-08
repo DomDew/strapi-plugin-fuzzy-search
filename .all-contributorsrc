@@ -112,6 +112,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "aadelgrossi",
+      "name": "Andre Grossi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6358947?v=4",
+      "profile": "https://github.com/aadelgrossi",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
