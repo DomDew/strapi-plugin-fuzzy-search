@@ -3,7 +3,9 @@
 # Strapi-plugin-fuzzy-search
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-11-orange.svg?style=flat-square)](#contributors-)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ![Github CI](https://img.shields.io/github/workflow/status/domdew/strapi-plugin-fuzzy-search/CI) ![Npm release](https://img.shields.io/npm/v/strapi-plugin-fuzzy-search?label=release) ![Npm monthly downloads](https://img.shields.io/npm/dm/strapi-plugin-fuzzy-search) ![License](https://img.shields.io/github/license/domdew/strapi-plugin-fuzzy-search)
@@ -14,8 +16,8 @@ Uses [fuzzysort](https://github.com/farzher/fuzzysort) under the hood: Simple, q
 
 **Roadmap:**
 
-- Include more fuzzysort options
-- Return better errors
+- Return indices/highlights of matches
+- Add Pagination
 
 # Requirements
 
