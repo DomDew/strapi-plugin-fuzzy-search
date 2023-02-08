@@ -6,6 +6,7 @@ const buildGraphqlResponse = async (searchResults: Result[], auth: any) => {
   const { toEntityResponseCollection } = strapi
     .plugin('graphql')
     .service('format').returnTypes;
+  const { getFindQueryName } = strapi.plugin('graphql').service('utils').naming;
 
   const resultsResponse = {};
 
@@ -13,9 +14,12 @@ const buildGraphqlResponse = async (searchResults: Result[], auth: any) => {
   // and thus resultsResponse can be build properly
   await Promise.all(
     searchResults.map(async (res) => {
-      resultsResponse[res.pluralName] = toEntityResponseCollection(
-        res.fuzzysortResults.map(async (fuzzyRes) => {
-          const schema = strapi.getModel(res.uid);
+      const { schemaInfo, fuzzysortResults, uid } = res;
+      const queryName = getFindQueryName({ info: schemaInfo });
+
+      resultsResponse[queryName] = toEntityResponseCollection(
+        fuzzysortResults.map(async (fuzzyRes) => {
+          const schema = strapi.getModel(uid);
 
           const sanitizedEntity = await sanitizeOutput(
             fuzzyRes.obj,

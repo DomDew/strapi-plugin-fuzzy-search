@@ -26,6 +26,7 @@ export default ({
 
   return {
     pluralName: model.pluralName,
+    schemaInfo: model.schemaInfo,
     uid: model.uid,
     fuzzysortResults: fuzzysort.go<Entity>(query, model[model.pluralName], {
       threshold: model.fuzzysortOptions.threshold,

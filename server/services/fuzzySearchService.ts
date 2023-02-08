@@ -18,6 +18,8 @@ export default () => ({
         return {
           uid: contentType.uid,
           pluralName: contentType.model.info.pluralName,
+          modelName: contentType.modelName,
+          schemaInfo: contentType.model.info,
           transliterate: contentType.transliterate,
           fuzzysortOptions: contentType.fuzzysortOptions,
           [contentType.model.info.pluralName]: await getFilteredEntries(

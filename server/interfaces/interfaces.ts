@@ -1,4 +1,4 @@
-import { Schema } from '@strapi/strapi';
+import { Schema, SchemaInfo } from '@strapi/strapi';
 
 type Writeable<T> = { -readonly [P in keyof T]: T[P] };
 
@@ -30,6 +30,7 @@ export interface ContentType {
 export interface FilteredEntry {
   uid: string;
   pluralName: string;
+  schemaInfo: SchemaInfo;
   transliterate: boolean;
   fuzzysortOptions: FuzzySortOptions;
   [x: string]: any;
@@ -37,6 +38,7 @@ export interface FilteredEntry {
 
 export interface Result {
   pluralName: string;
+  schemaInfo: SchemaInfo;
   uid: string;
   fuzzysortResults: Writeable<Fuzzysort.KeysResults<Entity>>;
 }

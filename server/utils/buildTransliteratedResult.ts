@@ -30,16 +30,19 @@ export default ({
 
   const transliterationKeys = keys.map((key) => `transliterations.${key}`);
 
-  const transliteratedResult = {
-    pluralName: model.pluralName,
-    uid: model.uid,
-    fuzzysortResults: fuzzysort.go<Entity>(query, model[model.pluralName], {
-      threshold: model.fuzzysortOptions.threshold,
-      limit: model.fuzzysortOptions.limit,
+  const { pluralName, uid, schemaInfo, fuzzysortOptions } = model;
+
+  const transliteratedResult: Result = {
+    pluralName,
+    uid,
+    schemaInfo,
+    fuzzysortResults: fuzzysort.go<Entity>(query, model[pluralName], {
+      threshold: fuzzysortOptions.threshold,
+      limit: fuzzysortOptions.limit,
       keys: transliterationKeys,
       scoreFn: (a) =>
         Math.max(
-          ...model.fuzzysortOptions.keys.map((key, index) =>
+          ...fuzzysortOptions.keys.map((key, index) =>
             a[index] ? a[index].score + key.weight : -9999
           )
         ),
