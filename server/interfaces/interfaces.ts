@@ -47,3 +47,27 @@ export interface Entity {
   id: string | number;
   [x: string]: any;
 }
+
+export interface PaginationBaseQuery {
+  pageSize?: string;
+  page?: string;
+  withCount?: 'true' | 'false';
+}
+
+export type PaginationQuery = Record<string, PaginationBaseQuery>;
+
+export interface PaginationMeta {
+  pageSize?: number;
+  page?: number;
+  pageCount?: number;
+  total?: number;
+}
+
+export interface PaginatedModelResponse {
+  meta?: { pagination: PaginationMeta };
+  data: Record<string, unknown>[];
+}
+
+export type ResultsResponse = Record<string, Record<string, unknown>[]>;
+
+export type PaginatedResultsResponse = Record<string, PaginatedModelResponse>;
