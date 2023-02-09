@@ -1,6 +1,6 @@
 <img src="assets/logo.png" alt="fuzzy search logo" width="200"/>
 
-# Strapi-plugin-fuzzy-search
+# Strapi-plugin-fuzzy-search <!-- omit from toc -->
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-13-orange.svg?style=flat-square)](#contributors-)
@@ -12,10 +12,33 @@ Register a weighted fuzzy search endpoint for Strapi Headless CMS you can add yo
 
 Uses [fuzzysort](https://github.com/farzher/fuzzysort) under the hood: Simple, quick and easy. No need to worry about setting up an instance for a complex search engine.
 
-**Roadmap:**
+## Table of Contents <!-- omit from toc -->
+
+- [Requirements](#requirements)
+- [Installation](#installation)
+  - [Options/Config](#optionsconfig)
+    - [General Options](#general-options)
+    - [Fuzzysort Options](#fuzzysort-options)
+    - [Full Example config](#full-example-config)
+  - [A note on performance:](#a-note-on-performance)
+- [Usage](#usage)
+  - [Search](#search)
+- [Examples](#examples)
+  - [Example Requests](#example-requests)
+    - [REST](#rest)
+    - [GraphQl](#graphql)
+  - [Example Responses](#example-responses)
+    - [REST](#rest-1)
+    - [GraphQl](#graphql-1)
+- [Why use fuzzysort and not something like Fuse.js?](#why-use-fuzzysort-and-not-something-like-fusejs)
+- [Found a bug?](#found-a-bug)
+  - [Contributors ✨](#contributors-)
+
+## Roadmap
 
 - Return indices/highlights of matches
 - Add Pagination
+- Add Population
 
 # Requirements
 
