@@ -1,39 +1,38 @@
-import { ContentType, Result } from '../interfaces/interfaces';
+import { PaginationArgs, Result } from '../interfaces/interfaces';
+import { paginateGraphQlResults } from './paginateGraphQlResults';
 import sanitizeOutput from './sanitizeOutput';
 
 // Destructure search results and return them in appropriate/sanitized format
-const buildGraphqlResponse = async (searchResults: Result[], auth: any) => {
-  const { toEntityResponseCollection } = strapi
-    .plugin('graphql')
-    .service('format').returnTypes;
-  const { getFindQueryName } = strapi.plugin('graphql').service('utils').naming;
+const buildGraphqlResponse = async (
+  searchResult: Result,
+  auth: Record<string, unknown>,
+  pagination?: PaginationArgs
+) => {
+  const { service: getService } = strapi.plugin('graphql');
+  const { returnTypes } = getService('format');
+  const { toEntityResponseCollection } = returnTypes;
+  const { fuzzysortResults, uid } = searchResult;
 
-  const resultsResponse = {};
+  const results = await Promise.all(
+    fuzzysortResults.map(async (fuzzyRes) => {
+      const schema = strapi.getModel(uid);
 
-  // Map over results instead of using for each so promises can be resolved
-  // and thus resultsResponse can be build properly
-  await Promise.all(
-    searchResults.map(async (res) => {
-      const { schemaInfo, fuzzysortResults, uid } = res;
-      const queryName = getFindQueryName({ info: schemaInfo });
-
-      resultsResponse[queryName] = toEntityResponseCollection(
-        fuzzysortResults.map(async (fuzzyRes) => {
-          const schema = strapi.getModel(uid);
-
-          const sanitizedEntity = await sanitizeOutput(
-            fuzzyRes.obj,
-            schema,
-            auth
-          );
-
-          return sanitizedEntity;
-        })
+      const sanitizedEntity: Record<string, unknown> = await sanitizeOutput(
+        fuzzyRes.obj,
+        schema,
+        auth
       );
+
+      return sanitizedEntity;
     })
   );
 
-  return resultsResponse;
+  const { data: nodes, meta } = paginateGraphQlResults(results, pagination);
+
+  return toEntityResponseCollection(nodes, {
+    args: meta,
+    resourceUID: uid,
+  });
 };
 
 export default buildGraphqlResponse;
