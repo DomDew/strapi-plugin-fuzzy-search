@@ -121,6 +121,15 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "jesusr00",
+      "name": "Jesús Reikel López Martín",
+      "avatar_url": "https://avatars.githubusercontent.com/u/68043863?v=4",
+      "profile": "http://www.linkedin.com/in/jesúsr00",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
