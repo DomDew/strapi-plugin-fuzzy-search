@@ -86,6 +86,8 @@ export type SearchResponseReturnType = SearchResponseArgs & {
 };
 
 export interface PaginationArgs {
-  page: number;
+  page?: number;
   pageSize?: number;
+  limit?: number;
+  start?: number;
 }

@@ -6,15 +6,15 @@ import {
 
 export const paginateGraphQlResults = (
   results: Record<string, unknown>[],
-  pagination?: PaginationArgs
+  { page = 1, pageSize, limit = 10, start }: PaginationArgs
 ): PaginatedModelResponse => {
   const resultsCopy = [...results];
 
-  const page = pagination?.page || 1;
-  const pageSize = pagination?.pageSize || 10;
+  const userLimit = pageSize || limit;
 
-  const startIndex = pageSize * (page - 1);
-  const endIndex = startIndex + pageSize;
+  const startIndex =
+    start || start !== undefined ? start : userLimit * (page - 1);
+  const endIndex = start ? start + userLimit : startIndex + userLimit;
 
   const data = resultsCopy.slice(startIndex, endIndex);
 
@@ -22,7 +22,7 @@ export const paginateGraphQlResults = (
   // and calculates values in toEntityResponseCollection() util
   const meta: PaginationMeta = {
     start: startIndex,
-    limit: pageSize,
+    limit: userLimit,
   };
 
   return { data, meta };

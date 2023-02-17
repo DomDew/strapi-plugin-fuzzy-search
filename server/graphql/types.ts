@@ -23,7 +23,7 @@ const getCustomTypes = (strapi: Strapi, nexus) => {
         t.field(getFindQueryName(model), {
           type: getEntityResponseCollectionName(model),
           args: {
-            pagination: nexus.arg({ type: 'FuzzySearchPaginationArg' }),
+            pagination: nexus.arg({ type: 'PaginationArg' }),
           },
           async resolve(
             parent: SearchResponseReturnType,
@@ -53,25 +53,9 @@ const getCustomTypes = (strapi: Strapi, nexus) => {
             throw new Error(ctx.koaContext.response.message);
           },
         });
-        t.field('meta', {
-          type: 'ResponseCollectionMeta',
-        });
       },
     });
   };
-
-  const paginationType = nexus.inputObjectType({
-    name: 'FuzzySearchPaginationArg',
-    definition(t) {
-      t.int('page');
-      t.int('pageSize');
-    },
-  });
-
-  const baseSearchResponseType = nexus.objectType({
-    name: 'SearchResponse',
-    definition() {},
-  });
 
   const searchResponseType = nexus.extendType({
     type: 'Query',
@@ -99,11 +83,7 @@ const getCustomTypes = (strapi: Strapi, nexus) => {
     },
   });
 
-  const returnTypes = [
-    paginationType,
-    baseSearchResponseType,
-    searchResponseType,
-  ];
+  const returnTypes = [searchResponseType];
 
   contentTypes.forEach((type) => {
     returnTypes.unshift(extendSearchType(nexus, type.model));
