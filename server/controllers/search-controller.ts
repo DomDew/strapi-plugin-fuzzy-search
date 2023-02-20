@@ -1,23 +1,28 @@
 import { NotFoundError } from '@strapi/utils/lib/errors';
-import { PaginationQuery } from '../interfaces/interfaces';
+import { Context } from '../interfaces/interfaces';
 import getResults from '../services/fuzzySearchService';
+import settingsService from '../services/settingsService';
 import buildRestResponse from '../utils/buildRestResponse';
 
 export default () => ({
-  async search(ctx) {
-    const query = ctx.query.query;
-    const locale = ctx.query.locale;
-    const pagination = ctx.query.pagination as PaginationQuery;
+  async search(ctx: Context) {
+    const { query, locale, pagination, filters } = ctx.query;
+
     const { auth } = ctx.state;
+    const { contentTypes } = settingsService().get();
 
-    // const searchResults = await getResults(query, locale);
+    const results = await Promise.all(
+      contentTypes.map(
+        async (contentType) => await getResults(contentType, query, locale)
+      )
+    );
 
-    // const response = await buildRestResponse(searchResults, auth, pagination);
+    const response = await buildRestResponse(results, auth, pagination);
 
-    // if (response) {
-    //   return response;
-    // } else {
-    //   throw new NotFoundError();
-    // }
+    if (response) {
+      return response;
+    } else {
+      throw new NotFoundError();
+    }
   },
 });

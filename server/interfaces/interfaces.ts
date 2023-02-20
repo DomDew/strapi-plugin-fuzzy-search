@@ -61,14 +61,26 @@ export interface PaginationMeta {
   limit: number;
 }
 
-export interface PaginatedModelResponse {
-  meta: PaginationMeta;
+export interface RESTPaginationMeta {
+  pagination: {
+    page: number;
+    pageSize: number;
+    pageCount?: number;
+    total?: number;
+  };
+}
+
+export interface PaginatedModelResponse<Meta = PaginationMeta> {
+  meta: Meta;
   data: Record<string, unknown>[];
 }
 
 export type ResultsResponse = Record<string, Record<string, unknown>[]>;
 
-export type PaginatedResultsResponse = Record<string, PaginatedModelResponse>;
+export type PaginatedResultsResponse<Meta = PaginationMeta> = Record<
+  string,
+  PaginatedModelResponse<Meta>
+>;
 
 export type ModelType = Schema & {
   uid: string;
@@ -90,4 +102,16 @@ export interface PaginationArgs {
   pageSize?: number;
   limit?: number;
   start?: number;
+}
+
+interface SearchQuery {
+  query: string;
+  locale: string;
+  pagination: PaginationQuery;
+  filters: { models: string };
+}
+
+export interface Context {
+  state: { auth: any };
+  query: SearchQuery;
 }
