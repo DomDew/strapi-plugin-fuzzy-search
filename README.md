@@ -3,7 +3,9 @@
 # Strapi-plugin-fuzzy-search <!-- omit from toc -->
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-12-orange.svg?style=flat-square)](#contributors-)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ![Github CI](https://img.shields.io/github/workflow/status/domdew/strapi-plugin-fuzzy-search/CI) ![Npm release](https://img.shields.io/npm/v/strapi-plugin-fuzzy-search?label=release) ![Npm monthly downloads](https://img.shields.io/npm/dm/strapi-plugin-fuzzy-search) ![License](https://img.shields.io/github/license/domdew/strapi-plugin-fuzzy-search)
@@ -161,7 +163,7 @@ Alternatively (and if the graphql plugin is installed), a search query is regist
 
 ```JavaScript
 await fetch(`${API_URL}/api/fuzzy-search/search?query=deresh&locale=en`);
-// GET /api/fuzzy-search/search?query=john&locale=en
+// GET /api/fuzzy-search/search?query=deresh&locale=en
 ```
 
 ### GraphQl

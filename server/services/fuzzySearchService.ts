@@ -9,8 +9,6 @@ export default async function getResult(
   query: string,
   locale: string
 ) {
-  // const { contentTypes } = settingsService().get();
-
   const buildFilteredEntry = async () => {
     await validateQuery(contentType, locale);
 

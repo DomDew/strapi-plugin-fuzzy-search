@@ -33,9 +33,7 @@ const buildRestResponse = async (
     );
   }
 
-  const paginatedResults = paginateResults(pagination, resultsResponse);
-
-  return pagination ? paginatedResults : resultsResponse;
+  return paginateResults(pagination, resultsResponse);
 };
 
 export default buildRestResponse;
