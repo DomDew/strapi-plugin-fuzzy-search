@@ -1,4 +1,4 @@
-import { PaginationBaseQuery } from '../interfaces/interfaces';
+import { PaginationBaseQuery, paginationSchema } from '../config/querySchema';
 
 export const parsePagination = (paginationQuery: PaginationBaseQuery) => {
   const {
