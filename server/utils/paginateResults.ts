@@ -1,13 +1,13 @@
+import { PaginationBaseQuery } from '../config/querySchema';
 import {
   PaginatedResultsResponse,
-  PaginationQuery,
   RESTPaginationMeta,
   ResultsResponse,
 } from '../interfaces/interfaces';
 import { parsePagination } from './parsePagination';
 
-export const paginateResults = (
-  pagination: PaginationQuery,
+export const paginateResults = async (
+  pagination: Record<string, PaginationBaseQuery>,
   resultsResponse: ResultsResponse
 ) => {
   const currentResult = { ...resultsResponse };

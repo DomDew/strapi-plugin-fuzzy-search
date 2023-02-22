@@ -1,4 +1,5 @@
 import { Schema, SchemaInfo } from '@strapi/strapi';
+import { SearchQuery } from '../config/querySchema';
 
 type Writeable<T> = { -readonly [P in keyof T]: T[P] };
 
@@ -48,14 +49,6 @@ export interface Entity {
   [x: string]: any;
 }
 
-export interface PaginationBaseQuery {
-  pageSize?: string;
-  page?: string;
-  withCount?: 'true' | 'false';
-}
-
-export type PaginationQuery = Record<string, PaginationBaseQuery>;
-
 export interface PaginationMeta {
   start: number;
   limit: number;
@@ -104,14 +97,8 @@ export interface PaginationArgs {
   start?: number;
 }
 
-interface SearchQuery {
-  query: string;
-  locale: string;
-  pagination: PaginationQuery;
-  filters: { models: string };
-}
-
 export interface Context {
   state: { auth: any };
   query: SearchQuery;
+  badRequest: (message: string, {}) => void;
 }
