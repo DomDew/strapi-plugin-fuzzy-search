@@ -11,6 +11,10 @@ export default async function getResult(
 ) {
   const buildFilteredEntry = async () => {
     await validateQuery(contentType, locale);
+    const { results } = (await getFilteredEntries(
+      locale,
+      contentType.model.uid
+    )) as { results: Record<string, unknown>[] };
 
     return {
       uid: contentType.uid,
@@ -19,10 +23,7 @@ export default async function getResult(
       schemaInfo: contentType.model.info,
       transliterate: contentType.transliterate,
       fuzzysortOptions: contentType.fuzzysortOptions,
-      [contentType.model.info.pluralName]: await getFilteredEntries(
-        locale,
-        contentType.model.uid
-      ),
+      [contentType.model.info.pluralName]: results,
     };
   };
 
