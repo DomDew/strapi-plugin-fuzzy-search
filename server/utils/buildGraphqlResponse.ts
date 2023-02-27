@@ -27,6 +27,7 @@ const buildGraphqlResponse = async (
     })
   );
 
+  console.log(pagination);
   const { data: nodes, meta } = paginateGraphQlResults(results, pagination);
 
   return toEntityResponseCollection(nodes, {

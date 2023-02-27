@@ -1,5 +1,4 @@
 import { NotFoundError } from '@strapi/utils/lib/errors';
-import { ValidationError } from 'yup';
 import { Context } from '../interfaces/interfaces';
 import getResults from '../services/fuzzySearchService';
 import settingsService from '../services/settingsService';
@@ -30,7 +29,7 @@ export default () => ({
 
     const queriedContentTypesSet = new Set(queriedContentTypes);
 
-    const filteredContentTypes = filtersQuery.contentTypes
+    const filteredContentTypes = filtersQuery?.contentTypes
       ? [...contentTypes].filter((contentType) =>
           queriedContentTypesSet.has(contentType.model.info.pluralName)
         )
@@ -41,8 +40,6 @@ export default () => ({
         async (contentType) => await getResults(contentType, query, locale)
       )
     );
-
-    // Todo: Strip Pagination of keys that are not in filter
 
     const response = await buildRestResponse(
       results,
