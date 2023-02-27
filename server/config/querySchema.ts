@@ -13,7 +13,7 @@ export const querySchema = object({
   query: string().required(),
   locale: string().max(2),
   filters: object({
-    models: string(),
+    contentTypes: string(),
   }),
 });
 
