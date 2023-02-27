@@ -6,7 +6,7 @@ import {
 
 export const paginateGraphQlResults = (
   results: Record<string, unknown>[],
-  { page = 1, pageSize, limit = 10, start }: PaginationArgs
+  { page = 1, pageSize, limit = 10, start }: PaginationArgs = {}
 ): PaginatedModelResponse => {
   const resultsCopy = [...results];
 

@@ -38,8 +38,6 @@ const getCustomTypes = (strapi: Strapi, nexus) => {
               (contentType) => contentType.modelName === model.modelName
             );
 
-            console.log(contentType);
-
             const searchResult = await getResult(contentType, query, locale);
 
             const resultsResponse = await buildGraphqlResponse(

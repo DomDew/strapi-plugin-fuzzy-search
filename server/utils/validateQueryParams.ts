@@ -15,7 +15,7 @@ export const validateQueryParams = async (
       page?: string;
       withCount?: string;
     }
-  >,
+  > | null,
   filteredContentTypes: string[] | null
 ) => {
   const configModels = new Set(
@@ -44,9 +44,7 @@ export const validateQueryParams = async (
   };
 
   await querySchema.validate(query);
-  await validatePaginationQueryParams();
-
-  if (!filteredContentTypes) return;
-
-  filteredContentTypes.forEach((model) => validateFilter(model));
+  if (pagination) await validatePaginationQueryParams();
+  if (filteredContentTypes)
+    filteredContentTypes.forEach((model) => validateFilter(model));
 };

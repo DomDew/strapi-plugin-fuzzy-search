@@ -14,8 +14,6 @@ export const paginateResults = async (
   const currentResult = { ...resultsResponse };
   const paginatedResult: PaginatedResultsResponse<RESTPaginationMeta> = {};
 
-  console.log(modelNames);
-
   const buildPaginatedResults = (modelName: string) => {
     const { page, pageSize, withCount } = parsePagination(
       pagination[modelName]
@@ -23,7 +21,7 @@ export const paginateResults = async (
 
     paginatedResult[modelName] = {
       data: [],
-      meta: { pagination: { page: 0, pageSize: 25 } },
+      meta: { pagination: { page: 1, pageSize: 25 } },
     };
     const startIndex = pageSize * (page - 1);
     const endIndex = startIndex + pageSize;
