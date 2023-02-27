@@ -15,13 +15,21 @@ export const validateQueryParams = async (
       page?: string;
       withCount?: string;
     }
-  >
+  >,
+  filteredContentTypes: string[] | null
 ) => {
-  const validatePaginationQueryParams = async () => {
-    const configModels = new Set(
-      contentTypes.map((contentType) => contentType.model.info.pluralName)
-    );
+  const configModels = new Set(
+    contentTypes.map((contentType) => contentType.model.info.pluralName)
+  );
 
+  const validateFilter = (filterModel: string) => {
+    if (!configModels.has(filterModel))
+      throw new Error(
+        `Filter query for model '${filterModel}' was found, however this model is not configured in the fuzzy-search config`
+      );
+  };
+
+  const validatePaginationQueryParams = async () => {
     const paginatedEntries = Object.entries(pagination);
 
     for (let [pluralName, paginationValues] of paginatedEntries) {
@@ -37,4 +45,8 @@ export const validateQueryParams = async (
 
   await querySchema.validate(query);
   await validatePaginationQueryParams();
+
+  if (!filteredContentTypes) return;
+
+  filteredContentTypes.forEach((model) => validateFilter(model));
 };

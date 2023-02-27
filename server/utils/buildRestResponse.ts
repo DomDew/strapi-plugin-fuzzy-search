@@ -6,7 +6,8 @@ import sanitizeOutput from './sanitizeOutput';
 const buildRestResponse = async (
   searchResults: Result[],
   auth: any,
-  pagination: Record<string, PaginationBaseQuery>
+  pagination: Record<string, PaginationBaseQuery>,
+  queriedContentTypes?: string[]
 ) => {
   const resultsResponse: ResultsResponse = {};
 
@@ -28,7 +29,9 @@ const buildRestResponse = async (
     );
   }
 
-  return await paginateResults(pagination, resultsResponse);
+  const modelNames = queriedContentTypes || Object.keys(pagination);
+
+  return await paginateResults(pagination, modelNames, resultsResponse);
 };
 
 export default buildRestResponse;

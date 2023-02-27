@@ -9,22 +9,47 @@ import { validateQueryParams } from '../utils/validateQueryParams';
 export default () => ({
   async search(ctx: Context) {
     const { contentTypes } = settingsService().get();
-    const { query, locale, pagination, filters } = ctx.query;
+    const { query, locale, pagination, filters: filtersQuery } = ctx.query;
     const { auth } = ctx.state;
 
+    const queriedContentTypes =
+      filtersQuery && filtersQuery.contentTypes
+        ? filtersQuery.contentTypes?.split(',')
+        : null;
+
     try {
-      await validateQueryParams(ctx.query, contentTypes, pagination);
+      await validateQueryParams(
+        ctx.query,
+        contentTypes,
+        pagination,
+        queriedContentTypes
+      );
     } catch (err) {
       return ctx.badRequest('Invalid query', err.message);
     }
 
+    const queriedContentTypesSet = new Set(queriedContentTypes);
+
+    const filteredContentTypes = filtersQuery.contentTypes
+      ? [...contentTypes].filter((contentType) =>
+          queriedContentTypesSet.has(contentType.model.info.pluralName)
+        )
+      : contentTypes;
+
     const results = await Promise.all(
-      contentTypes.map(
+      filteredContentTypes.map(
         async (contentType) => await getResults(contentType, query, locale)
       )
     );
 
-    const response = await buildRestResponse(results, auth, pagination);
+    // Todo: Strip Pagination of keys that are not in filter
+
+    const response = await buildRestResponse(
+      results,
+      auth,
+      pagination,
+      queriedContentTypes
+    );
 
     if (response) {
       return response;

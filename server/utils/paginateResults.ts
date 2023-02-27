@@ -8,11 +8,13 @@ import { parsePagination } from './parsePagination';
 
 export const paginateResults = async (
   pagination: Record<string, PaginationBaseQuery>,
+  modelNames: string[],
   resultsResponse: ResultsResponse
 ) => {
   const currentResult = { ...resultsResponse };
   const paginatedResult: PaginatedResultsResponse<RESTPaginationMeta> = {};
-  const modelNames = Object.keys(pagination);
+
+  console.log(modelNames);
 
   const buildPaginatedResults = (modelName: string) => {
     const { page, pageSize, withCount } = parsePagination(
@@ -48,6 +50,8 @@ export const paginateResults = async (
   };
 
   modelNames.forEach((modelName) => {
+    if (!pagination[modelName]) return;
+
     buildPaginatedResults(modelName);
   });
 
