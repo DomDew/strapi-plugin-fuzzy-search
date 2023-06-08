@@ -13,7 +13,11 @@ const getCustomTypes = (strapi: Strapi, nexus) => {
   const { service: getService } = strapi.plugin('graphql');
   const { naming } = getService('utils');
   const { contentTypes } = settingsService().get();
-  const { getEntityResponseCollectionName, getFindQueryName } = naming;
+  const {
+    getEntityResponseCollectionName,
+    getFindQueryName,
+    getFiltersInputTypeName,
+  } = naming;
 
   // Extend the SearchResponse type for each registered model
   const extendSearchType = (nexus, model: ModelType) => {
@@ -24,6 +28,7 @@ const getCustomTypes = (strapi: Strapi, nexus) => {
           type: getEntityResponseCollectionName(model),
           args: {
             pagination: nexus.arg({ type: 'PaginationArg' }),
+            filters: nexus.arg({ type: getFiltersInputTypeName(model) }),
           },
           async resolve(
             parent: SearchResponseReturnType,
