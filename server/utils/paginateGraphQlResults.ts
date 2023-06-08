@@ -6,23 +6,17 @@ import {
 
 export const paginateGraphQlResults = (
   results: Record<string, unknown>[],
-  { page = 1, pageSize, limit = 10, start }: PaginationArgs = {}
+  { limit, start }: PaginationArgs = {}
 ): PaginatedModelResponse => {
   const resultsCopy = [...results];
 
-  const userLimit = pageSize || limit;
-
-  const startIndex =
-    start || start !== undefined ? start : userLimit * (page - 1);
-  const endIndex = start ? start + userLimit : startIndex + userLimit;
-
-  const data = resultsCopy.slice(startIndex, endIndex);
+  const data = resultsCopy.slice(start, start + limit);
 
   // Strapi only accepts start and limit at meta args
   // and calculates values in toEntityResponseCollection() util
   const meta: PaginationMeta = {
-    start: startIndex,
-    limit: userLimit,
+    start,
+    limit,
   };
 
   return { data, meta };

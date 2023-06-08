@@ -10,8 +10,10 @@ export default ({
   keys: string[];
   query: string;
 }) => {
+  const { pluralName } = model.schemaInfo;
+
   if (model.fuzzysortOptions.characterLimit) {
-    model[model.pluralName].forEach((entry) => {
+    model[pluralName].forEach((entry) => {
       const entryKeys = Object.keys(entry);
 
       entryKeys.forEach((key) => {
@@ -28,7 +30,7 @@ export default ({
     pluralName: model.pluralName,
     schemaInfo: model.schemaInfo,
     uid: model.uid,
-    fuzzysortResults: fuzzysort.go<Entity>(query, model[model.pluralName], {
+    fuzzysortResults: fuzzysort.go<Entity>(query, model[pluralName], {
       threshold: model.fuzzysortOptions.threshold,
       limit: model.fuzzysortOptions.limit,
       keys,

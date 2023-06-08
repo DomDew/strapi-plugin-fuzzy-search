@@ -7,23 +7,20 @@ import validateQuery from '../utils/validateQuery';
 export default async function getResult(
   contentType: ContentType,
   query: string,
-  locale: string
+  filters: Record<string, unknown>
 ) {
   const buildFilteredEntry = async () => {
-    await validateQuery(contentType, locale);
-    const { results } = (await getFilteredEntries(
-      locale,
-      contentType.model.uid
-    )) as { results: Record<string, unknown>[] };
+    await validateQuery(contentType);
+    const entries = await getFilteredEntries(contentType.model.uid, filters);
 
     return {
       uid: contentType.uid,
-      pluralName: contentType.model.info.pluralName,
+      pluralName: contentType.model.info.singularName,
       modelName: contentType.modelName,
       schemaInfo: contentType.model.info,
       transliterate: contentType.transliterate,
       fuzzysortOptions: contentType.fuzzysortOptions,
-      [contentType.model.info.pluralName]: results,
+      [contentType.model.info.pluralName]: entries,
     };
   };
 

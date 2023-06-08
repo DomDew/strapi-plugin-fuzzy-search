@@ -37,7 +37,7 @@ export default () => ({
 
     const results = await Promise.all(
       filteredContentTypes.map(async (contentType) => {
-        return await getResults(contentType, query, locale);
+        return await getResults(contentType, query, {});
       })
     );
 

@@ -1,4 +1,4 @@
-import { PaginationArgs, Result } from '../interfaces/interfaces';
+import { Result, TransformedPagination } from '../interfaces/interfaces';
 import { paginateGraphQlResults } from './paginateGraphQlResults';
 import sanitizeOutput from './sanitizeOutput';
 
@@ -6,7 +6,7 @@ import sanitizeOutput from './sanitizeOutput';
 const buildGraphqlResponse = async (
   searchResult: Result,
   auth: Record<string, unknown>,
-  pagination?: PaginationArgs
+  pagination?: TransformedPagination
 ) => {
   const { service: getService } = strapi.plugin('graphql');
   const { returnTypes } = getService('format');
@@ -27,9 +27,7 @@ const buildGraphqlResponse = async (
     })
   );
 
-  console.log(pagination);
   const { data: nodes, meta } = paginateGraphQlResults(results, pagination);
-
   return toEntityResponseCollection(nodes, {
     args: meta,
     resourceUID: uid,

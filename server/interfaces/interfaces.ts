@@ -97,6 +97,11 @@ export interface PaginationArgs {
   start?: number;
 }
 
+export interface TransformedPagination {
+  limit: number;
+  start: number;
+}
+
 export interface Context {
   state: { auth: any };
   query: SearchQuery;
