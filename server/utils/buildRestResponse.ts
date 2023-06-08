@@ -1,27 +1,38 @@
-import { Result } from '../interfaces/interfaces';
+import { PaginationBaseQuery } from '../config/querySchema';
+import { Entity, Result, ResultsResponse } from '../interfaces/interfaces';
+import { paginateResults } from './paginateResults';
 import sanitizeOutput from './sanitizeOutput';
 
-// Since sanitizeOutput returns a promise --> Resolve all promises in async for loop so that results can be awaited correctly
-const buildRestResponse = async (searchResults: Result[], auth: any) => {
-  const resultsResponse = {};
+const buildRestResponse = async (
+  searchResults: Result[],
+  auth: any,
+  pagination: Record<string, PaginationBaseQuery> | null,
+  queriedContentTypes?: string[]
+) => {
+  const resultsResponse: ResultsResponse = {};
 
   for (const res of searchResults) {
-    resultsResponse[res.pluralName] = await Promise.all(
-      res.fuzzysortResults.map(async (fuzzyRes) => {
-        const schema = strapi.getModel(res.uid);
+    const sanitizeEntry = async (fuzzyRes: Fuzzysort.KeysResult<Entity>) => {
+      const schema = strapi.getModel(res.uid);
 
-        const sanitizedEntity = await sanitizeOutput(
-          fuzzyRes.obj,
-          schema,
-          auth
-        );
+      return await sanitizeOutput(fuzzyRes.obj, schema, auth);
+    };
 
-        return sanitizedEntity;
-      })
+    const buildSanitizedEntries = async () =>
+      res.fuzzysortResults.map(
+        async (fuzzyRes) => await sanitizeEntry(fuzzyRes)
+      );
+
+    // Since sanitizeOutput returns a promise --> Resolve all promises in async for loop so that results can be awaited correctly
+    resultsResponse[res.schemaInfo.pluralName] = await Promise.all(
+      await buildSanitizedEntries()
     );
   }
 
-  return resultsResponse;
+  if (!pagination) return resultsResponse;
+
+  const modelNames = queriedContentTypes || Object.keys(pagination);
+  return await paginateResults(pagination, modelNames, resultsResponse);
 };
 
 export default buildRestResponse;

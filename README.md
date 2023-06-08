@@ -1,21 +1,55 @@
 <img src="assets/logo.png" alt="fuzzy search logo" width="200"/>
 
-# Strapi-plugin-fuzzy-search
+# Strapi-plugin-fuzzy-search <!-- omit from toc -->
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-13-orange.svg?style=flat-square)](#contributors-)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-![Github CI](https://img.shields.io/github/workflow/status/domdew/strapi-plugin-fuzzy-search/CI) ![Npm release](https://img.shields.io/npm/v/strapi-plugin-fuzzy-search?label=release) ![Npm monthly downloads](https://img.shields.io/npm/dm/strapi-plugin-fuzzy-search) ![License](https://img.shields.io/github/license/domdew/strapi-plugin-fuzzy-search)
+![Github CI](https://img.shields.io/github/actions/workflow/status/domdew/strapi-plugin-fuzzy-search/release.yml) ![Npm release](https://img.shields.io/npm/v/strapi-plugin-fuzzy-search?label=release) ![Npm monthly downloads](https://img.shields.io/npm/dm/strapi-plugin-fuzzy-search) ![License](https://img.shields.io/github/license/domdew/strapi-plugin-fuzzy-search)
 
 Register a weighted fuzzy search endpoint for Strapi Headless CMS you can add your content types to in no time.
 
 Uses [fuzzysort](https://github.com/farzher/fuzzysort) under the hood: Simple, quick and easy. No need to worry about setting up an instance for a complex search engine.
 
-**Roadmap:**
+## Table of Contents <!-- omit from toc -->
+
+- [Roadmap 🏗️](#roadmap-️)
+- [Requirements](#requirements)
+- [Installation](#installation)
+  - [Options/Config](#optionsconfig)
+    - [General Options](#general-options)
+    - [Fuzzysort Options](#fuzzysort-options)
+    - [Full Example config](#full-example-config)
+  - [A note on performance:](#a-note-on-performance)
+- [Usage](#usage)
+  - [Basic Search](#basic-search)
+    - [Example Requests](#example-requests)
+      - [REST](#rest)
+      - [GraphQl](#graphql)
+    - [Example Responses](#example-responses)
+      - [REST](#rest-1)
+      - [GraphQl](#graphql-1)
+  - [Pagination](#pagination)
+    - [REST](#rest-2)
+    - [GraphQL](#graphql-2)
+  - [Filters](#filters)
+    - [REST](#rest-3)
+    - [GraphQL](#graphql-3)
+  - [Filter by Content Type (REST)](#filter-by-content-type-rest)
+- [Why use fuzzysort and not something like Fuse.js?](#why-use-fuzzysort-and-not-something-like-fusejs)
+- [Found a bug?](#found-a-bug)
+- [Contributors ✨](#contributors-)
+
+# Roadmap 🏗️
 
 - Return indices/highlights of matches
-- Add Pagination
+- Support Population
+- Improve response performance
+- Pass configuration as query params/args
+  - Configure fuzzysort through params/args per content type
 
 # Requirements
 
@@ -122,7 +156,7 @@ A high `characterLimit`, `limit`, a low `threshold` (the lower the value the mor
 
 # Usage
 
-## Search
+## Basic Search
 
 Hitting the `/api/fuzzy-search/search?query=<your-query-string>` will return an array of matched entries for each content type registered in the config. If no match could be found an empty array will be returned. The endpoint accepts an optional `locale=<your-locale>` query as well.
 
@@ -130,18 +164,16 @@ Alternatively (and if the graphql plugin is installed), a search query is regist
 
 **IMPORTANT:** Please not that in order to query for the locale of a content type, localization must be enabled for the content type.
 
-# Examples
+### Example Requests
 
-## Example Requests
-
-### REST
+#### REST
 
 ```JavaScript
 await fetch(`${API_URL}/api/fuzzy-search/search?query=deresh&locale=en`);
-// GET /api/fuzzy-search/search?query=john&locale=en
+// GET /api/fuzzy-search/search?query=deresh&locale=en
 ```
 
-### GraphQl
+#### GraphQl
 
 ```graphql
 query {
@@ -165,11 +197,11 @@ query {
 }
 ```
 
-## Example Responses
+### Example Responses
 
-**IMPORTANT:** Please note that as of now published as well as unpublished entries will be returned.
+**IMPORTANT:** Please note that as of now published as well as unpublished entries will be returned by default. Modify this behavior by setting up a `queryConstraint` in your [config](#full-example-config).
 
-### REST
+#### REST
 
 ```json
 {
@@ -196,7 +228,7 @@ query {
 }
 ```
 
-### GraphQl
+#### GraphQl
 
 ```json
 {
@@ -226,6 +258,215 @@ query {
 }
 ```
 
+## Pagination
+
+### REST
+
+The endpoint accepts query parameters in line with Strapis [pagination by page](https://docs.strapi.io/dev-docs/api/rest/sort-pagination#pagination-by-page) parameters. The difference being that the pagination is scoped for the content types individually.
+
+**Important**: Please note that if pagination parameters are passed for a content type, it's data will now be available under the key `data`, whereas the pagination meta data can be found under the key `meta`.
+
+| Parameter                            | Type    | Description                                                               | Default |
+| ------------------------------------ | ------- | ------------------------------------------------------------------------- | ------- |
+| pagination[myContentType][page]      | Integer | Page number                                                               | 1       |
+| pagination[myContentType][pagesize]  | Integer | Page size                                                                 | 25      |
+| pagination[myContentType][withcount] | Boolean | Adds the total numbers of entries and the number of pages to the response | True    |
+
+**Request:**
+
+```JavaScript
+await fetch(`${API_URL}/api/fuzzy-search/search?query=deresh&pagination[authors][pageSize]=2&pagination[authors][page]=3`);
+// GET /api/fuzzy-search/search?query=deresh&pagination[authors][pageSize]=2&pagination[authors][page]=3
+```
+
+**Response:**
+
+```json
+{
+  "authors": [
+    // ...
+  ],
+  "books": {
+    "data": [
+      // ...
+    ],
+    "meta": {
+      "pagination": {
+        "page": 3,
+        "pageSize": 2,
+        "total": 6,
+        "pageCount": 3
+      }
+    }
+  }
+}
+```
+
+### GraphQL
+
+The endpoint accepts pagination arguments in line with Strapis [pagination by page](https://docs.strapi.io/dev-docs/api/graphql#pagination-by-page) and [pagination by offset](https://docs.strapi.io/dev-docs/api/graphql#pagination-by-offset) parameters.
+
+| Parameter            | Description                  | Default |
+| -------------------- | ---------------------------- | ------- |
+| pagination[page]     | Page number                  | 1       |
+| pagination[pageSize] | Page size                    | 10      |
+| pagination[start]    | Start value                  | 0       |
+| pagination[limit]    | Number of entities to return | 10      |
+
+**IMPORTANT:** Please note that in line with Strapis defaults, pagination methods can not be mixed. Always use either page with pageSize or start with limit.
+
+**Request:**
+
+```graphql
+search(query: "deresh") {
+  books(pagination: { page: 3, pageSize: 2 }) {
+    data {
+      attributes {
+        title
+      }
+    }
+    meta {
+      pagination {
+        page
+        pageSize
+        pageCount
+        total
+      }
+    }
+  }
+}
+```
+
+**Response:**
+
+```json
+{
+  "data": {
+    "search": {
+      "books": {
+        "data": [
+          // ...
+        ],
+        "meta": {
+          "pagination": {
+            "page": 3,
+            "pageSize": 2,
+            "pageCount": 3,
+            "total": 6
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+## Filters
+
+### REST
+
+The endpoint accepts query parameters in line with Strapis [filter parameters](https://docs.strapi.io/dev-docs/api/rest/filters-locale-publication#filtering) parameters. The difference being that the filters are scoped for the content types individually.
+
+**Request:**
+
+```JavaScript
+await fetch(`${API_URL}/api/fuzzy-search/search?query=deresh&filters[books][title][$eq]=A%20good%20book`);
+// GET /api/fuzzy-search/search?query=deresh&filters[books][title][$eq]=A%20good%20book
+```
+
+**Response:**
+
+```json
+{
+  "authors": [
+    // ...
+  ],
+  "books": {
+    "data": [
+      {
+        "id": 3,
+        "title": "A good book",
+        "description": "Written by Lyubko Deresh",
+        "createdAt": "2023-02-27T08:11:11.771Z",
+        "updatedAt": "2023-02-27T08:11:12.208Z",
+        "publishedAt": "2023-02-27T08:11:12.207Z",
+        "locale": "en"
+      }
+    ]
+  }
+}
+```
+
+### GraphQL
+
+The endpoint accepts filter arguments in line with Strapis [filters parameter](https://docs.strapi.io/dev-docs/api/graphql#filters) .
+
+**Request:**
+
+```graphql
+search(query: "deresh") {
+  books(filters: { title: { eq: "A good book" } } ) {
+    data {
+      attributes {
+        title
+      }
+    }
+  }
+}
+```
+
+**Response:**
+
+```json
+{
+  "data": {
+    "search": {
+      "books": {
+        "data": [
+          // ...
+        ],
+        "meta": {
+          "pagination": {
+            "page": 3,
+            "pageSize": 2,
+            "pageCount": 3,
+            "total": 6
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+## Filter by Content Type (REST)
+
+The REST-endpoint accepts an optional parameter to select only some content types the fuzzy search should run for.
+
+| Parameter             | Type   | Description                                                     |
+| --------------------- | ------ | --------------------------------------------------------------- |
+| filters[contentTypes] | string | Comma seperated list of the content types to run the search for |
+
+**Request:**
+
+```JavaScript
+await fetch(`${API_URL}/api/fuzzy-search/search?query=deresh&filters[contentTypes]=books,authors`);
+// GET /api/fuzzy-search/search?query=deresh&filters[contentTypes]=books
+```
+
+**Response:**
+
+```json
+{
+  "authors": [
+    // ...
+  ],
+  "books": [
+    // ...
+  ]
+}
+```
+
 # Why use fuzzysort and not something like Fuse.js?
 
 While [Fuse.js](https://github.com/krisk/Fuse) proofs to be an amazing library, it can yield unexpected results and what is to be perceived as "false positives" (by a human) when searching through longer strings. Fuzzysort aims to solve this problem by introducing the evaluation and scoring of exact matches. Since we had issues with Fuse.js and it's underlying algorithm, we opted for fuzzysearch to do the heavy lifting instead.
@@ -234,7 +475,7 @@ While [Fuse.js](https://github.com/krisk/Fuse) proofs to be an amazing library, 
 
 If you found a bug or have any questions please [submit an issue](https://github.com/DomDew/strapi-plugin-fuzzy-search/issues). If you think you found a way how to fix it, please feel free to create a pull request!
 
-## Contributors ✨
+# Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
