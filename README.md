@@ -413,16 +413,12 @@ search(query: "deresh") {
     "search": {
       "books": {
         "data": [
-          // ...
-        ],
-        "meta": {
-          "pagination": {
-            "page": 3,
-            "pageSize": 2,
-            "pageCount": 3,
-            "total": 6
+          {
+            "attributes": {
+              "title": "A good book"
+            }
           }
-        }
+        ]
       }
     }
   }
