@@ -69,11 +69,10 @@ Mandatory settings are marked with `*`.
 
 The plugin requires several configurations to be set in the `.config/plugins.js` file of your Strapi project to work.
 
-| Key              | Type             | Notes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| ---------------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| contentTypes\*   | Array of Objects | List the content types you want to register for fuzzysort. Each object requires the `uid: string` and `modelName: string` to be set for a content type                                                                                                                                                                                                                                                                                                                                                         |
-| transliterate    | boolean          | If this is set to true the search will additionally run against transliterated versions of the content for the keys specified in the keys array for a given content type. E.g. `你好` will match for `ni hao`. Note that activating this feature for a content type comes at a performance cost and may increase the response time.                                                                                                                                                                            |
-| queryConstraints | Object           | Manipulate the db query that queries for the entries of a model, e.g. as to only select articles that have been published. These constraints to the underlying `findMany()` query are built with the [logical operators](https://docs.strapi.io/developer-docs/latest/developer-resources/database-apis-reference/query-engine/filtering.html#logical-operators) of [Strapis Query Engine API](https://docs.strapi.io/developer-docs/latest/developer-resources/database-apis-reference/query-engine-api.html) |
+| Key            | Type             | Notes                                                                                                                                                                                                                                                                                                                               |
+| -------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| contentTypes\* | Array of Objects | List the content types you want to register for fuzzysort. Each object requires the `uid: string` and `modelName: string` to be set for a content type                                                                                                                                                                              |
+| transliterate  | boolean          | If this is set to true the search will additionally run against transliterated versions of the content for the keys specified in the keys array for a given content type. E.g. `你好` will match for `ni hao`. Note that activating this feature for a content type comes at a performance cost and may increase the response time. |
 
 ### Fuzzysort Options
 
@@ -100,15 +99,6 @@ module.exports = ({ env }) => ({
           uid: "api::author.author",
           modelName: "author",
           transliterate: true,
-          queryConstraints: {
-            where: {
-              $and: [
-                {
-                  publishedAt: { $notNull: true },
-                },
-              ],
-            },
-          },
           fuzzysortOptions: {
             characterLimit: 300,
             threshold: -600,
@@ -199,7 +189,7 @@ query {
 
 ### Example Responses
 
-**IMPORTANT:** Please note that as of now published as well as unpublished entries will be returned by default. Modify this behavior by setting up a `queryConstraint` in your [config](#full-example-config).
+**IMPORTANT:** Please note that as of now published as well as unpublished entries will be returned by default. Modify this behavior by passing a [filter](#filters) to the query.
 
 #### REST
 
