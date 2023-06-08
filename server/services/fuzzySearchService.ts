@@ -15,7 +15,6 @@ export default async function getResult(
 
     return {
       uid: contentType.uid,
-      pluralName: contentType.model.info.singularName,
       modelName: contentType.modelName,
       schemaInfo: contentType.model.info,
       transliterate: contentType.transliterate,

@@ -35,7 +35,6 @@ export default ({
   const { uid, schemaInfo, fuzzysortOptions } = model;
 
   const transliteratedResult: Result = {
-    pluralName,
     uid,
     schemaInfo,
     fuzzysortResults: fuzzysort.go<Entity>(query, model[pluralName], {

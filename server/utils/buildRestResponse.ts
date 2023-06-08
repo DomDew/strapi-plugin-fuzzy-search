@@ -24,7 +24,7 @@ const buildRestResponse = async (
       );
 
     // Since sanitizeOutput returns a promise --> Resolve all promises in async for loop so that results can be awaited correctly
-    resultsResponse[res.pluralName] = await Promise.all(
+    resultsResponse[res.schemaInfo.pluralName] = await Promise.all(
       await buildSanitizedEntries()
     );
   }

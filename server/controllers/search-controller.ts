@@ -8,7 +8,7 @@ import { validateQueryParams } from '../utils/validateQueryParams';
 export default () => ({
   async search(ctx: Context) {
     const { contentTypes } = settingsService().get();
-    const { query, locale, pagination, filters: filtersQuery } = ctx.query;
+    const { query, pagination, filters: filtersQuery } = ctx.query;
     const { auth } = ctx.state;
 
     const queriedContentTypes =
@@ -37,7 +37,11 @@ export default () => ({
 
     const results = await Promise.all(
       filteredContentTypes.map(async (contentType) => {
-        return await getResults(contentType, query, {});
+        return await getResults(
+          contentType,
+          query,
+          filtersQuery[contentType.model.info.pluralName]
+        );
       })
     );
 
