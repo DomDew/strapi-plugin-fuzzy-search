@@ -13,10 +13,12 @@ export default ({
   query: string;
   result: Result;
 }): Result => {
+  const { pluralName } = model.schemaInfo;
+
   /**
    * Transliterate relevant fields for the entry
    */
-  model[model.pluralName].forEach((entry) => {
+  model[pluralName].forEach((entry) => {
     const entryKeys = Object.keys(entry);
 
     entry.transliterations = {};
@@ -30,10 +32,9 @@ export default ({
 
   const transliterationKeys = keys.map((key) => `transliterations.${key}`);
 
-  const { pluralName, uid, schemaInfo, fuzzysortOptions } = model;
+  const { uid, schemaInfo, fuzzysortOptions } = model;
 
   const transliteratedResult: Result = {
-    pluralName,
     uid,
     schemaInfo,
     fuzzysortResults: fuzzysort.go<Entity>(query, model[pluralName], {

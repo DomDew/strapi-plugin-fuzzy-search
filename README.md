@@ -35,6 +35,9 @@ Uses [fuzzysort](https://github.com/farzher/fuzzysort) under the hood: Simple, q
   - [Pagination](#pagination)
     - [REST](#rest-2)
     - [GraphQL](#graphql-2)
+  - [Filters](#filters)
+    - [REST](#rest-3)
+    - [GraphQL](#graphql-3)
   - [Filter by Content Type (REST)](#filter-by-content-type-rest)
 - [Why use fuzzysort and not something like Fuse.js?](#why-use-fuzzysort-and-not-something-like-fusejs)
 - [Found a bug?](#found-a-bug)
@@ -43,10 +46,10 @@ Uses [fuzzysort](https://github.com/farzher/fuzzysort) under the hood: Simple, q
 # Roadmap 🏗️
 
 - Return indices/highlights of matches
+- Support Population
+- Improve response performance
 - Pass configuration as query params/args
   - Configure fuzzysort through params/args per content type
-  - Allow default Strapi filters
-- Support Population
 
 # Requirements
 
@@ -328,6 +331,84 @@ search(query: "deresh") {
         pageSize
         pageCount
         total
+      }
+    }
+  }
+}
+```
+
+**Response:**
+
+```json
+{
+  "data": {
+    "search": {
+      "books": {
+        "data": [
+          // ...
+        ],
+        "meta": {
+          "pagination": {
+            "page": 3,
+            "pageSize": 2,
+            "pageCount": 3,
+            "total": 6
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+## Filters
+
+### REST
+
+The endpoint accepts query parameters in line with Strapis [filter parameters](https://docs.strapi.io/dev-docs/api/rest/filters-locale-publication#filtering) parameters. The difference being that the filters are scoped for the content types individually.
+
+**Request:**
+
+```JavaScript
+await fetch(`${API_URL}/api/fuzzy-search/search?query=deresh&filters[books][title][$eq]=A%20good%20book`);
+// GET /api/fuzzy-search/search?query=deresh&filters[books][title][$eq]=A%20good%20book
+```
+
+**Response:**
+
+```json
+{
+  "authors": [
+    // ...
+  ],
+  "books": {
+    "data": [
+      {
+        "id": 3,
+        "title": "A good book",
+        "description": "Written by Lyubko Deresh",
+        "createdAt": "2023-02-27T08:11:11.771Z",
+        "updatedAt": "2023-02-27T08:11:12.208Z",
+        "publishedAt": "2023-02-27T08:11:12.207Z",
+        "locale": "en"
+      }
+    ]
+  }
+}
+```
+
+### GraphQL
+
+The endpoint accepts filter arguments in line with Strapis [filters parameter](https://docs.strapi.io/dev-docs/api/graphql#filters) .
+
+**Request:**
+
+```graphql
+search(query: "deresh") {
+  books(filters: { title: { eq: "A good book" } } ) {
+    data {
+      attributes {
+        title
       }
     }
   }

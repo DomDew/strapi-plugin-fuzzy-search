@@ -8,25 +8,25 @@ import { parsePagination } from './parsePagination';
 
 export const paginateResults = async (
   pagination: Record<string, PaginationBaseQuery>,
-  modelNames: string[],
+  pluralNames: string[],
   resultsResponse: ResultsResponse
 ) => {
   const currentResult = { ...resultsResponse };
   const paginatedResult: PaginatedResultsResponse<RESTPaginationMeta> = {};
 
-  const buildPaginatedResults = (modelName: string) => {
+  const buildPaginatedResults = (pluralName: string) => {
     const { page, pageSize, withCount } = parsePagination(
-      pagination[modelName]
+      pagination[pluralName]
     );
 
-    paginatedResult[modelName] = {
+    paginatedResult[pluralName] = {
       data: [],
       meta: { pagination: { page: 1, pageSize: 25 } },
     };
     const startIndex = pageSize * (page - 1);
     const endIndex = startIndex + pageSize;
 
-    paginatedResult[modelName].data = currentResult[modelName].slice(
+    paginatedResult[pluralName].data = currentResult[pluralName].slice(
       startIndex,
       endIndex
     );
@@ -39,18 +39,18 @@ export const paginateResults = async (
     };
 
     if (withCount) {
-      const total = resultsResponse[modelName].length;
+      const total = resultsResponse[pluralName].length;
       meta.pagination.total = total;
       meta.pagination.pageCount = Math.ceil(total / pageSize);
     }
 
-    paginatedResult[modelName].meta = meta;
+    paginatedResult[pluralName].meta = meta;
   };
 
-  modelNames.forEach((modelName) => {
-    if (!pagination[modelName]) return;
+  pluralNames.forEach((pluralName) => {
+    if (!pagination[pluralName]) return;
 
-    buildPaginatedResults(modelName);
+    buildPaginatedResults(pluralName);
   });
 
   return { ...resultsResponse, ...paginatedResult };

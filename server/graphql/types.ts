@@ -8,12 +8,19 @@ import {
 import getResult from '../services/fuzzySearchService';
 import settingsService from '../services/settingsService';
 import buildGraphqlResponse from '../utils/buildGraphqlResponse';
+import { getTransformedUserPaginationInput } from '../utils/getTransformedGraphqlPaginationInput';
 
 const getCustomTypes = (strapi: Strapi, nexus) => {
   const { service: getService } = strapi.plugin('graphql');
   const { naming } = getService('utils');
+  const { utils } = getService('builders');
   const { contentTypes } = settingsService().get();
-  const { getEntityResponseCollectionName, getFindQueryName } = naming;
+  const {
+    getEntityResponseCollectionName,
+    getFindQueryName,
+    getFiltersInputTypeName,
+  } = naming;
+  const { transformArgs } = utils;
 
   // Extend the SearchResponse type for each registered model
   const extendSearchType = (nexus, model: ModelType) => {
@@ -24,26 +31,52 @@ const getCustomTypes = (strapi: Strapi, nexus) => {
           type: getEntityResponseCollectionName(model),
           args: {
             pagination: nexus.arg({ type: 'PaginationArg' }),
+            filters: nexus.arg({ type: getFiltersInputTypeName(model) }),
+            locale: nexus.arg({ type: 'I18NLocaleCode' }),
           },
           async resolve(
             parent: SearchResponseReturnType,
-            args: { pagination?: PaginationArgs },
+            args: {
+              pagination?: PaginationArgs;
+              filters?: Record<string, unknown>;
+              locale?: string;
+            },
             ctx,
             auth: Record<string, unknown>
           ) {
-            const { query, locale } = parent;
-            const { pagination } = args;
+            const { query } = parent;
+            const { pagination, filters, locale } = args;
+
+            const { start, limit } =
+              getTransformedUserPaginationInput(pagination);
+
+            const {
+              start: transformedStart,
+              limit: transformedLimit,
+              filters: transformedFilters,
+            } = transformArgs(
+              { pagination: { start, limit }, filters },
+              {
+                contentType: model,
+                usePagination: true,
+              }
+            );
 
             const contentType = contentTypes.find(
               (contentType) => contentType.modelName === model.modelName
             );
 
-            const searchResult = await getResult(contentType, query, locale);
+            const searchResult = await getResult(
+              contentType,
+              query,
+              transformedFilters,
+              locale
+            );
 
             const resultsResponse = await buildGraphqlResponse(
               searchResult,
               auth,
-              pagination
+              { start: transformedStart, limit: transformedLimit }
             );
 
             if (resultsResponse) return resultsResponse;

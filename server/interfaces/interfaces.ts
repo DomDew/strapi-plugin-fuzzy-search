@@ -30,7 +30,6 @@ export interface ContentType {
 
 export interface FilteredEntry {
   uid: string;
-  pluralName: string;
   schemaInfo: SchemaInfo;
   transliterate: boolean;
   fuzzysortOptions: FuzzySortOptions;
@@ -38,7 +37,6 @@ export interface FilteredEntry {
 }
 
 export interface Result {
-  pluralName: string;
   schemaInfo: SchemaInfo;
   uid: string;
   fuzzysortResults: Writeable<Fuzzysort.KeysResults<Entity>>;
@@ -95,6 +93,11 @@ export interface PaginationArgs {
   pageSize?: number;
   limit?: number;
   start?: number;
+}
+
+export interface TransformedPagination {
+  limit: number;
+  start: number;
 }
 
 export interface Context {
