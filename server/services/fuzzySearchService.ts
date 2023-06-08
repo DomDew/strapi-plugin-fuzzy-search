@@ -7,11 +7,19 @@ import validateQuery from '../utils/validateQuery';
 export default async function getResult(
   contentType: ContentType,
   query: string,
-  filters: Record<string, unknown>
+  filters: Record<string, unknown>,
+  locale?: string
 ) {
   const buildFilteredEntry = async () => {
-    await validateQuery(contentType);
-    const entries = await getFilteredEntries(contentType.model.uid, filters);
+    await validateQuery(contentType, locale);
+
+    console.log('LOCALE', locale);
+
+    const entries = await getFilteredEntries(
+      contentType.model.uid,
+      filters,
+      locale
+    );
 
     return {
       uid: contentType.uid,

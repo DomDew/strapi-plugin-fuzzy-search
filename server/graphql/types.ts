@@ -32,18 +32,20 @@ const getCustomTypes = (strapi: Strapi, nexus) => {
           args: {
             pagination: nexus.arg({ type: 'PaginationArg' }),
             filters: nexus.arg({ type: getFiltersInputTypeName(model) }),
+            locale: nexus.arg({ type: 'I18NLocaleCode' }),
           },
           async resolve(
             parent: SearchResponseReturnType,
             args: {
               pagination?: PaginationArgs;
               filters?: Record<string, unknown>;
+              locale?: string;
             },
             ctx,
             auth: Record<string, unknown>
           ) {
             const { query } = parent;
-            const { pagination, filters } = args;
+            const { pagination, filters, locale } = args;
 
             const { start, limit } =
               getTransformedUserPaginationInput(pagination);
@@ -67,7 +69,8 @@ const getCustomTypes = (strapi: Strapi, nexus) => {
             const searchResult = await getResult(
               contentType,
               query,
-              transformedFilters
+              transformedFilters,
+              locale
             );
 
             const resultsResponse = await buildGraphqlResponse(

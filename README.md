@@ -35,6 +35,8 @@ Uses [fuzzysort](https://github.com/farzher/fuzzysort) under the hood: Simple, q
   - [Pagination](#pagination)
     - [REST](#rest-2)
     - [GraphQL](#graphql-2)
+  - [Filters](#filters)
+    - [REST](#rest-3)
   - [Filter by Content Type (REST)](#filter-by-content-type-rest)
 - [Why use fuzzysort and not something like Fuse.js?](#why-use-fuzzysort-and-not-something-like-fusejs)
 - [Found a bug?](#found-a-bug)
@@ -357,6 +359,12 @@ search(query: "deresh") {
   }
 }
 ```
+
+## Filters
+
+### REST
+
+The endpoint accepts query parameters in line with Strapis [filter parameters](https://docs.strapi.io/dev-docs/api/rest/filters-locale-publication#filtering) parameters. The difference being that the filters are scoped for the content types individually.
 
 ## Filter by Content Type (REST)
 
