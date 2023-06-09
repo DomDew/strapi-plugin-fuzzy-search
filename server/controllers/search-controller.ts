@@ -36,14 +36,15 @@ export default () => ({
       : contentTypes;
 
     const results = await Promise.all(
-      filteredContentTypes.map(async (contentType) => {
-        return await getResults(
-          contentType,
-          query,
-          filtersQuery[contentType.model.info.pluralName],
-          locale
-        );
-      })
+      filteredContentTypes.map(
+        async (contentType) =>
+          await getResults(
+            contentType,
+            query,
+            filtersQuery[contentType.model.info.pluralName],
+            locale
+          )
+      )
     );
 
     const response = await buildRestResponse(
