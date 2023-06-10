@@ -130,8 +130,18 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "prborisov17",
+      "name": "prborisov17",
+      "avatar_url": "https://avatars.githubusercontent.com/u/131133955?v=4",
+      "profile": "https://github.com/prborisov17",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
-  "skipCi": true
+  "skipCi": true,
+  "commitType": "docs"
 }
