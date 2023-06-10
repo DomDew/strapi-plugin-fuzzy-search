@@ -360,8 +360,8 @@ The endpoint accepts query parameters in line with Strapis [filter parameters](h
 **Request:**
 
 ```JavaScript
-await fetch(`${API_URL}/api/fuzzy-search/search?query=deresh&filters[books][title][$eq]=A%20good%20book`);
-// GET /api/fuzzy-search/search?query=deresh&filters[books][title][$eq]=A%20good%20book
+await fetch(`${API_URL}/api/fuzzy-search/search?query=deresh&filters[books][publishedAt][$notNull]=true`);
+// GET /api/fuzzy-search/search?query=deresh&filters[books][publishedAt][$notNull]=true
 ```
 
 **Response:**
@@ -395,7 +395,7 @@ The endpoint accepts filter arguments in line with Strapis [filters parameter](h
 
 ```graphql
 search(query: "deresh") {
-  books(filters: { title: { eq: "A good book" } } ) {
+  books(filters: { publishedAt: { notNull: true } }) {
     data {
       attributes {
         title
