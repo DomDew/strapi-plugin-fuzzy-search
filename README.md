@@ -3,7 +3,9 @@
 # Strapi-plugin-fuzzy-search <!-- omit from toc -->
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-14-orange.svg?style=flat-square)](#contributors-)
+
+[![All Contributors](https://img.shields.io/badge/all_contributors-13-orange.svg?style=flat-square)](#contributors-)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ![Github CI](https://img.shields.io/github/actions/workflow/status/domdew/strapi-plugin-fuzzy-search/release.yml) ![Npm release](https://img.shields.io/npm/v/strapi-plugin-fuzzy-search?label=release) ![Npm monthly downloads](https://img.shields.io/npm/dm/strapi-plugin-fuzzy-search) ![License](https://img.shields.io/github/license/domdew/strapi-plugin-fuzzy-search)
@@ -484,7 +486,6 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://www.ddazal.com"><img src="https://avatars.githubusercontent.com/u/21014225?v=4?s=100" width="100px;" alt="David Daza"/><br /><sub><b>David Daza</b></sub></a><br /><a href="https://github.com/DomDew/strapi-plugin-fuzzy-search/commits?author=ddazal" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/aadelgrossi"><img src="https://avatars.githubusercontent.com/u/6358947?v=4?s=100" width="100px;" alt="Andre Grossi"/><br /><sub><b>Andre Grossi</b></sub></a><br /><a href="https://github.com/DomDew/strapi-plugin-fuzzy-search/issues?q=author%3Aaadelgrossi" title="Bug reports">🐛</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://www.linkedin.com/in/jesúsr00"><img src="https://avatars.githubusercontent.com/u/68043863?v=4?s=100" width="100px;" alt="Jesús Reikel López Martín"/><br /><sub><b>Jesús Reikel López Martín</b></sub></a><br /><a href="https://github.com/DomDew/strapi-plugin-fuzzy-search/issues?q=author%3Ajesusr00" title="Bug reports">🐛</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/you"><img src="https://avatars.githubusercontent.com/u/57100752?v=4?s=100" width="100px;" alt="you"/><br /><sub><b>you</b></sub></a><br /><a href="https://github.com/DomDew/strapi-plugin-fuzzy-search/issues?q=author%3Ayou" title="Bug reports">🐛</a></td>
     </tr>
   </tbody>
 </table>
