@@ -6,7 +6,7 @@ import validateQuery from '../utils/validateQuery';
 export default async function getResult(
   contentType: ContentType,
   query: string,
-  filters: Record<string, unknown>,
+  filters?: Record<string, unknown>,
   locale?: string
 ) {
   const buildFilteredEntry = async () => {
