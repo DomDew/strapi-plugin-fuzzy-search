@@ -8,7 +8,7 @@ import { validateQueryParams } from '../utils/validateQueryParams';
 export default () => ({
   async search(ctx: Context) {
     const { contentTypes } = settingsService().get();
-    const { query, pagination, filters: filtersQuery, locale } = ctx.query;
+    const { query, pagination, filters: filtersQuery = {}, locale } = ctx.query;
     const { auth } = ctx.state;
 
     const queriedContentTypes =
