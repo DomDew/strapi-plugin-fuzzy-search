@@ -1,7 +1,7 @@
 name: CI
 on:
   push:
-    branches: [main, beta]
+    branches: [1.x, main, beta]
   workflow_dispatch:
 jobs:
   release:
