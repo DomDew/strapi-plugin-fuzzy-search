@@ -69,7 +69,9 @@ const getCustomTypes = (strapi: Strapi, nexus) => {
             const searchResult = await getResult(
               contentType,
               query,
-              transformedFilters,
+              transformedFilters ||
+                contentType.queryConstraints?.where ||
+                contentType.queryConstraints,
               locale
             );
 

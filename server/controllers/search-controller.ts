@@ -40,7 +40,9 @@ export default () => ({
         return await getResults(
           contentType,
           query,
-          filtersQuery[contentType.model.info.pluralName],
+          filtersQuery[contentType.model.info.pluralName] ||
+            contentType.queryConstraints?.where ||
+            contentType.queryConstraints,
           locale
         );
       })

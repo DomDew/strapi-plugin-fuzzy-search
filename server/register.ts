@@ -11,6 +11,16 @@ export default ({ strapi }: { strapi: Strapi }) => {
   // reset plugin settings
   settingsServ.set(normalizedSettings);
 
+  const hasQueryConstrains = normalizedSettings.contentTypes.find(
+    (contentType) => contentType.queryConstraints
+  );
+
+  if (hasQueryConstrains) {
+    strapi.log.warn(
+      '[fuzzy-search] queryConstraints option is deprecated and removed in v2.0.0. Please use the new filters query parameter instead.'
+    );
+  }
+
   if (strapi.plugin('graphql')) {
     strapi.log.info('[fuzzy-search] graphql detected, registering queries');
 
