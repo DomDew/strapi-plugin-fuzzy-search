@@ -3,7 +3,9 @@
 # Strapi-plugin-fuzzy-search <!-- omit from toc -->
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-14-orange.svg?style=flat-square)](#contributors-)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ![Github CI](https://img.shields.io/github/actions/workflow/status/domdew/strapi-plugin-fuzzy-search/release.yml) ![Npm release](https://img.shields.io/npm/v/strapi-plugin-fuzzy-search?label=release) ![Npm monthly downloads](https://img.shields.io/npm/dm/strapi-plugin-fuzzy-search) ![License](https://img.shields.io/github/license/domdew/strapi-plugin-fuzzy-search)
@@ -38,6 +40,7 @@ Uses [fuzzysort](https://github.com/farzher/fuzzysort) under the hood: Simple, q
     - [GraphQL](#graphql-3)
   - [Filter by Content Type (REST)](#filter-by-content-type-rest)
 - [Why use fuzzysort and not something like Fuse.js?](#why-use-fuzzysort-and-not-something-like-fusejs)
+- [Contributing](#contributing)
 - [Found a bug?](#found-a-bug)
 - [Contributors ✨](#contributors-)
 
@@ -148,9 +151,9 @@ A high `characterLimit`, `limit`, a low `threshold` (the lower the value the mor
 
 Hitting the `/api/fuzzy-search/search?query=<your-query-string>` will return an array of matched entries for each content type registered in the config. If no match could be found an empty array will be returned. The endpoint accepts an optional `locale=<your-locale>` query as well.
 
-Alternatively (and if the graphql plugin is installed), a search query is registered that accepts `query: String!` and `locale: String` (optional) as arguments.
+Alternatively (and if the graphql plugin is installed), a search query is registered that accepts `query: String!` and `locale: String` (optional) as arguments. If set, the locale parameter will be used as a default for all queried content types. If you'd rather filter the content types by local on an individual level, pass the locale to the content type as a [filter](#filters) parameter.
 
-**IMPORTANT:** Please not that in order to query for the locale of a content type, localization must be enabled for the content type.
+**IMPORTANT:** Please not that in order to query for the locale of the content types via the locale parameter, localization must be enabled for the content types.
 
 ### Example Requests
 
@@ -454,6 +457,12 @@ await fetch(`${API_URL}/api/fuzzy-search/search?query=deresh&filters[contentType
 # Why use fuzzysort and not something like Fuse.js?
 
 While [Fuse.js](https://github.com/krisk/Fuse) proofs to be an amazing library, it can yield unexpected results and what is to be perceived as "false positives" (by a human) when searching through longer strings. Fuzzysort aims to solve this problem by introducing the evaluation and scoring of exact matches. Since we had issues with Fuse.js and it's underlying algorithm, we opted for fuzzysearch to do the heavy lifting instead.
+
+# Contributing
+
+Feel free to contribute, PRs are always welcome!
+
+For local development: Clone this repository and run `npm run develop`, this will spin up tsc and watch for file changes. When commiting, please choose meaningful commit messages that adhere to the [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) specification, as we have automated our releases and generate the changelogs based on the commit names and descriptions.
 
 # Found a bug?
 
