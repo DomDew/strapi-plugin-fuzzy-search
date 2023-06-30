@@ -19,7 +19,7 @@ const validateQuery = async (contentType: ContentType, locale: string) => {
 
   if (!isLocalizedContentType) {
     throw new ValidationError(
-      `A query for the locale: '${locale}' was found, however model: '${contentType.model.modelName}' is not a localized content type. Enable localization if you want to query or localized entries.`
+      `A query for the locale: '${locale}' was found, however model: '${contentType.model.modelName}' is not a localized content type. Enable localization for all content types if you want to query for localized entries via the locale parameter.`
     );
   }
 };

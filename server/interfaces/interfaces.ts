@@ -22,7 +22,6 @@ interface FuzzySortOptions {
 export interface ContentType {
   uid: string;
   modelName: string;
-  queryConstraints?: { where: {} };
   transliterate?: boolean;
   fuzzysortOptions: FuzzySortOptions;
   model: Schema & { uid: string; responseName: string; modelName: string };
