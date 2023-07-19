@@ -54,7 +54,9 @@ Uses [fuzzysort](https://github.com/farzher/fuzzysort) under the hood: Simple, q
 
 # Requirements
 
-Strapi Version v4.x.x
+Strapi Version `>= v4.11.4`
+
+For compatibility with older Strapi versions please use older Versions of this package (<= 1.11.2 and <= 2.0.3)
 
 # Installation
 

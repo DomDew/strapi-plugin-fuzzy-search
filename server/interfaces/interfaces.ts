@@ -1,4 +1,4 @@
-import { Schema, SchemaInfo } from '@strapi/strapi';
+import { Schema } from '@strapi/strapi';
 import { SearchQuery } from '../config/querySchema';
 
 type Writeable<T> = { -readonly [P in keyof T]: T[P] };
@@ -24,19 +24,23 @@ export interface ContentType {
   modelName: string;
   transliterate?: boolean;
   fuzzysortOptions: FuzzySortOptions;
-  model: Schema & { uid: string; responseName: string; modelName: string };
+  model: Schema.Schema & {
+    uid: string;
+    responseName: string;
+    modelName: string;
+  };
 }
 
 export interface FilteredEntry {
   uid: string;
-  schemaInfo: SchemaInfo;
+  schemaInfo: Schema.Info;
   transliterate: boolean;
   fuzzysortOptions: FuzzySortOptions;
   [x: string]: any;
 }
 
 export interface Result {
-  schemaInfo: SchemaInfo;
+  schemaInfo: Schema.Info;
   uid: string;
   fuzzysortResults: Writeable<Fuzzysort.KeysResults<Entity>>;
 }
@@ -72,7 +76,7 @@ export type PaginatedResultsResponse<Meta = PaginationMeta> = Record<
   PaginatedModelResponse<Meta>
 >;
 
-export type ModelType = Schema & {
+export type ModelType = Schema.Schema & {
   uid: string;
   responseName: string;
   modelName: string;
@@ -103,4 +107,25 @@ export interface Context {
   state: { auth: any };
   query: SearchQuery;
   badRequest: (message: string, {}) => void;
+}
+
+export interface Attribute {
+  type: string;
+  writable?: boolean;
+  relation?: string;
+  [key: string]: unknown;
+}
+
+export interface Model {
+  uid?: string;
+  kind: 'singleType' | 'collectionType';
+  info: {
+    singularName: string;
+    pluralName: string;
+  };
+  options: {
+    populateCreatorFields: boolean;
+  };
+  privateAttributes?: string[];
+  attributes: Record<string, Attribute>;
 }

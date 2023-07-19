@@ -1,7 +1,9 @@
-import { Schema } from '@strapi/strapi';
-import { contentAPI } from '@strapi/utils/lib/sanitize';
+import { sanitize } from '@strapi/utils';
+import { Model } from '../interfaces/interfaces';
 
-const sanitizeOutput = (data: any, contentType: Schema, auth: any) =>
+const { contentAPI } = sanitize;
+
+const sanitizeOutput = (data: any, contentType: Model, auth: any) =>
   contentAPI.output(data, contentType, { auth });
 
 export default sanitizeOutput;

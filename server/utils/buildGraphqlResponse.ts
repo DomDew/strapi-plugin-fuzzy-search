@@ -17,11 +17,11 @@ const buildGraphqlResponse = async (
     fuzzysortResults.map(async (fuzzyRes) => {
       const schema = strapi.getModel(uid);
 
-      const sanitizedEntity: Record<string, unknown> = await sanitizeOutput(
+      const sanitizedEntity: Record<string, unknown> = (await sanitizeOutput(
         fuzzyRes.obj,
         schema,
         auth
-      );
+      )) as Record<string, unknown>;
 
       return sanitizedEntity;
     })
