@@ -7,15 +7,15 @@ export const paginationSchema = object({
     ['true', 'false'],
     "withCount must either be 'true' or 'false'"
   ),
-});
+}).noUnknown();
 
 export const querySchema = object({
   query: string().required(),
   locale: string().max(2),
   filters: object({
     contentTypes: string(),
-  }),
-});
+  }).optional(),
+}).noUnknown();
 
 export type PaginationBaseQuery = InferType<typeof paginationSchema>;
 

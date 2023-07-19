@@ -3,7 +3,7 @@ import {
   querySchema,
   SearchQuery,
 } from '../config/querySchema';
-import { ContentType, Context } from '../interfaces/interfaces';
+import { ContentType } from '../interfaces/interfaces';
 
 export const validateQueryParams = async (
   query: SearchQuery,
@@ -16,7 +16,7 @@ export const validateQueryParams = async (
       withCount?: string;
     }
   > | null,
-  filteredContentTypes: string[] | null
+  filteredContentTypes?: string[]
 ) => {
   const configModels = new Set(
     contentTypes.map((contentType) => contentType.model.info.pluralName)

@@ -1,14 +1,16 @@
-import { NotFoundError } from '@strapi/utils/lib/errors';
+import { errors } from '@strapi/utils';
 import { Context } from '../interfaces/interfaces';
 import getResults from '../services/fuzzySearchService';
 import settingsService from '../services/settingsService';
 import buildRestResponse from '../utils/buildRestResponse';
 import { validateQueryParams } from '../utils/validateQueryParams';
 
+const { NotFoundError } = errors;
+
 export default () => ({
   async search(ctx: Context) {
     const { contentTypes } = settingsService().get();
-    const { query, pagination, filters: filtersQuery = {}, locale } = ctx.query;
+    const { query, pagination, filters: filtersQuery, locale } = ctx.query;
     const { auth } = ctx.state;
 
     const queriedContentTypes =
@@ -40,7 +42,7 @@ export default () => ({
         return await getResults(
           contentType,
           query,
-          filtersQuery[contentType.model.info.pluralName] ||
+          (filtersQuery && filtersQuery[contentType.model.info.pluralName]) ||
             contentType.queryConstraints?.where ||
             contentType.queryConstraints,
           locale

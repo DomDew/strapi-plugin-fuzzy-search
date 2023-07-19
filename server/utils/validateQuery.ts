@@ -1,5 +1,7 @@
-import { ValidationError } from '@strapi/utils/lib/errors';
+import { errors } from '@strapi/utils';
 import { ContentType } from '../interfaces/interfaces';
+
+const { ValidationError } = errors;
 
 const validateQuery = async (contentType: ContentType, locale: string) => {
   contentType.fuzzysortOptions.keys.forEach((key) => {
