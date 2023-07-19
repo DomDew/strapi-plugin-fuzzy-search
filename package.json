@@ -27,8 +27,8 @@
     "transliteration": "2.3.5"
   },
   "peerDependencies": {
-    "@strapi/strapi": "4.x",
-    "@strapi/utils": "4.x",
+    "@strapi/strapi": "^4.11.4",
+    "@strapi/utils": "^4.11.4",
     "yup": "^0.32.9"
   },
   "author": "@DomDew (https://github.com/DomDew)",
