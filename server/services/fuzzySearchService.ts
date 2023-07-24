@@ -13,10 +13,8 @@ export default async function getResult(
     await validateQuery(contentType, locale);
 
     const items = await strapi.entityService.findMany(contentType.model.uid, {
-      filters: {
-        ...(filters && { ...filters }),
-        ...(locale && { locale }),
-      },
+      ...(filters && { filters }),
+      ...(locale && { locale }),
     });
 
     return {

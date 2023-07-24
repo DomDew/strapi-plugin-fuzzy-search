@@ -44,8 +44,14 @@ const getCustomTypes = (strapi: Strapi, nexus) => {
             ctx,
             auth: Record<string, unknown>
           ) {
-            const { query } = parent;
-            const { pagination, filters, locale } = args;
+            const { query, locale: parentLocaleQuery } = parent;
+            const {
+              pagination,
+              filters,
+              locale: contentTypeLocaleQuery,
+            } = args;
+
+            const locale = contentTypeLocaleQuery || parentLocaleQuery;
 
             const { start, limit } =
               getTransformedUserPaginationInput(pagination);
@@ -104,7 +110,6 @@ const getCustomTypes = (strapi: Strapi, nexus) => {
           args: SearchResponseArgs,
           ctx
         ): Promise<SearchResponseReturnType> {
-          // Destructure the args to get query value
           const { query, locale } = args;
           const { auth } = ctx.state;
 

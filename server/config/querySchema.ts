@@ -11,7 +11,7 @@ export const paginationSchema = object({
 
 export const querySchema = object({
   query: string().required(),
-  locale: string().max(2),
+  locale: string(),
   filters: object({
     contentTypes: string(),
   }),
