@@ -14,7 +14,6 @@ export const querySchema = object({
   locale: string(),
   filters: object({
     contentTypes: string(),
-    locale: string(),
   }),
 });
 
