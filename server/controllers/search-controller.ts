@@ -43,10 +43,8 @@ export default () => ({
           await getResults(
             contentType,
             query,
-            filtersQuery
-              ? filtersQuery[contentType.model.info.pluralName]
-              : undefined,
-            locale
+            filtersQuery?.[contentType.model.info.pluralName],
+            filtersQuery?.[contentType.model.info.pluralName]?.locale || locale
           )
       )
     );
