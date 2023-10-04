@@ -1,9 +1,9 @@
 import { errors } from '@strapi/utils';
-import { Context } from '../interfaces/interfaces';
+import { Context, Result } from '../interfaces/interfaces';
 import getResults from '../services/fuzzySearchService';
+import buildRestResponse from '../services/responseTransformationService';
 import settingsService from '../services/settingsService';
-import buildRestResponse from '../utils/buildRestResponse';
-import { validateQueryParams } from '../utils/validateQueryParams';
+import { validateQueryParams } from '../services/validationService';
 
 const { NotFoundError } = errors;
 
@@ -25,26 +25,29 @@ export default () => ({
         pagination,
         queriedContentTypes
       );
-    } catch (err) {
-      return ctx.badRequest('Invalid query', err.message);
+    } catch (err: any) {
+      return ctx.badRequest(
+        'Invalid query',
+        'message' in err ? err.message : ''
+      );
     }
 
     const queriedContentTypesSet = new Set(queriedContentTypes);
 
     const filteredContentTypes = filtersQuery?.contentTypes
       ? [...contentTypes].filter((contentType) =>
-          queriedContentTypesSet.has(contentType.model.info.pluralName)
+          queriedContentTypesSet.has(contentType.info.pluralName)
         )
       : contentTypes;
 
-    const results = await Promise.all(
+    const results: Result[] = await Promise.all(
       filteredContentTypes.map(
         async (contentType) =>
           await getResults(
             contentType,
             query,
-            filtersQuery?.[contentType.model.info.pluralName],
-            filtersQuery?.[contentType.model.info.pluralName]?.locale || locale
+            filtersQuery?.[contentType.info.pluralName],
+            filtersQuery?.[contentType.info.pluralName]?.locale || locale
           )
       )
     );

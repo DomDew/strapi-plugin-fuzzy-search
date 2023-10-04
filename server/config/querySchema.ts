@@ -21,4 +21,8 @@ export type PaginationBaseQuery = InferType<typeof paginationSchema>;
 
 export type SearchQuery = InferType<typeof querySchema> & {
   pagination: Record<string, PaginationBaseQuery>;
+  filters: {
+    contentTypes: string;
+    [x: string]: any;
+  };
 };
