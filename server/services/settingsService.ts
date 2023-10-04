@@ -16,7 +16,7 @@ const settingsService = (): SettingsService => ({
   },
   build(settings: Config) {
     settings.contentTypes.forEach((contentType) => {
-      contentType.model = strapi.contentTypes[contentType.uid];
+      contentType = { ...contentType, ...strapi.contentTypes[contentType.uid] };
     });
 
     return settings;

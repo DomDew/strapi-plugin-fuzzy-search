@@ -3,13 +3,17 @@ import registerGraphlQLQuery from './graphql';
 import settingsService from './services/settingsService';
 
 export default ({ strapi }: { strapi: Strapi }) => {
-  const settingsServ = settingsService();
+  const {
+    get: getSettings,
+    build: buildSettings,
+    set: setSettings,
+  } = settingsService();
 
-  const settings = settingsServ.get();
+  const settings = getSettings();
   // build settings structure
-  const normalizedSettings = settingsServ.build(settings);
+  const normalizedSettings = buildSettings(settings);
   // reset plugin settings
-  settingsServ.set(normalizedSettings);
+  setSettings(normalizedSettings);
 
   if (strapi.plugin('graphql')) {
     strapi.log.info('[fuzzy-search] graphql detected, registering queries');

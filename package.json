@@ -44,7 +44,8 @@
   "types": "dist/index.d.ts",
   "devDependencies": {
     "all-contributors-cli": "^6.20.0",
-    "semantic-release": "^22.0.5"
+    "semantic-release": "^22.0.5",
+    "vitest": "^0.34.6"
   },
   "scripts": {
     "semantic-release": "semantic-release",

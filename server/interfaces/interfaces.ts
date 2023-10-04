@@ -7,7 +7,7 @@ export interface Config {
   contentTypes: ContentType[];
 }
 
-interface FuzzySortOptions {
+export interface FuzzySortOptions {
   threshold?: number;
   limit?: number;
   characterLimit?: number;
@@ -19,33 +19,21 @@ interface FuzzySortOptions {
   ];
 }
 
-export interface ContentType {
-  uid: string;
-  modelName: string;
+export interface ContentType extends Schema.ContentType {
   transliterate?: boolean;
   fuzzysortOptions: FuzzySortOptions;
-  model: Schema.Schema & {
-    uid: string;
-    responseName: string;
-    modelName: string;
-  };
 }
 
-export interface FilteredEntry {
-  uid: string;
-  schemaInfo: Schema.Info;
-  transliterate: boolean;
-  fuzzysortOptions: FuzzySortOptions;
-  [x: string]: any;
+export interface QueryResult extends ContentType {
+  entries: Entry[];
 }
 
 export interface Result {
-  schemaInfo: Schema.Info;
-  uid: string;
-  fuzzysortResults: Writeable<Fuzzysort.KeysResults<Entity>>;
+  fuzzysortResults: Fuzzysort.KeysResults<Entry>;
+  schema: Schema.ContentType;
 }
 
-export interface Entity {
+export interface Entry {
   id: string | number;
   [x: string]: any;
 }
@@ -66,7 +54,7 @@ export interface RESTPaginationMeta {
 
 export interface PaginatedModelResponse<Meta = PaginationMeta> {
   meta: Meta;
-  data: Record<string, unknown>[];
+  data: unknown[];
 }
 
 export type ResultsResponse = Record<string, Record<string, unknown>[]>;
@@ -76,12 +64,6 @@ export type PaginatedResultsResponse<Meta = PaginationMeta> = Record<
   PaginatedModelResponse<Meta>
 >;
 
-export type ModelType = Schema.Schema & {
-  uid: string;
-  responseName: string;
-  modelName: string;
-};
-
 export interface SearchResponseArgs {
   query: string;
   locale?: string;
@@ -90,6 +72,15 @@ export interface SearchResponseArgs {
 export type SearchResponseReturnType = SearchResponseArgs & {
   auth: Record<string, unknown>;
 };
+
+export type PaginationParams = Record<
+  string,
+  {
+    pageSize?: string;
+    page?: string;
+    withCount?: string;
+  }
+> | null;
 
 export interface PaginationArgs {
   page?: number;
