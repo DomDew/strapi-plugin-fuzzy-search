@@ -1,8 +1,6 @@
 import { Schema } from '@strapi/strapi';
 import { SearchQuery } from '../config/querySchema';
 
-type Writeable<T> = { -readonly [P in keyof T]: T[P] };
-
 export interface Config {
   contentTypes: ContentType[];
 }
