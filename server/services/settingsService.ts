@@ -15,11 +15,13 @@ const settingsService = (): SettingsService => ({
     return strapi.config.set(`plugin.${pluginId}`, settings);
   },
   build(settings: Config) {
-    settings.contentTypes.forEach((contentType) => {
-      contentType = { ...contentType, ...strapi.contentTypes[contentType.uid] };
-    });
-
-    return settings;
+    return {
+      ...settings,
+      contentTypes: settings.contentTypes.map((contentType) => ({
+        ...contentType,
+        ...strapi.contentTypes[contentType.uid],
+      })),
+    };
   },
 });
 
