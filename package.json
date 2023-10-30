@@ -45,12 +45,14 @@
   "devDependencies": {
     "all-contributors-cli": "^6.20.0",
     "semantic-release": "^22.0.5",
+    "sqlite3": "^5.1.6",
     "vitest": "^0.34.6"
   },
   "scripts": {
     "semantic-release": "semantic-release",
     "develop": "tsc -w",
-    "build": "tsc"
+    "build": "tsc",
+    "test": "vitest"
   },
   "repository": {
     "type": "git",
