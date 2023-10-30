@@ -21,7 +21,7 @@ const weightScores = (
   return Math.max(...weightedScores);
 };
 
-const buildResult = ({
+export const buildResult = ({
   entries,
   fuzzysortOptions,
   keys,
@@ -54,7 +54,7 @@ const buildResult = ({
   });
 };
 
-const buildTransliteratedResult = ({
+export const buildTransliteratedResult = ({
   entries,
   fuzzysortOptions,
   keys,
