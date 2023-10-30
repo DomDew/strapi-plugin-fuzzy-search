@@ -148,6 +148,15 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "pavelglac",
+      "name": "Pavel Glac",
+      "avatar_url": "https://avatars.githubusercontent.com/u/42679661?v=4",
+      "profile": "https://www.pavelglac.com/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
