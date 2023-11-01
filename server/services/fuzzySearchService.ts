@@ -21,6 +21,24 @@ const weightScores = (
   return Math.max(...weightedScores);
 };
 
+const limitCharacters = (
+  entries: Entry[],
+  characterLimit: number,
+  keys: string[]
+) =>
+  entries.map((entry) => {
+    const limitedEntry = { ...entry };
+    const entryKeys = Object.keys(limitedEntry);
+
+    entryKeys.forEach((key) => {
+      if (!keys.includes(key)) return;
+
+      limitedEntry[key] = limitedEntry[key].slice(0, characterLimit);
+    });
+
+    return limitedEntry;
+  });
+
 export const buildResult = ({
   entries,
   fuzzysortOptions,
@@ -32,27 +50,32 @@ export const buildResult = ({
   keys: string[];
   query: string;
 }) => {
-  if (fuzzysortOptions.characterLimit) {
-    entries.forEach((entry) => {
-      const entryKeys = Object.keys(entry);
+  const modifiedEntries = fuzzysortOptions.characterLimit
+    ? limitCharacters(entries, fuzzysortOptions.characterLimit, keys)
+    : entries;
 
-      entryKeys.forEach((key) => {
-        if (!keys.includes(key)) return;
-
-        if (!entry[key]) return;
-
-        entry[key] = entry[key].slice(0, fuzzysortOptions.characterLimit);
-      });
-    });
-  }
-
-  return fuzzysort.go<Entry>(query, entries, {
+  return fuzzysort.go<Entry>(query, modifiedEntries, {
     threshold: fuzzysortOptions.threshold,
     limit: fuzzysortOptions.limit,
     keys,
     scoreFn: (a) => weightScores(a, fuzzysortOptions.keys),
   });
 };
+
+const transliterateEntries = (entries: Entry[]) =>
+  entries.map((entry) => {
+    const entryKeys = Object.keys(entry);
+
+    entry.transliterations = {};
+
+    entryKeys.forEach((key) => {
+      if (!entry[key]) return;
+
+      entry.transliterations[key] = transliterate(entry[key]);
+    });
+
+    return entry;
+  });
 
 export const buildTransliteratedResult = ({
   entries,
@@ -72,26 +95,20 @@ export const buildTransliteratedResult = ({
   /**
    * Transliterate relevant fields for the entry
    */
-  entries.forEach((entry: Record<string, any>) => {
-    const entryKeys = Object.keys(entry);
-
-    entry.transliterations = {};
-
-    entryKeys.forEach((key) => {
-      if (!keys.includes(key) || !entry[key]) return;
-
-      entry.transliterations[key] = transliterate(entry[key]);
-    });
-  });
+  const transliteratedEntries = transliterateEntries(entries);
 
   const transliterationKeys = keys.map((key) => `transliterations.${key}`);
 
-  const transliteratedResult = fuzzysort.go<Entry>(query, entries, {
-    threshold,
-    limit,
-    keys: transliterationKeys,
-    scoreFn: (a) => weightScores(a, fuzzysortKeys),
-  });
+  const transliteratedResult = fuzzysort.go<Entry>(
+    query,
+    transliteratedEntries,
+    {
+      threshold,
+      limit,
+      keys: transliterationKeys,
+      scoreFn: (a) => weightScores(a, fuzzysortKeys),
+    }
+  );
 
   const previousResults = result;
 

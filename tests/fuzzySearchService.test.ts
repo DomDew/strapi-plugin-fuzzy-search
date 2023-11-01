@@ -2,6 +2,8 @@ import { beforeAll, expect, test, vi } from 'vitest';
 import getResult from '../server/services/fuzzySearchService';
 import { contentTypeMock, findManyResMock } from './utils/mocks';
 
+const TEST_QUERY = 'test';
+
 beforeAll(() => {
   const findMany = vi.fn().mockResolvedValue(findManyResMock);
 
@@ -17,24 +19,19 @@ beforeAll(() => {
   } as any;
 });
 
-// buildResult Test
-// Path: server/services/fuzzySearchService.ts
-// Compare this snippet from server/services/fuzzySearchService.ts:
 test('get basic result', async () => {
-  const TEST_QUERY = 'test';
-
   const result = await getResult(contentTypeMock, TEST_QUERY);
 
   expect(result.fuzzysortResults.length).toBe(3);
   expect(result.fuzzysortResults[0].obj.name).toBe('test');
   expect(result.fuzzysortResults[0].score).toBe(0);
+  expect(result.fuzzysortResults[1].obj.name).toBe('a test hit');
   expect(result.fuzzysortResults[1].score).toBe(-6.002768166089965);
+  expect(result.fuzzysortResults[2].obj.name).toBe('no hit');
   expect(result.fuzzysortResults[2].score).toBe(-9999);
 }, 10000);
 
 test('get result with threshold', async () => {
-  const TEST_QUERY = 'test';
-
   const result = await getResult(
     {
       ...contentTypeMock,
@@ -54,8 +51,6 @@ test('get result with threshold', async () => {
 }, 10000);
 
 test('get result with weights', async () => {
-  const TEST_QUERY = 'test';
-
   const result = await getResult(
     {
       ...contentTypeMock,
@@ -82,8 +77,6 @@ test('get result with weights', async () => {
 }, 10000);
 
 test('get result with limit', async () => {
-  const TEST_QUERY = 'test';
-
   const result = await getResult(
     {
       ...contentTypeMock,
@@ -101,8 +94,6 @@ test('get result with limit', async () => {
 }, 10000);
 
 test('get result with characterLimit', async () => {
-  const TEST_QUERY = 'test';
-
   const result = await getResult(
     {
       ...contentTypeMock,
@@ -121,4 +112,24 @@ test('get result with characterLimit', async () => {
   expect(result.fuzzysortResults[1].score).toBe(-9999);
   expect(result.fuzzysortResults[2].obj.name).toBe('a te');
   expect(result.fuzzysortResults[2].score).toBe(-9999);
-});
+}, 10000);
+
+test('get result with transliteration', async () => {
+  const result = await getResult(
+    {
+      ...contentTypeMock,
+      transliterate: true,
+    },
+    TEST_QUERY
+  );
+
+  console.log(result.fuzzysortResults);
+
+  expect(result.fuzzysortResults.length).toBe(3);
+  expect(result.fuzzysortResults[0].obj.name).toBe('test');
+  expect(result.fuzzysortResults[0].score).toBe(0);
+  expect(result.fuzzysortResults[1].obj.name).toBe('a test hit');
+  expect(result.fuzzysortResults[1].score).toBe(-6.002768166089965);
+  expect(result.fuzzysortResults[2].obj.name).toBe('no hit');
+  expect(result.fuzzysortResults[2].score).toBe(-9999);
+}, 10000);
