@@ -92,9 +92,6 @@ export const buildTransliteratedResult = ({
 }) => {
   const { keys: fuzzysortKeys, threshold, limit } = fuzzysortOptions;
 
-  /**
-   * Transliterate relevant fields for the entry
-   */
   const transliteratedEntries = transliterateEntries(entries);
 
   const transliterationKeys = keys.map((key) => `transliterations.${key}`);
@@ -110,16 +107,14 @@ export const buildTransliteratedResult = ({
     }
   );
 
-  const previousResults = result;
+  if (!result.total) return transliteratedResult;
 
-  if (!previousResults.total) return transliteratedResult;
-
-  const newResults = [...previousResults] as any[];
+  const newResults = [...result];
 
   // In the chance that a transliterated result scores higher than its non-transliterated counterpart,
   // overwrite the original result with the transliterated result and resort the results
   transliteratedResult.forEach((res) => {
-    const origIndex = previousResults.findIndex(
+    const origIndex = newResults.findIndex(
       (origRes) => origRes.obj.id === res.obj.id && origRes.score <= res.score
     );
 
@@ -128,7 +123,12 @@ export const buildTransliteratedResult = ({
 
   newResults.sort((a, b) => b.score - a.score);
 
-  return result;
+  /**
+   * Typecasting here, as newResults is inferred as Fuzzysort.KeysResult<Entry>[] instead of Fuzzysort.KeysResults<Entry>.
+   * Typecasting newResults during creation as Fuzzysort.KeysResults<Entry> results in a type error, as the KeysResults type is readonly
+   * but needs to be mutable for the sort function.
+   */
+  return newResults as unknown as Fuzzysort.KeysResults<Entry>;
 };
 
 export default async function getResult(

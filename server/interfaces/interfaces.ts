@@ -1,6 +1,10 @@
 import { Schema } from '@strapi/strapi';
 import { SearchQuery } from '../config/querySchema';
 
+export type Mutable<T> = {
+  -readonly [P in keyof T]: T[P];
+};
+
 export interface Config {
   contentTypes: ContentType[];
 }
@@ -9,12 +13,10 @@ export interface FuzzySortOptions {
   threshold?: number;
   limit?: number;
   characterLimit?: number;
-  keys: [
-    {
-      name: string;
-      weight?: number;
-    }
-  ];
+  keys: {
+    name: string;
+    weight?: number;
+  }[];
 }
 
 export interface ContentType extends Schema.ContentType {
