@@ -80,7 +80,7 @@ export type PaginationParams = Record<
     page?: string;
     withCount?: string;
   }
-> | null;
+>;
 
 export interface PaginationArgs {
   page?: number;

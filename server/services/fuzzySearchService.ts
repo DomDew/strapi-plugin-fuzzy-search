@@ -1,3 +1,4 @@
+import { WhereQuery } from '@strapi/utils/dist/convert-query-params';
 import fuzzysort from 'fuzzysort';
 import { transliterate } from 'transliteration';
 import {
@@ -134,8 +135,7 @@ export const buildTransliteratedResult = ({
 export default async function getResult(
   contentType: ContentType,
   query: string,
-  // Need to type filters as any, as Strapi doesn't expose the Filter type
-  filters?: any,
+  filters?: WhereQuery,
   locale?: string
 ): Promise<Result> {
   const buildFilteredEntry = async () => {
