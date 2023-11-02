@@ -19,8 +19,6 @@ const validatePaginationQueryParams = async (
   configModels: Set<string>,
   pagination: PaginationParams
 ) => {
-  if (!pagination) return;
-
   const paginatedEntries = Object.entries(pagination);
 
   for (let [pluralName, paginationValues] of paginatedEntries) {
@@ -38,8 +36,6 @@ const validateFiltersQueryParams = (
   configModels: Set<string>,
   filters: Record<string, any>
 ) => {
-  if (!filters) return;
-
   const filterKeys = Object.keys(filters);
 
   filterKeys.forEach((key) => {
