@@ -35,6 +35,7 @@ export interface Result {
 
 export interface Entry {
   id: string | number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [x: string]: any;
 }
 
@@ -95,9 +96,9 @@ export interface TransformedPagination {
 }
 
 export interface Context {
-  state: { auth: any };
+  state: { auth: unknown };
   query: SearchQuery;
-  badRequest: (message: string, {}) => void;
+  badRequest: (prefix: string, message: string) => void;
 }
 
 export interface Attribute {

@@ -23,20 +23,20 @@ export default () => ({
         ctx.query,
         contentTypes,
         pagination,
-        queriedContentTypes
+        queriedContentTypes,
       );
-    } catch (err: any) {
-      return ctx.badRequest(
-        'Invalid query',
-        'message' in err ? err.message : ''
-      );
+    } catch (err: unknown) {
+      let message = 'unknown error';
+      if (err instanceof Error) message = err.message;
+
+      return ctx.badRequest('Invalid query', message);
     }
 
     const queriedContentTypesSet = new Set(queriedContentTypes);
 
     const filteredContentTypes = filtersQuery?.contentTypes
       ? [...contentTypes].filter((contentType) =>
-          queriedContentTypesSet.has(contentType.info.pluralName)
+          queriedContentTypesSet.has(contentType.info.pluralName),
         )
       : contentTypes;
 
@@ -47,16 +47,16 @@ export default () => ({
             contentType,
             query,
             filtersQuery?.[contentType.info.pluralName],
-            filtersQuery?.[contentType.info.pluralName]?.locale || locale
-          )
-      )
+            filtersQuery?.[contentType.info.pluralName]?.locale || locale,
+          ),
+      ),
     );
 
     const response = await buildRestResponse(
       results,
       auth,
       pagination,
-      queriedContentTypes
+      queriedContentTypes,
     );
 
     if (response) {

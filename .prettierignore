@@ -1,0 +1,13 @@
+/node_modules
+.idea/
+server/.DS_Store
+.DS_Store
+/dist
+yarn.lock
+.npmrc
+coverage
+dist/
+.all-contributorsrc
+.github/dependabot.yml
+.strapi-updater.json
+README.md

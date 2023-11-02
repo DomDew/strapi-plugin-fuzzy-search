@@ -3,7 +3,7 @@ import pluginId from '../utils/pluginId';
 
 export interface SettingsService {
   get(): Config;
-  set(settings: Config): any;
+  set(settings: Config): unknown;
   build(settings: Config): Config;
 }
 

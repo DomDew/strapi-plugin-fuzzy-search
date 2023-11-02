@@ -1,10 +1,10 @@
-name: Release
+name: Test
 on:
-  push:
+  pull_request:
     branches: [1.x, main, beta]
   workflow_dispatch:
 jobs:
-  release:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout project
@@ -19,11 +19,11 @@ jobs:
       - name: Install deps
         run: npm ci
 
-      - name: Transpile Typescript
-        run: npm run build
+      - name: Check Types
+        run: npm run typecheck
 
-      - name: Release to NPM
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: npx semantic-release
+      - name: 'Lint'
+        run: npm run lint && npm run prettier:check
+
+      - name: Run Tests
+        run: npm run coverage

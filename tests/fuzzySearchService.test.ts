@@ -46,7 +46,7 @@ describe('getResult', () => {
           threshold: -1000,
         },
       },
-      TEST_QUERY
+      TEST_QUERY,
     );
 
     expect(result.fuzzysortResults.length).toBe(2);
@@ -70,7 +70,7 @@ describe('getResult', () => {
           ],
         },
       },
-      TEST_QUERY
+      TEST_QUERY,
     );
 
     expect(result.fuzzysortResults.length).toBe(3);
@@ -91,7 +91,7 @@ describe('getResult', () => {
           limit: 1,
         },
       },
-      TEST_QUERY
+      TEST_QUERY,
     );
 
     expect(result.fuzzysortResults.length).toBe(1);
@@ -108,7 +108,7 @@ describe('getResult', () => {
           characterLimit: 4,
         },
       },
-      TEST_QUERY
+      TEST_QUERY,
     );
 
     expect(result.fuzzysortResults.length).toBe(3);

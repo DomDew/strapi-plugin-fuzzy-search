@@ -5,7 +5,7 @@ export const paginationSchema = object({
   page: string().matches(/^\d+$/, 'page must be an integer'),
   withCount: string().oneOf(
     ['true', 'false'],
-    "withCount must either be 'true' or 'false'"
+    "withCount must either be 'true' or 'false'",
   ),
 });
 
@@ -23,5 +23,6 @@ type QuerySchema = InferType<typeof querySchema>;
 
 export type SearchQuery = Omit<QuerySchema, 'filters'> & {
   pagination?: Record<string, PaginationBaseQuery>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   filters?: QuerySchema['filters'] & Record<string, any>;
 };

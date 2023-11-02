@@ -4,7 +4,7 @@ import getCustomTypes from './types';
 
 const registerGraphlQLQuery = (strapi: Strapi) => {
   // build plugins schema extension
-  const extension = ({ nexus }: { nexus: any }) => ({
+  const extension = ({ nexus }: { nexus: unknown }) => ({
     types: getCustomTypes(strapi, nexus),
     resolversConfig: getResolversConfig(),
   });

@@ -34,7 +34,7 @@ describe('validateQuery', () => {
       };
 
       await expect(validateQuery(invalidConfiguration)).rejects.toThrow(
-        "Key: 'invalid' is not a valid field for model: 'test"
+        "Key: 'invalid' is not a valid field for model: 'test",
       );
     });
   });
@@ -44,7 +44,7 @@ describe('validateQuery', () => {
       .validateQuery;
 
     const buildStrapiNamespacePlugins = (
-      isLocalizedContentType: Mock<any, any>
+      isLocalizedContentType: Mock<any, any>,
     ) => ({
       i18n: {
         services: {
@@ -59,7 +59,7 @@ describe('validateQuery', () => {
       const isLocalizedContentType = vi.fn().mockResolvedValue(true);
 
       global.strapi.plugins = buildStrapiNamespacePlugins(
-        isLocalizedContentType
+        isLocalizedContentType,
       ) as any;
 
       await validateQuery(contentTypeMock, 'en');
@@ -69,11 +69,11 @@ describe('validateQuery', () => {
       const isLocalizedContentType = vi.fn().mockResolvedValue(false);
 
       global.strapi.plugins = buildStrapiNamespacePlugins(
-        isLocalizedContentType
+        isLocalizedContentType,
       ) as any;
 
       await expect(validateQuery(contentTypeMock, 'en')).rejects.toThrow(
-        "A query for the locale: 'en' was found, however model: 'test' is not a localized content type. Enable localization for all content types if you want to query for localized entries via the locale parameter."
+        "A query for the locale: 'en' was found, however model: 'test' is not a localized content type. Enable localization for all content types if you want to query for localized entries via the locale parameter.",
       );
     });
   });
@@ -104,7 +104,7 @@ describe('validateQueryParams', async () => {
           },
           [contentTypeMock],
           undefined,
-          validContentTypes
+          validContentTypes,
         );
       });
 
@@ -119,10 +119,10 @@ describe('validateQueryParams', async () => {
             },
             [contentTypeMock],
             undefined,
-            invalidContentTypes
-          )
+            invalidContentTypes,
+          ),
         ).rejects.toThrow(
-          "Filter query for model 'invalid' was found, however this model is not configured in the fuzzy-search config"
+          "Filter query for model 'invalid' was found, however this model is not configured in the fuzzy-search config",
         );
       });
     });
@@ -144,7 +144,7 @@ describe('validateQueryParams', async () => {
           },
           [contentTypeMock],
           undefined,
-          null
+          null,
         );
       });
 
@@ -161,10 +161,10 @@ describe('validateQueryParams', async () => {
             },
             [contentTypeMock],
             undefined,
-            null
-          )
+            null,
+          ),
         ).rejects.toThrow(
-          "Filter queries for model 'invalid' were found, however this model is not configured in the fuzzy-search config"
+          "Filter queries for model 'invalid' were found, however this model is not configured in the fuzzy-search config",
         );
       });
     });
@@ -186,7 +186,7 @@ describe('validateQueryParams', async () => {
         },
         [contentTypeMock],
         { tests: pagination },
-        null
+        null,
       );
     });
 
@@ -206,10 +206,10 @@ describe('validateQueryParams', async () => {
           },
           [contentTypeMock],
           { invalid: pagination },
-          null
-        )
+          null,
+        ),
       ).rejects.toThrow(
-        "Pagination queries for model 'invalid' were found, however this model is not configured in the fuzzy-search config"
+        "Pagination queries for model 'invalid' were found, however this model is not configured in the fuzzy-search config",
       );
     });
 
@@ -229,8 +229,8 @@ describe('validateQueryParams', async () => {
           },
           [contentTypeMock],
           { tests: pagination },
-          null
-        )
+          null,
+        ),
       ).rejects.toThrow('pageSize must be an integer');
     });
 
@@ -250,8 +250,8 @@ describe('validateQueryParams', async () => {
           },
           [contentTypeMock],
           { tests: pagination },
-          null
-        )
+          null,
+        ),
       ).rejects.toThrow('page must be an integer');
     });
 
@@ -271,8 +271,8 @@ describe('validateQueryParams', async () => {
           },
           [contentTypeMock],
           { tests: pagination },
-          null
-        )
+          null,
+        ),
       ).rejects.toThrow("withCount must either be 'true' or 'false'");
     });
   });
