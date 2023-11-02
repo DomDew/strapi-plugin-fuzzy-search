@@ -24,14 +24,14 @@ const parsePaginationArgs = (paginationQuery: PaginationBaseQuery) => {
 export const paginateRestResults = async (
   pagination: Record<string, PaginationBaseQuery>,
   pluralNames: string[],
-  resultsResponse: ResultsResponse
+  resultsResponse: ResultsResponse,
 ) => {
   const currentResult = { ...resultsResponse };
   const paginatedResult: PaginatedResultsResponse<RESTPaginationMeta> = {};
 
   const buildPaginatedResults = (pluralName: string) => {
     const { page, pageSize, withCount } = parsePaginationArgs(
-      pagination[pluralName]
+      pagination[pluralName],
     );
 
     paginatedResult[pluralName] = {
@@ -43,7 +43,7 @@ export const paginateRestResults = async (
 
     paginatedResult[pluralName].data = currentResult[pluralName].slice(
       startIndex,
-      endIndex
+      endIndex,
     );
 
     const meta: RESTPaginationMeta = {
@@ -90,7 +90,7 @@ export const getTransformedUserPaginationInput = ({
 
 export const paginateGraphQlResults = (
   results: unknown[],
-  { limit: limitInput, start: startInput }: PaginationArgs = {}
+  { limit: limitInput, start: startInput }: PaginationArgs = {},
 ): PaginatedModelResponse => {
   const { config } = strapi.plugin('graphql');
   const resultsCopy = [...results];

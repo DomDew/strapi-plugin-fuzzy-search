@@ -1,8 +1,8 @@
 const getResolversConfig = () => {
   return {
-    "Query.search": {
+    'Query.search': {
       auth: {
-        scope: "plugin::fuzzy-search.searchController.search",
+        scope: 'plugin::fuzzy-search.searchController.search',
       },
     },
   };

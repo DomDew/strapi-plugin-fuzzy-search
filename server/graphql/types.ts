@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Strapi } from '@strapi/strapi';
 import {
   ContentType,
@@ -42,7 +43,7 @@ const getCustomTypes = (strapi: Strapi, nexus: any) => {
               locale?: string;
             },
             ctx: any,
-            auth: Record<string, unknown>
+            auth: Record<string, unknown>,
           ) {
             const { query, locale: parentLocaleQuery } = parent;
             const {
@@ -65,11 +66,11 @@ const getCustomTypes = (strapi: Strapi, nexus: any) => {
               {
                 contentType: model,
                 usePagination: true,
-              }
+              },
             );
 
             const contentType = contentTypes.find(
-              (contentType) => contentType.modelName === model.modelName
+              (contentType) => contentType.modelName === model.modelName,
             );
 
             if (!contentType) return;
@@ -78,14 +79,14 @@ const getCustomTypes = (strapi: Strapi, nexus: any) => {
               contentType,
               query,
               transformedFilters,
-              locale
+              locale,
             );
 
             const resultsResponse = await buildGraphqlResponse(
               results.fuzzysortResults,
               contentType,
               auth,
-              { start: transformedStart, limit: transformedLimit }
+              { start: transformedStart, limit: transformedLimit },
             );
 
             if (resultsResponse) return resultsResponse;
@@ -104,14 +105,16 @@ const getCustomTypes = (strapi: Strapi, nexus: any) => {
         type: 'SearchResponse',
         args: {
           query: nexus.nonNull(
-            nexus.stringArg('The query string by which the models are searched')
+            nexus.stringArg(
+              'The query string by which the models are searched',
+            ),
           ),
           locale: nexus.stringArg('The locale by which to filter the models'),
         },
         async resolve(
           _parent: any,
           args: SearchResponseArgs,
-          ctx: any
+          ctx: any,
         ): Promise<SearchResponseReturnType> {
           const { query, locale } = args;
           const { auth } = ctx.state;

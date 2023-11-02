@@ -11,7 +11,7 @@ import { validateQuery } from './validationService';
 
 const weightScores = (
   a: readonly Fuzzysort.KeyResult<Entry>[],
-  keys: FuzzySortOptions['keys']
+  keys: FuzzySortOptions['keys'],
 ) => {
   const weightedScores = keys.map((key, index) => {
     const weight = key.weight || 0;
@@ -25,7 +25,7 @@ const weightScores = (
 const limitCharacters = (
   entries: Entry[],
   characterLimit: number,
-  keys: string[]
+  keys: string[],
 ) =>
   entries.map((entry) => {
     const limitedEntry = { ...entry };
@@ -105,7 +105,7 @@ export const buildTransliteratedResult = ({
       limit,
       keys: transliterationKeys,
       scoreFn: (a) => weightScores(a, fuzzysortKeys),
-    }
+    },
   );
 
   if (!result.total) return transliteratedResult;
@@ -116,7 +116,7 @@ export const buildTransliteratedResult = ({
   // overwrite the original result with the transliterated result and resort the results
   transliteratedResult.forEach((res) => {
     const origIndex = newResults.findIndex(
-      (origRes) => origRes.obj.id === res.obj.id && origRes.score <= res.score
+      (origRes) => origRes.obj.id === res.obj.id && origRes.score <= res.score,
     );
 
     if (origIndex >= 0) newResults[origIndex] = res;
@@ -136,7 +136,7 @@ export default async function getResult(
   contentType: ContentType,
   query: string,
   filters?: WhereQuery,
-  locale?: string
+  locale?: string,
 ): Promise<Result> {
   const buildFilteredEntry = async () => {
     await validateQuery(contentType, locale);

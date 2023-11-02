@@ -16,9 +16,9 @@ import {
 const { contentAPI } = sanitize;
 
 const sanitizeOutput = (
-  data: any,
+  data: unknown,
   contentType: Schema.ContentType,
-  auth: any
+  auth: unknown,
 ) => contentAPI.output(data, contentType, { auth });
 
 // Destructure search results and return them in appropriate/sanitized format
@@ -26,7 +26,7 @@ export const buildGraphqlResponse = async (
   searchResult: Fuzzysort.KeysResults<Entry>,
   schema: ContentType,
   auth: Record<string, unknown>,
-  pagination?: TransformedPagination
+  pagination?: TransformedPagination,
 ) => {
   const { service: getService } = strapi.plugin('graphql');
   const { returnTypes } = getService('format');
@@ -34,8 +34,8 @@ export const buildGraphqlResponse = async (
 
   const results = await Promise.all(
     searchResult.map(
-      async (fuzzyRes) => await contentAPI.output(fuzzyRes.obj, schema, auth)
-    )
+      async (fuzzyRes) => await contentAPI.output(fuzzyRes.obj, schema, auth),
+    ),
   );
 
   const { data: nodes, meta } = paginateGraphQlResults(results, pagination);
@@ -47,9 +47,9 @@ export const buildGraphqlResponse = async (
 
 export const buildRestResponse = async (
   searchResults: Result[],
-  auth: any,
+  auth: unknown,
   pagination?: Record<string, PaginationBaseQuery>,
-  queriedContentTypes?: string[]
+  queriedContentTypes?: string[],
 ) => {
   const resultsResponse: ResultsResponse = {};
 
@@ -60,13 +60,13 @@ export const buildRestResponse = async (
 
     const buildSanitizedEntries = async () =>
       res.fuzzysortResults.map(
-        async (fuzzyRes) => await sanitizeEntry(fuzzyRes)
+        async (fuzzyRes) => await sanitizeEntry(fuzzyRes),
       );
 
     // Since sanitizeOutput returns a promise --> Resolve all promises in async for loop so that results can be awaited correctly
     resultsResponse[res.schema.info.pluralName] = (await Promise.all(
-      await buildSanitizedEntries()
-    )) as Record<string, unknown>[];
+      await buildSanitizedEntries(),
+    )) as Array<Record<string, unknown>>;
   }
 
   if (!pagination) return resultsResponse;

@@ -15,11 +15,11 @@ const pluginConfigSchema = yup
               yup.object({
                 name: yup.string().required(),
                 weight: yup.number(),
-              })
+              }),
             ),
           })
           .required(),
-      })
+      }),
     ),
   })
   .noUnknown();
