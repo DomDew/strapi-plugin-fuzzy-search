@@ -48,8 +48,8 @@ export const buildGraphqlResponse = async (
 export const buildRestResponse = async (
   searchResults: Result[],
   auth: any,
-  pagination: Record<string, PaginationBaseQuery> | null,
-  queriedContentTypes: string[] | null
+  pagination?: Record<string, PaginationBaseQuery>,
+  queriedContentTypes?: string[]
 ) => {
   const resultsResponse: ResultsResponse = {};
 

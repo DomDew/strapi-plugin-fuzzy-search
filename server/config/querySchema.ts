@@ -19,10 +19,9 @@ export const querySchema = object({
 
 export type PaginationBaseQuery = InferType<typeof paginationSchema>;
 
-export type SearchQuery = InferType<typeof querySchema> & {
-  pagination: Record<string, PaginationBaseQuery>;
-  filters: {
-    contentTypes: string;
-    [x: string]: any;
-  };
+type QuerySchema = InferType<typeof querySchema>;
+
+export type SearchQuery = Omit<QuerySchema, 'filters'> & {
+  pagination?: Record<string, PaginationBaseQuery>;
+  filters?: QuerySchema['filters'] & Record<string, any>;
 };
