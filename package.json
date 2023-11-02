@@ -43,6 +43,7 @@
   "main": "strapi-server.js",
   "types": "dist/index.d.ts",
   "devDependencies": {
+    "@vitest/coverage-v8": "^0.34.6",
     "all-contributors-cli": "^6.20.0",
     "semantic-release": "^22.0.5",
     "sqlite3": "^5.1.6",
@@ -52,7 +53,8 @@
     "semantic-release": "semantic-release",
     "develop": "tsc -w",
     "build": "tsc",
-    "test": "vitest"
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
   },
   "repository": {
     "type": "git",

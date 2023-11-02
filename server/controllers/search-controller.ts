@@ -16,7 +16,7 @@ export default () => ({
     const queriedContentTypes =
       filtersQuery && filtersQuery.contentTypes
         ? filtersQuery.contentTypes?.split(',')
-        : null;
+        : undefined;
 
     try {
       await validateQueryParams(

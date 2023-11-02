@@ -1,6 +1,6 @@
 import { ContentType } from '../../server/interfaces/interfaces';
 
-export const contentTypeMock: ContentType = {
+export const baseContentTypeMock = {
   uid: 'api::test.test',
   modelType: 'contentType',
   modelName: 'test',
@@ -12,11 +12,15 @@ export const contentTypeMock: ContentType = {
     description: 'A test contentType',
   },
   globalId: 'Test',
-  fuzzysortOptions: {
-    keys: [{ name: 'name' }],
-  },
   attributes: {
     name: { type: 'string' },
+  },
+} as const;
+
+export const contentTypeMock: ContentType = {
+  ...baseContentTypeMock,
+  fuzzysortOptions: {
+    keys: [{ name: 'name' }],
   },
 };
 

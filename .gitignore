@@ -5,3 +5,4 @@ server/.DS_Store
 /dist
 yarn.lock
 .npmrc
+coverage
