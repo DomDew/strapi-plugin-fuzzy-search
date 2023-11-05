@@ -26,7 +26,7 @@ export const buildGraphqlResponse = async (
   searchResult: Fuzzysort.KeysResults<Entry>,
   schema: ContentType,
   auth: Record<string, unknown>,
-  pagination?: TransformedPagination,
+  pagination: TransformedPagination,
 ) => {
   const { service: getService } = strapi.plugin('graphql');
   const { returnTypes } = getService('format');

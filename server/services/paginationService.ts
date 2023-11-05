@@ -8,15 +8,14 @@ import {
   ResultsResponse,
 } from '../interfaces/interfaces';
 
-const parsePaginationArgs = (paginationQuery: PaginationBaseQuery) => {
-  const {
-    page: pageQuery = '1',
-    pageSize: pageSizeQuery = '25',
-    withCount: withCountQuery = 'true',
-  } = paginationQuery;
-  const page = pageQuery ? parseInt(pageQuery, 10) : 1;
-  const pageSize = pageSizeQuery ? parseInt(pageSizeQuery, 10) : 25;
-  const withCount = withCountQuery ? withCountQuery === 'true' : true;
+const parsePaginationArgs = ({
+  page: pageQuery = '1',
+  pageSize: pageSizeQuery = '25',
+  withCount: withCountQuery = 'true',
+}: PaginationBaseQuery) => {
+  const page = parseInt(pageQuery, 10);
+  const pageSize = parseInt(pageSizeQuery, 10);
+  const withCount = withCountQuery === 'true';
 
   return { page, pageSize, withCount };
 };
@@ -73,30 +72,25 @@ export const paginateRestResults = async (
 
 export const getTransformedUserPaginationInput = ({
   page,
-  pageSize: inputPageSize,
+  pageSize,
   start,
   limit,
 }: PaginationArgs = {}) => {
   const { config } = strapi.plugin('graphql');
 
-  const pageSize = inputPageSize || config('defaultLimit');
   const pageNumber = (page || 1) - 1;
 
   return {
-    start: pageNumber * (pageSize || 15) || start || undefined,
-    limit: pageSize || limit || undefined,
+    start: pageNumber * (pageSize || 15) || start || 0,
+    limit: pageSize || limit || config('defaultLimit') || 15,
   };
 };
 
 export const paginateGraphQlResults = (
   results: unknown[],
-  { limit: limitInput, start: startInput }: PaginationArgs = {},
+  { limit, start }: { limit: number; start: number },
 ): PaginatedModelResponse => {
-  const { config } = strapi.plugin('graphql');
   const resultsCopy = [...results];
-
-  const start = startInput || 0;
-  const limit = limitInput || config('defaultLimit') || 15;
 
   const data = resultsCopy.slice(start, start + limit);
 
