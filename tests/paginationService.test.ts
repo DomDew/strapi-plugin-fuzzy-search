@@ -1,11 +1,9 @@
-import { beforeAll, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import {
   PaginatedModelResponse,
-  PaginationArgs,
   RESTPaginationMeta,
 } from '../server/interfaces/interfaces';
 import {
-  getTransformedUserPaginationInput,
   paginateGraphQlResults,
   paginateRestResults,
 } from '../server/services/paginationService';
@@ -112,58 +110,6 @@ describe('paginateRestResults', () => {
     expect(paginatedResults.tests.meta.pagination.pageCount).toBe(1);
     expect(paginatedResults.tests.meta.pagination.total).toBe(3);
     expect(paginatedResults.tests.meta.pagination.pageSize).toBe(DEFAULT_LIMIT);
-  });
-});
-
-describe('getTransformedPagination', () => {
-  beforeAll(() => {
-    global.strapi = {
-      plugin: (name: string) =>
-        ({
-          graphql: {
-            config: (key: string) =>
-              ({
-                defaultLimit: DEFAULT_LIMIT,
-              })[key],
-          },
-        })[name],
-    } as any;
-  });
-
-  it('returns the default pagination if no args are passed', () => {
-    const paginationArgs: PaginationArgs = {};
-    const transformedPagination =
-      getTransformedUserPaginationInput(paginationArgs);
-    expect(transformedPagination).toEqual({
-      limit: DEFAULT_LIMIT,
-      start: 0,
-    });
-  });
-
-  it('transforms the page and pageSize params to limit and start values', () => {
-    const paginationArgs: PaginationArgs = {
-      page: 2,
-      pageSize: 10,
-    };
-    const transformedPagination =
-      getTransformedUserPaginationInput(paginationArgs);
-    expect(transformedPagination).toEqual({
-      limit: 10,
-      start: 10,
-    });
-  });
-
-  it("returns start and limit if they're passed", () => {
-    const paginationArgs: PaginationArgs = {
-      limit: 10,
-      start: 20,
-    };
-    const transformedPagination =
-      getTransformedUserPaginationInput(paginationArgs);
-    expect(transformedPagination).toEqual({
-      limit: 10,
-      start: 20,
-    });
   });
 });
 

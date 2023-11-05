@@ -2,7 +2,6 @@ import { PaginationBaseQuery } from '../config/querySchema';
 import {
   PaginatedModelResponse,
   PaginatedResultsResponse,
-  PaginationArgs,
   PaginationMeta,
   RESTPaginationMeta,
   ResultsResponse,
@@ -68,22 +67,6 @@ export const paginateRestResults = async (
   });
 
   return { ...resultsResponse, ...paginatedResult };
-};
-
-export const getTransformedUserPaginationInput = ({
-  page,
-  pageSize,
-  start,
-  limit,
-}: PaginationArgs = {}) => {
-  const { config } = strapi.plugin('graphql');
-
-  const pageNumber = (page || 1) - 1;
-
-  return {
-    start: pageNumber * (pageSize || 15) || start || 0,
-    limit: pageSize || limit || config('defaultLimit') || 15,
-  };
 };
 
 export const paginateGraphQlResults = (

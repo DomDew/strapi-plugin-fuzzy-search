@@ -7,7 +7,6 @@ import {
   SearchResponseReturnType,
 } from '../interfaces/interfaces';
 import getResult from '../services/fuzzySearchService';
-import { getTransformedUserPaginationInput } from '../services/paginationService';
 import { buildGraphqlResponse } from '../services/responseTransformationService';
 import settingsService from '../services/settingsService';
 
@@ -54,15 +53,12 @@ const getCustomTypes = (strapi: Strapi, nexus: any) => {
 
             const locale = contentTypeLocaleQuery || parentLocaleQuery;
 
-            const { start, limit } =
-              getTransformedUserPaginationInput(pagination);
-
             const {
               start: transformedStart,
               limit: transformedLimit,
               filters: transformedFilters,
             } = transformArgs(
-              { pagination: { start, limit }, filters },
+              { pagination, filters },
               {
                 contentType: model,
                 usePagination: true,
