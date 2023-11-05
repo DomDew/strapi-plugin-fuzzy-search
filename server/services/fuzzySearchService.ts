@@ -34,7 +34,9 @@ const limitCharacters = (
     entryKeys.forEach((key) => {
       if (!keys.includes(key)) return;
 
-      limitedEntry[key] = limitedEntry[key].slice(0, characterLimit);
+      limitedEntry[key] = limitedEntry[key]
+        ? limitedEntry[key].slice(0, characterLimit)
+        : limitedEntry[key];
     });
 
     return limitedEntry;
