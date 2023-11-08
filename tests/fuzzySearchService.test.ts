@@ -143,9 +143,25 @@ describe('transliteration', () => {
     const result = await getResult(localizedContentTypeMock, TEST_QUERY);
 
     expect(result.fuzzysortResults.length).toBe(2);
-    expect(result.fuzzysortResults[0].obj.name).toBe('Lyubko Deresh');
+    expect(result.fuzzysortResults[0].obj).toEqual({
+      id: 2,
+      name: 'Lyubko Deresh',
+      description:
+        'As an author, Любко Дереш has had somewhat of a cult-like following among the younger generation in Ukraine since the appearance of his novel Cult at age eighteen, which was followed almost immediately by the publication of another novel, written in early high school.',
+      createdAt: '2022-05-05T13:08:19.312Z',
+      updatedAt: '2022-05-05T13:34:46.488Z',
+      publishedAt: '2022-05-05T13:22:17.310Z',
+    });
     expect(result.fuzzysortResults[0].score).toBe(-7.007158509861212);
-    expect(result.fuzzysortResults[1].obj.name).toBe('Любко Дереш');
+    expect(result.fuzzysortResults[1].obj).toEqual({
+      id: 1,
+      name: 'Любко Дереш',
+      description:
+        'As an author, Lyubko has had somewhat of a cult-like following among the younger generation in Ukraine since the appearance of his novel Cult at age eighteen, which was followed almost immediately by the publication of another novel, written in early high school.',
+      createdAt: '2022-05-05T13:08:19.312Z',
+      updatedAt: '2022-05-05T13:34:46.488Z',
+      publishedAt: '2022-05-05T13:22:17.310Z',
+    });
     expect(result.fuzzysortResults[1].score).toBe(-7.007158509861212);
   }, 10000);
 });
