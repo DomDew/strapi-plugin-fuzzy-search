@@ -110,6 +110,9 @@ export const buildTransliteratedResult = ({
     },
   );
 
+  // Remove transliterations key from entries
+  entries.forEach((entry) => delete entry.transliterations);
+
   if (!result.total) return transliteratedResult;
 
   const newResults = [...result];
