@@ -1,5 +1,6 @@
 import { errors } from '@strapi/utils';
 import {
+  PopulationSchema,
   SearchQuery,
   paginationSchema,
   querySchema,
@@ -8,10 +9,13 @@ import { ContentType, PaginationParams } from '../interfaces/interfaces';
 
 const { ValidationError } = errors;
 
-const validateFilter = (configModels: Set<string>, filterModel: string) => {
+const validateFilteredContentTypes = (
+  configModels: Set<string>,
+  filterModel: string,
+) => {
   if (!configModels.has(filterModel))
     throw new Error(
-      `Filter query for model '${filterModel}' was found, however this model is not configured in the fuzzy-search config`,
+      `'${filterModel}' was found in contentTypes filter query, however this model is not configured in the fuzzy-search config`,
     );
 };
 
@@ -32,16 +36,16 @@ const validatePaginationQueryParams = async (
   }
 };
 
-const validateFiltersQueryParams = (
+const validateNestedQueryParams = (
   configModels: Set<string>,
-  filters: Record<string, unknown>,
+  nestedParams: Record<string, unknown>,
 ) => {
-  const filterKeys = Object.keys(filters);
+  const filterKeys = Object.keys(nestedParams);
 
   filterKeys.forEach((key) => {
     if (key !== 'contentTypes' && !configModels.has(key)) {
       throw new Error(
-        `Filter queries for model '${key}' were found, however this model is not configured in the fuzzy-search config`,
+        `Query params for model '${key}' were found, however this model is not configured in the fuzzy-search config`,
       );
     }
   });
@@ -51,6 +55,7 @@ export const validateQueryParams = async (
   query: SearchQuery,
   contentTypes: ContentType[],
   pagination: PaginationParams | undefined,
+  populate: Record<string, PopulationSchema> | undefined,
   filteredContentTypes: string[] | null | undefined,
 ) => {
   const configModels = new Set(
@@ -60,11 +65,12 @@ export const validateQueryParams = async (
   await querySchema.validate(query);
 
   if (pagination) await validatePaginationQueryParams(configModels, pagination);
-  if (query.filters) validateFiltersQueryParams(configModels, query.filters);
+  if (query.filters) validateNestedQueryParams(configModels, query.filters);
+  if (populate) validateNestedQueryParams(configModels, populate);
 
   if (filteredContentTypes)
     filteredContentTypes.forEach((model) =>
-      validateFilter(configModels, model),
+      validateFilteredContentTypes(configModels, model),
     );
 };
 

@@ -71,12 +71,13 @@ const getCustomTypes = (strapi: Strapi, nexus: any) => {
 
             if (!contentType) return;
 
-            const results = await getResult(
+            const results = await getResult({
               contentType,
               query,
-              transformedFilters,
+              filters: transformedFilters,
+              populate: undefined,
               locale,
-            );
+            });
 
             const resultsResponse = await buildGraphqlResponse(
               results.fuzzysortResults,
@@ -84,8 +85,6 @@ const getCustomTypes = (strapi: Strapi, nexus: any) => {
               auth,
               { start: transformedStart, limit: transformedLimit },
             );
-
-            console.log(resultsResponse);
 
             if (resultsResponse) return resultsResponse;
 

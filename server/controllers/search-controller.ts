@@ -10,7 +10,13 @@ const { NotFoundError } = errors;
 export default () => ({
   async search(ctx: Context) {
     const { contentTypes } = settingsService().get();
-    const { query, pagination, filters: filtersQuery, locale } = ctx.query;
+    const {
+      query,
+      pagination,
+      filters: filtersQuery,
+      locale,
+      populate,
+    } = ctx.query;
     const { auth } = ctx.state;
 
     const queriedContentTypes =
@@ -23,6 +29,7 @@ export default () => ({
         ctx.query,
         contentTypes,
         pagination,
+        populate,
         queriedContentTypes,
       );
     } catch (err: unknown) {
@@ -43,12 +50,14 @@ export default () => ({
     const results: Result[] = await Promise.all(
       filteredContentTypes.map(
         async (contentType) =>
-          await getResult(
+          await getResult({
             contentType,
             query,
-            filtersQuery?.[contentType.info.pluralName],
-            filtersQuery?.[contentType.info.pluralName]?.locale || locale,
-          ),
+            filters: filtersQuery?.[contentType.info.pluralName],
+            populate: populate?.[contentType.info.pluralName],
+            locale:
+              filtersQuery?.[contentType.info.pluralName]?.locale || locale,
+          }),
       ),
     );
 
