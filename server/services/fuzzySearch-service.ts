@@ -137,18 +137,26 @@ export const buildTransliteratedResult = ({
   return newResults as unknown as Fuzzysort.KeysResults<Entry>;
 };
 
-export default async function getResult(
-  contentType: ContentType,
-  query: string,
-  filters?: WhereQuery,
-  locale?: string,
-): Promise<Result> {
+export default async function getResult({
+  contentType,
+  query,
+  filters,
+  populate,
+  locale,
+}: {
+  contentType: ContentType;
+  query: string;
+  filters?: WhereQuery;
+  populate?: string;
+  locale?: string;
+}): Promise<Result> {
   const buildFilteredEntry = async () => {
     await validateQuery(contentType, locale);
 
     return (await strapi.entityService.findMany(contentType.uid, {
       ...(filters && { filters }),
       ...(locale && { locale }),
+      ...(populate && { populate }),
     })) as unknown as Entry[];
   };
 

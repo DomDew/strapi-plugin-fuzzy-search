@@ -106,6 +106,7 @@ describe('validateQueryParams', async () => {
           },
           [contentTypeMock],
           undefined,
+          undefined,
           validContentTypes,
         );
       });
@@ -121,10 +122,11 @@ describe('validateQueryParams', async () => {
             },
             [contentTypeMock],
             undefined,
+            undefined,
             invalidContentTypes,
           ),
         ).rejects.toThrow(
-          "Filter query for model 'invalid' was found, however this model is not configured in the fuzzy-search config",
+          "'invalid' was found in contentTypes filter query, however this model is not configured in the fuzzy-search config",
         );
       });
     });
@@ -146,6 +148,7 @@ describe('validateQueryParams', async () => {
           },
           [contentTypeMock],
           undefined,
+          undefined,
           null,
         );
       });
@@ -163,10 +166,11 @@ describe('validateQueryParams', async () => {
             },
             [contentTypeMock],
             undefined,
+            undefined,
             null,
           ),
         ).rejects.toThrow(
-          "Filter queries for model 'invalid' were found, however this model is not configured in the fuzzy-search config",
+          "Query params for model 'invalid' were found, however this model is not configured in the fuzzy-search config",
         );
       });
     });
@@ -188,6 +192,7 @@ describe('validateQueryParams', async () => {
         },
         [contentTypeMock],
         { tests: pagination },
+        undefined,
         null,
       );
     });
@@ -208,6 +213,7 @@ describe('validateQueryParams', async () => {
           },
           [contentTypeMock],
           { invalid: pagination },
+          undefined,
           null,
         ),
       ).rejects.toThrow(
@@ -231,6 +237,7 @@ describe('validateQueryParams', async () => {
           },
           [contentTypeMock],
           { tests: pagination },
+          undefined,
           null,
         ),
       ).rejects.toThrow('pageSize must be an integer');
@@ -252,6 +259,7 @@ describe('validateQueryParams', async () => {
           },
           [contentTypeMock],
           { tests: pagination },
+          undefined,
           null,
         ),
       ).rejects.toThrow('page must be an integer');
@@ -273,9 +281,48 @@ describe('validateQueryParams', async () => {
           },
           [contentTypeMock],
           { tests: pagination },
+          undefined,
           null,
         ),
       ).rejects.toThrow("withCount must either be 'true' or 'false'");
+    });
+  });
+
+  describe('population params', () => {
+    test('validates population params as valid', async () => {
+      const populate = 'tests';
+
+      validateQueryParams(
+        {
+          query: 'test',
+          locale: undefined,
+          populate: { tests: populate },
+        },
+        [contentTypeMock],
+        undefined,
+        { tests: populate },
+        null,
+      );
+    });
+
+    test('validates population params as invalid if the model is not configured', async () => {
+      const populate = 'invalid';
+
+      expect(
+        validateQueryParams(
+          {
+            query: 'test',
+            locale: undefined,
+            populate: { invalid: populate },
+          },
+          [contentTypeMock],
+          undefined,
+          { invalid: populate },
+          null,
+        ),
+      ).rejects.toThrow(
+        "Query params for model 'invalid' were found, however this model is not configured in the fuzzy-search config",
+      );
     });
   });
 });
