@@ -6,9 +6,9 @@ import {
   SearchResponseArgs,
   SearchResponseReturnType,
 } from '../interfaces/interfaces';
-import getResult from '../services/fuzzySearchService';
-import { buildGraphqlResponse } from '../services/responseTransformationService';
-import settingsService from '../services/settingsService';
+import getResult from '../services/fuzzySearch-service';
+import { buildGraphqlResponse } from '../services/response-transformation-service';
+import settingsService from '../services/settings-service';
 
 const getCustomTypes = (strapi: Strapi, nexus: any) => {
   const { service: getService } = strapi.plugin('graphql');
@@ -84,6 +84,8 @@ const getCustomTypes = (strapi: Strapi, nexus: any) => {
               auth,
               { start: transformedStart, limit: transformedLimit },
             );
+
+            console.log(resultsResponse);
 
             if (resultsResponse) return resultsResponse;
 

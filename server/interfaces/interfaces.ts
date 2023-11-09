@@ -1,5 +1,5 @@
 import { Schema } from '@strapi/strapi';
-import { SearchQuery } from '../config/querySchema';
+import { SearchQuery } from '../config/query.schema';
 
 export type Mutable<T> = {
   -readonly [P in keyof T]: T[P];

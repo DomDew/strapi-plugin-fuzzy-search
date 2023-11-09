@@ -6,7 +6,7 @@ import {
 import {
   paginateGraphQlResults,
   paginateRestResults,
-} from '../server/services/paginationService';
+} from '../server/services/pagination-service';
 import { findManyResMock } from './utils/mocks';
 
 const DEFAULT_LIMIT = 25;
