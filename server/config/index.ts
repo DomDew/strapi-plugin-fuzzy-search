@@ -1,5 +1,5 @@
 import { Config } from '../interfaces/interfaces';
-import pluginConfigSchema from './schema';
+import pluginConfigSchema from './config.schema';
 
 export default {
   default() {

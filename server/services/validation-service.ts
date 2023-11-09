@@ -3,7 +3,7 @@ import {
   SearchQuery,
   paginationSchema,
   querySchema,
-} from '../config/querySchema';
+} from '../config/query.schema';
 import { ContentType, PaginationParams } from '../interfaces/interfaces';
 
 const { ValidationError } = errors;

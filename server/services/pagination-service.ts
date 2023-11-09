@@ -1,4 +1,4 @@
-import { PaginationBaseQuery } from '../config/querySchema';
+import { PaginationBaseQuery } from '../config/query.schema';
 import {
   PaginatedModelResponse,
   PaginatedResultsResponse,

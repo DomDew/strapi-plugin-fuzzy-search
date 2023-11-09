@@ -1,5 +1,5 @@
 import { Strapi } from '@strapi/strapi';
-import getResolversConfig from './resolversConfig';
+import getResolversConfig from './resolvers-config';
 import getCustomTypes from './types';
 
 const registerGraphlQLQuery = (strapi: Strapi) => {

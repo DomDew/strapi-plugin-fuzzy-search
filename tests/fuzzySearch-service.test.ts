@@ -1,5 +1,5 @@
 import { beforeAll, describe, expect, test, vi } from 'vitest';
-import getResult from '../server/services/fuzzySearchService';
+import getResult from '../server/services/fuzzySearch-service';
 import {
   contentTypeMock,
   findManyLocalizedResMock,

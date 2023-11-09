@@ -1,6 +1,6 @@
 import { Schema } from '@strapi/types';
 import { sanitize } from '@strapi/utils';
-import { PaginationBaseQuery } from '../config/querySchema';
+import { PaginationBaseQuery } from '../config/query.schema';
 import {
   ContentType,
   Entry,
@@ -11,7 +11,7 @@ import {
 import {
   paginateGraphQlResults,
   paginateRestResults,
-} from './paginationService';
+} from './pagination-service';
 
 const { contentAPI } = sanitize;
 

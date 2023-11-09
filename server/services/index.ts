@@ -1,4 +1,4 @@
-import settingsService from './settingsService';
+import settingsService from './settings-service';
 
 export default {
   settingsService: settingsService,

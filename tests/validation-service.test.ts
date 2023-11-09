@@ -11,8 +11,9 @@ describe('validateQuery', () => {
   });
 
   describe('keys setup', async () => {
-    const validateQuery = (await import('../server/services/validationService'))
-      .validateQuery;
+    const validateQuery = (
+      await import('../server/services/validation-service')
+    ).validateQuery;
 
     test("validates keys setup for model 'test' as valid", async () => {
       const validConfiguration = {
@@ -40,8 +41,9 @@ describe('validateQuery', () => {
   });
 
   describe('localization', async () => {
-    const validateQuery = (await import('../server/services/validationService'))
-      .validateQuery;
+    const validateQuery = (
+      await import('../server/services/validation-service')
+    ).validateQuery;
 
     const buildStrapiNamespacePlugins = (
       isLocalizedContentType: Mock<any, any>,
@@ -81,7 +83,7 @@ describe('validateQuery', () => {
 
 describe('validateQueryParams', async () => {
   const validateQueryParams = (
-    await import('../server/services/validationService')
+    await import('../server/services/validation-service')
   ).validateQueryParams;
 
   beforeAll(() => {

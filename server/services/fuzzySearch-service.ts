@@ -7,7 +7,7 @@ import {
   FuzzySortOptions,
   Result,
 } from '../interfaces/interfaces';
-import { validateQuery } from './validationService';
+import { validateQuery } from './validation-service';
 
 const weightScores = (
   a: readonly Fuzzysort.KeyResult<Entry>[],

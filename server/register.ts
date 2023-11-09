@@ -1,6 +1,6 @@
 import { Strapi } from '@strapi/strapi';
 import registerGraphlQLQuery from './graphql';
-import settingsService from './services/settingsService';
+import settingsService from './services/settings-service';
 
 export default ({ strapi }: { strapi: Strapi }) => {
   const {
