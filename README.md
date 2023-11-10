@@ -462,7 +462,7 @@ While [Fuse.js](https://github.com/krisk/Fuse) proofs to be an amazing library, 
 
 Feel free to contribute, PRs are always welcome!
 
-For local development: Clone this repository and run `npm run develop`, this will spin up tsc and watch for file changes. When commiting, please choose meaningful commit messages that adhere to the [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) specification, as we have automated our releases and generate the changelogs based on the commit names and descriptions.
+Please see the [CONTRIBUTING.md](CONTRIBUTING.md) for reference.
 
 # Found a bug?
 
