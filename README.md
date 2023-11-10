@@ -33,9 +33,12 @@ Uses [fuzzysort](https://github.com/farzher/fuzzysort) under the hood: Simple, q
   - [Pagination](#pagination)
     - [REST](#rest-2)
     - [GraphQL](#graphql-2)
-  - [Filters](#filters)
+  - [Population](#population)
     - [REST](#rest-3)
     - [GraphQL](#graphql-3)
+  - [Filters](#filters)
+    - [REST](#rest-4)
+    - [GraphQL](#graphql-4)
   - [Filter by Content Type (REST)](#filter-by-content-type-rest)
 - [Why use fuzzysort and not something like Fuse.js?](#why-use-fuzzysort-and-not-something-like-fusejs)
 - [Contributing](#contributing)
@@ -351,6 +354,65 @@ search(query: "deresh") {
   }
 }
 ```
+
+## Population
+
+### REST
+
+The endpoint accepts query parameters in line with Strapis [populate](https://docs.strapi.io/dev-docs/api/rest/populate-select#population) parameters. The difference being that the population is scoped for the content types individually.
+
+| Parameter                            | Type    | Description                                                               |
+| ------------------------------------ | ------- | ------------------------------------------------------------------------- |
+| population[myContentType]     | String/PopulationParams | Either pass a string for the relation to populate directly, or build more complex population queries in line with the [official documentation on population](https://docs.strapi.io/dev-docs/api/rest/populate-select#population) like in the example below. |
+
+
+**Request:**
+
+```JavaScript
+await fetch(`${API_URL}/api/fuzzy-search/search?query=deresh&populate[books][author][populate][0]=city`);
+// GET /api/fuzzy-search/search?query=deresh&populate[books][author][populate][0]=city
+```
+
+**Response:**
+
+```json
+{
+  "authors": [
+    // ...
+  ],
+  "books": [
+    {
+      "id": 1,
+      "title": "A good book",
+      "description": "Written by Lyubko Deresh",
+      "createdAt": "2022-09-21T16:16:07.365Z",
+      "updatedAt": "2023-07-24T12:00:51.624Z",
+      "publishedAt": "2022-09-21T16:16:09.973Z",
+      "locale": "en",
+      "author": {
+        "id": 2,
+        "name": "Любко Дереш",
+        "description": "A poet, novelist, essayist, and translator.",
+        "createdAt": "2022-09-24T12:39:34.669Z",
+        "updatedAt": "2023-11-10T12:28:22.828Z",
+        "publishedAt": "2022-09-24T12:39:53.945Z",
+        "locale": "en",
+        "city": {
+          "id": 1,
+          "name": "Pustomyty",
+          "createdAt": "2023-11-10T12:26:29.981Z",
+          "updatedAt": "2023-11-10T12:26:32.254Z",
+          "publishedAt": "2023-11-10T12:26:32.252Z"
+        }
+      }
+    }
+  ]
+}
+```
+
+### GraphQL
+
+See [Strapis official GraphQL documentation for queries](https://docs.strapi.io/dev-docs/api/graphql#queries).
 
 ## Filters
 
