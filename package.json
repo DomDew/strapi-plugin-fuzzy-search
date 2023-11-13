@@ -67,7 +67,8 @@
     "build": "tsc",
     "typecheck": "tsc --noEmit",
     "test": "vitest",
-    "coverage": "vitest run --coverage",
+    "test:coverage": "vitest run --coverage",
+    "test:coverage:json": "vitest run --coverage.enabled --coverage.reporter=json-summary",
     "lint": "eslint . --ext .ts",
     "prettier:check": "prettier --check ./server ./tests",
     "prettier:write": "prettier --write ./server ./tests"

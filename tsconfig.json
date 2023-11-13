@@ -22,6 +22,7 @@
     "admin/",
     // Do not include test files
     "**/*.test.ts",
-    "tests/"
+    "tests/",
+    "scripts/"
   ]
 }
