@@ -171,6 +171,8 @@ export default async function getResult({
     query,
   });
 
+  console.log('result', result);
+
   if (contentType.transliterate) {
     result = buildTransliteratedResult({
       entries: filteredEntries,
