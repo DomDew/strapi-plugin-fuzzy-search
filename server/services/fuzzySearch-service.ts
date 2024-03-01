@@ -22,25 +22,40 @@ const weightScores = (
   return Math.max(...weightedScores);
 };
 
+const transformEntryKeysToString = (entries: Entry[], keys: string[]) =>
+  entries.map((entry) =>
+    transformEntry(entry, keys, (value) => value?.toString()),
+  );
+
 const limitCharacters = (
   entries: Entry[],
   characterLimit: number,
   keys: string[],
 ) =>
-  entries.map((entry) => {
-    const limitedEntry = { ...entry };
-    const entryKeys = Object.keys(limitedEntry);
+  entries.map((entry) =>
+    transformEntry(
+      entry,
+      keys,
+      (value) => value?.toString().slice(0, characterLimit),
+    ),
+  );
 
-    entryKeys.forEach((key) => {
-      if (!keys.includes(key)) return;
+const transformEntry = (
+  entry: Entry,
+  keys: string[],
+  transformFn: (value: unknown) => string | undefined,
+) => {
+  const transformedEntry = { ...entry };
+  const entryKeys = Object.keys(transformedEntry);
 
-      limitedEntry[key] = limitedEntry[key]
-        ? limitedEntry[key].slice(0, characterLimit)
-        : limitedEntry[key];
-    });
+  entryKeys.forEach((key) => {
+    if (!keys.includes(key)) return;
 
-    return limitedEntry;
+    transformedEntry[key] = transformFn(transformedEntry[key]);
   });
+
+  return transformedEntry;
+};
 
 export const buildResult = ({
   entries,
@@ -53,11 +68,11 @@ export const buildResult = ({
   keys: string[];
   query: string;
 }) => {
-  const modifiedEntries = fuzzysortOptions.characterLimit
+  const transformedEntries = fuzzysortOptions.characterLimit
     ? limitCharacters(entries, fuzzysortOptions.characterLimit, keys)
-    : entries;
+    : transformEntryKeysToString(entries, keys);
 
-  return fuzzysort.go<Entry>(query, modifiedEntries, {
+  return fuzzysort.go<Entry>(query, transformedEntries, {
     threshold: fuzzysortOptions.threshold,
     limit: fuzzysortOptions.limit,
     keys,
@@ -150,7 +165,7 @@ export default async function getResult({
   populate?: string;
   locale?: string;
 }): Promise<Result> {
-  const buildFilteredEntry = async () => {
+  const buildFilteredEntries = async () => {
     await validateQuery(contentType, locale);
 
     return (await strapi.entityService.findMany(contentType.uid, {
@@ -160,7 +175,7 @@ export default async function getResult({
     })) as unknown as Entry[];
   };
 
-  const filteredEntries = await buildFilteredEntry();
+  const filteredEntries = await buildFilteredEntries();
 
   const keys = contentType.fuzzysortOptions.keys.map((key) => key.name);
 
@@ -170,8 +185,6 @@ export default async function getResult({
     keys,
     query,
   });
-
-  console.log('result', result);
 
   if (contentType.transliterate) {
     result = buildTransliteratedResult({
