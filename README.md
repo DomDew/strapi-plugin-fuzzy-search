@@ -48,8 +48,9 @@ Uses [fuzzysort](https://github.com/farzher/fuzzysort) under the hood: Simple, q
 # Roadmap 🏗️
 
 - Return indices/highlights of matches
-- Support Population
 - Improve response performance
+- Include option to hide unpublished content by default
+- Allow single types as content types
 - Pass configuration as query params/args
   - Configure fuzzysort through params/args per content type
 
@@ -78,6 +79,8 @@ The plugin requires several configurations to be set in the `.config/plugins.js`
 | contentTypes\* | Array of Objects | List the content types you want to register for fuzzysort. Each object requires the `uid: string` and `modelName: string` to be set for a content type                                                                                                                                                                              |
 | transliterate  | boolean          | If this is set to true the search will additionally run against transliterated versions of the content for the keys specified in the keys array for a given content type. E.g. `你好` will match for `ni hao`. Note that activating this feature for a content type comes at a performance cost and may increase the response time. |
 
+**IMPORTANT:** Please note that as of now, only collectionTypes are supported as contentTypes.
+
 ### Fuzzysort Options
 
 The `fuzzysortOptions` allow for some finetuning of fuzzysorts searching algorithm to your needs.
@@ -88,8 +91,6 @@ The `fuzzysortOptions` allow for some finetuning of fuzzysorts searching algorit
 | threshold      | int (negative)   | Sets the threshold for the score of the entries that will be returned. The lower, the "fuzzier" the results.                                                                                                                |
 | limit          | int (positive)   | Limits the amount of entries returned from the search                                                                                                                                                                       |
 | keys\*         | array of objects | Lists the fields of the models the algorithm should search `(name: string)` and a factor to weight them by `weight: int`. The higher the weight, the higher a match for a given field will be evaluated for a content type. |
-
-test
 
 ### Full Example config
 
@@ -158,7 +159,7 @@ Hitting the `/api/fuzzy-search/search?query=<your-query-string>` will return an 
 
 Alternatively (and if the graphql plugin is installed), a search query is registered that accepts `query: String!` and `locale: String` (optional) as arguments. If set, the locale parameter will be used as a default for all queried content types. If you'd rather filter the content types by local on an individual level, pass the locale to the content type as a [filter](#filters) parameter.
 
-**IMPORTANT:** Please not that in order to query for the locale of the content types via the locale parameter, localization must be enabled for the content types.
+**IMPORTANT:** Please note that in order to query for the locale of the content types via the locale parameter, localization must be enabled for the content types.
 
 ### Example Requests
 

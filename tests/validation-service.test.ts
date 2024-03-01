@@ -10,6 +10,27 @@ describe('validateQuery', () => {
     } as any;
   });
 
+  describe('content type', async () => {
+    const validateQuery = (
+      await import('../server/services/validation-service')
+    ).validateQuery;
+
+    test('validates contentType of kind singleType as invalid', async () => {
+      const invalidConfiguration = {
+        ...baseContentTypeMock,
+        fuzzysortOptions: {
+          keys: [{ name: 'name' }],
+        },
+        kind: 'singleType' as const,
+        modelName: 'invalid',
+      };
+
+      await expect(validateQuery(invalidConfiguration)).rejects.toThrow(
+        "Content type: 'invalid' is not a collectionType",
+      );
+    });
+  });
+
   describe('keys setup', async () => {
     const validateQuery = (
       await import('../server/services/validation-service')

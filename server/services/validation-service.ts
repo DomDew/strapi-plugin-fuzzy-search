@@ -78,6 +78,11 @@ export const validateQuery = async (
   contentType: ContentType,
   locale?: string,
 ) => {
+  if (contentType.kind !== 'collectionType')
+    throw new ValidationError(
+      `Content type: '${contentType.modelName}' is not a collectionType`,
+    );
+
   contentType.fuzzysortOptions.keys.forEach((key) => {
     const attributeKeys = Object.keys(contentType.attributes);
 
