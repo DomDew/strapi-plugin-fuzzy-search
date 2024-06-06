@@ -266,8 +266,11 @@ The endpoint accepts query parameters in line with Strapis [pagination by page](
 | Parameter                            | Type    | Description                                                               | Default |
 | ------------------------------------ | ------- | ------------------------------------------------------------------------- | ------- |
 | pagination[myContentType][page]      | Integer | Page number                                                               | 1       |
-| pagination[myContentType][pagesize]  | Integer | Page size                                                                 | 25      |
+| pagination[myContentType][pageSize]  | Integer | Page size                                                                 | 25      |
 | pagination[myContentType][withcount] | Boolean | Adds the total numbers of entries and the number of pages to the response | True    |
+
+Please note that [myContentType] needs to be in the plural form. For example, for the content type "author," the correct parameter is "authors".
+
 
 **Request:**
 
