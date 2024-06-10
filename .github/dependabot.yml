@@ -9,3 +9,21 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
+    groups:
+      linting:
+          patterns:
+            - 'eslint*'
+            - '@typescript-eslint/*'
+            - 'prettier*'
+      dev-dependencies:
+        dependency-type: 'development'
+        exclude-patterns:
+          - 'eslint*'
+          - '@typescript-eslint/*'
+          - 'prettier*'
+      production-dependencies:
+        dependency-type: 'production'
+        exclude-patterns:
+          - 'eslint*'
+          - '@typescript-eslint/*'
+          - 'prettier*'
