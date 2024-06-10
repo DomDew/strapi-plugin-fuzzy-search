@@ -157,6 +157,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "Lon3035",
+      "name": "Leon Sauer",
+      "avatar_url": "https://avatars.githubusercontent.com/u/126874219?v=4",
+      "profile": "http://sauer.dev",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
