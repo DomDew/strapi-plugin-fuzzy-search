@@ -90,7 +90,7 @@ The `fuzzysortOptions` allow for some finetuning of fuzzysorts searching algorit
 | characterLimit | int (positive)   | Limits the length of characters the algorithm is searching through for any string of the content type                                                                                                                       |
 | threshold      | float (positive)   | Sets the threshold for the score of the entries that will be returned. The lower, the "fuzzier" the results.                                                                                                                |
 | limit          | int (positive)   | Limits the amount of entries returned from the search                                                                                                                                                                       |
-| keys\*         | array of objects | Lists the fields of the models the algorithm should search `(name: string)` and a factor to weight them by `weight: int`. The higher the weight, the higher a match for a given field will be evaluated for a content type. |
+| keys\*         | array of objects | Lists the fields of the models the algorithm should search `(name: string)` and a factor to weight them by `weight: float`. The higher the weight, the higher a match for a given field will be evaluated for a content type. |
 
 ### Full Example config
 
