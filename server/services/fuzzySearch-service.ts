@@ -10,7 +10,7 @@ import {
 import { validateQuery } from './validation-service';
 
 const weightScores = (
-  a: readonly Fuzzysort.KeyResult<Entry>[],
+  a: Fuzzysort.KeysResult<Entry>,
   keys: FuzzySortOptions['keys'],
 ) => {
   const weightedScores = keys.map((key, index) => {
