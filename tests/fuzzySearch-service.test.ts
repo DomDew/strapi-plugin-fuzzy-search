@@ -31,13 +31,11 @@ describe('getResult', () => {
       query: TEST_QUERY,
     });
 
-    expect(result.fuzzysortResults.length).toBe(3);
+    expect(result.fuzzysortResults.length).toBe(2);
     expect(result.fuzzysortResults[0].obj.name).toBe('test');
-    expect(result.fuzzysortResults[0].score).toBe(0);
+    expect(result.fuzzysortResults[0].score).toBe(1);
     expect(result.fuzzysortResults[1].obj.name).toBe('a test hit');
-    expect(result.fuzzysortResults[1].score).toBe(-6.002768166089965);
-    expect(result.fuzzysortResults[2].obj.name).toBe('localized entry');
-    expect(result.fuzzysortResults[2].score).toBe(-9999);
+    expect(result.fuzzysortResults[1].score).toBe(0.8839519797824431);
   }, 10000);
 
   test('get result with threshold', async () => {
@@ -45,7 +43,7 @@ describe('getResult', () => {
       ...contentTypeMock,
       fuzzysortOptions: {
         ...contentTypeMock.fuzzysortOptions,
-        threshold: -1000,
+        threshold: 0.9,
       },
     };
 
@@ -54,11 +52,9 @@ describe('getResult', () => {
       query: TEST_QUERY,
     });
 
-    expect(result.fuzzysortResults.length).toBe(2);
+    expect(result.fuzzysortResults.length).toBe(1);
     expect(result.fuzzysortResults[0].obj.name).toBe('test');
-    expect(result.fuzzysortResults[0].score).toBe(0);
-    expect(result.fuzzysortResults[1].obj.name).toBe('a test hit');
-    expect(result.fuzzysortResults[1].score).toBe(-6.002768166089965);
+    expect(result.fuzzysortResults[0].score).toBe(1);
   }, 10000);
 
   test('get result with weights', async () => {
@@ -69,7 +65,7 @@ describe('getResult', () => {
         keys: [
           {
             name: 'name',
-            weight: 200,
+            weight: 0.2,
           },
         ],
       },
@@ -80,13 +76,11 @@ describe('getResult', () => {
       query: TEST_QUERY,
     });
 
-    expect(result.fuzzysortResults.length).toBe(3);
+    expect(result.fuzzysortResults.length).toBe(2);
     expect(result.fuzzysortResults[0].obj.name).toBe('test');
-    expect(result.fuzzysortResults[0].score).toBe(200);
+    expect(result.fuzzysortResults[0].score).toBe(1.2);
     expect(result.fuzzysortResults[1].obj.name).toBe('a test hit');
-    expect(result.fuzzysortResults[1].score).toBe(193.99723183391004);
-    expect(result.fuzzysortResults[2].obj.name).toBe('localized entry');
-    expect(result.fuzzysortResults[2].score).toBe(-9999);
+    expect(result.fuzzysortResults[1].score).toBe(1.083951979782443);
   }, 10000);
 
   test('get result with limit', async () => {
@@ -105,7 +99,7 @@ describe('getResult', () => {
 
     expect(result.fuzzysortResults.length).toBe(1);
     expect(result.fuzzysortResults[0].obj.name).toBe('test');
-    expect(result.fuzzysortResults[0].score).toBe(0);
+    expect(result.fuzzysortResults[0].score).toBe(1);
   }, 10000);
 
   test('get result with characterLimit', async () => {
@@ -113,22 +107,18 @@ describe('getResult', () => {
       ...contentTypeMock,
       fuzzysortOptions: {
         ...contentTypeMock.fuzzysortOptions,
-        characterLimit: 4,
+        characterLimit: 3,
       },
     };
 
     const result = await getResult({
       contentType,
-      query: TEST_QUERY,
+      query: 'tes',
     });
 
-    expect(result.fuzzysortResults.length).toBe(3);
-    expect(result.fuzzysortResults[0].obj.name).toBe('test');
-    expect(result.fuzzysortResults[0].score).toBe(0);
-    expect(result.fuzzysortResults[1].obj.name).toBe('loca');
-    expect(result.fuzzysortResults[1].score).toBe(-9999);
-    expect(result.fuzzysortResults[2].obj.name).toBe('a te');
-    expect(result.fuzzysortResults[2].score).toBe(-9999);
+    expect(result.fuzzysortResults.length).toBe(1);
+    expect(result.fuzzysortResults[0].obj.name).toBe('tes');
+    expect(result.fuzzysortResults[0].score).toBe(1);
   }, 10000);
 });
 
@@ -166,7 +156,7 @@ describe('transliteration', () => {
       updatedAt: '2022-05-05T13:34:46.488Z',
       publishedAt: '2022-05-05T13:22:17.310Z',
     });
-    expect(result.fuzzysortResults[0].score).toBe(-7.007158509861212);
+    expect(result.fuzzysortResults[0].score).toBe(0.8745480242383942);
     expect(result.fuzzysortResults[1].obj).toEqual({
       id: 1,
       name: 'Любко Дереш',
@@ -176,6 +166,6 @@ describe('transliteration', () => {
       updatedAt: '2022-05-05T13:34:46.488Z',
       publishedAt: '2022-05-05T13:22:17.310Z',
     });
-    expect(result.fuzzysortResults[1].score).toBe(-7.007158509861212);
+    expect(result.fuzzysortResults[1].score).toBe(0.8745480242383942);
   }, 10000);
 });

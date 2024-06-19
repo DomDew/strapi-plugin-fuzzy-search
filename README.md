@@ -88,7 +88,7 @@ The `fuzzysortOptions` allow for some finetuning of fuzzysorts searching algorit
 | Key            | Type             | Notes                                                                                                                                                                                                                       |
 | -------------- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | characterLimit | int (positive)   | Limits the length of characters the algorithm is searching through for any string of the content type                                                                                                                       |
-| threshold      | int (negative)   | Sets the threshold for the score of the entries that will be returned. The lower, the "fuzzier" the results.                                                                                                                |
+| threshold      | float (positive)   | Sets the threshold for the score of the entries that will be returned. The lower, the "fuzzier" the results.                                                                                                                |
 | limit          | int (positive)   | Limits the amount of entries returned from the search                                                                                                                                                                       |
 | keys\*         | array of objects | Lists the fields of the models the algorithm should search `(name: string)` and a factor to weight them by `weight: int`. The higher the weight, the higher a match for a given field will be evaluated for a content type. |
 
@@ -108,16 +108,16 @@ module.exports = ({ env }) => ({
           transliterate: true,
           fuzzysortOptions: {
             characterLimit: 300,
-            threshold: -600,
+            threshold: 0.6,
             limit: 10,
             keys: [
               {
                 name: "name",
-                weight: 100,
+                weight: 0.1,
               },
               {
                 name: "description",
-                weight: -100,
+                weight: -0.1,
               },
             ],
           },
@@ -130,11 +130,11 @@ module.exports = ({ env }) => ({
             keys: [
               {
                 name: "title",
-                weight: 200,
+                weight: 0.2,
               },
               {
                 name: "description",
-                weight: -200,
+                weight: -0.2,
               },
             ],
           },
@@ -149,7 +149,7 @@ module.exports = ({ env }) => ({
 
 ## A note on performance:
 
-A high `characterLimit`, `limit`, a low `threshold` (the lower the value the more matches) as well as setting `transliterate: true` all hamper the performance of the search algorithm. We recommend that you start out with a `characterLimit: 500`, `threshold: -1000`, `limit: 15` and work your way from there. The characterLimit especially can be quite delicate, so make sure to test every scenario when dialing in it's value.
+A high `characterLimit`, `limit`, a low `threshold` (the lower the value the more matches) as well as setting `transliterate: true` all hamper the performance of the search algorithm. We recommend that you start out with a `characterLimit: 500`, `threshold: 0.5`, `limit: 15` and work your way from there. The characterLimit especially can be quite delicate, so make sure to test every scenario when dialing in it's value.
 
 # Usage
 
@@ -267,7 +267,7 @@ The endpoint accepts query parameters in line with Strapis [pagination by page](
 | ------------------------------------ | ------- | ------------------------------------------------------------------------- | ------- |
 | pagination[myContentType][page]      | Integer | Page number                                                               | 1       |
 | pagination[myContentType][pageSize]  | Integer | Page size                                                                 | 25      |
-| pagination[myContentType][withcount] | Boolean | Adds the total numbers of entries and the number of pages to the response | True    |
+| pagination[myContentType][withCount] | Boolean | Adds the total numbers of entries and the number of pages to the response | True    |
 
 Please note that [myContentType] needs to be in the plural form. For example, for the content type "author," the correct parameter is "authors".
 
