@@ -1,0 +1,27 @@
+{
+  "name": "Strapi Plugin Fuzzy Search",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "devcontainer",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "shutdownAction": "stopCompose",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "vivaxy.vscode-conventional-commits",
+        "GitHub.vscode-github-actions",
+        "codezombiech.gitignore",
+        "yzhang.markdown-all-in-one",
+        "christian-kohler.npm-intellisense",
+        "esbenp.prettier-vscode",
+        "redhat.vscode-yaml",
+        "ms-azuretools.vscode-docker",
+        "rangav.vscode-thunder-client",
+        "Gruntfuggly.todo-tree",
+        "streetsidesoftware.code-spell-checker"
+      ]
+    }
+  },
+  "features": {},
+  "forwardPorts": []
+}
