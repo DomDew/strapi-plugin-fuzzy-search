@@ -21,6 +21,9 @@ jobs:
       - name: Install deps
         run: npm ci
 
+      - name: Verify Plugin
+        run: npm run verify
+
       - name: Check Types
         run: npm run typecheck
 
