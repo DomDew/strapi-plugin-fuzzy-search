@@ -1,5 +1,5 @@
-import { Schema } from '@strapi/types';
 import { sanitize } from '@strapi/utils';
+import { Model } from '@strapi/utils/dist/types';
 import { PaginationBaseQuery } from '../config/query.schema';
 import {
   ContentType,
@@ -13,13 +13,10 @@ import {
   paginateRestResults,
 } from './pagination-service';
 
-const { contentAPI } = sanitize;
-
-const sanitizeOutput = (
-  data: unknown,
-  contentType: Schema.ContentType,
-  auth: unknown,
-) => contentAPI.output(data, contentType, { auth });
+const sanitizeOutput = (data: unknown, schema: Model, auth: unknown) =>
+  sanitize
+    .createAPISanitizers({ getModel: () => schema })
+    .output(data, schema, { auth });
 
 // Destructure search results and return them in appropriate/sanitized format
 export const buildGraphqlResponse = async (
@@ -34,7 +31,7 @@ export const buildGraphqlResponse = async (
 
   const results = await Promise.all(
     searchResult.map(
-      async (fuzzyRes) => await contentAPI.output(fuzzyRes.obj, schema, auth),
+      async (fuzzyRes) => await sanitizeOutput(fuzzyRes.obj, schema, auth),
     ),
   );
 

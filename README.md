@@ -6,7 +6,7 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-17-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-![Github CI](https://img.shields.io/github/actions/workflow/status/domdew/strapi-plugin-fuzzy-search/release.yml) ![Npm release](https://img.shields.io/npm/v/strapi-plugin-fuzzy-search?label=release) ![Npm monthly downloads](https://img.shields.io/npm/dm/strapi-plugin-fuzzy-search) ![License](https://img.shields.io/github/license/domdew/strapi-plugin-fuzzy-search) ![Coverage](https://img.shields.io/badge/Coverage-78.88%25-brightgreen.svg)
+![Github CI](https://img.shields.io/github/actions/workflow/status/domdew/strapi-plugin-fuzzy-search/release.yml) ![Npm release](https://img.shields.io/npm/v/strapi-plugin-fuzzy-search?label=release) ![Npm monthly downloads](https://img.shields.io/npm/dm/strapi-plugin-fuzzy-search) ![License](https://img.shields.io/github/license/domdew/strapi-plugin-fuzzy-search) ![Coverage](https://img.shields.io/badge/Coverage-80%25-brightgreen.svg)
 
 Register a weighted fuzzy search endpoint for Strapi Headless CMS you can add your content types to in no time.
 
@@ -56,7 +56,7 @@ Uses [fuzzysort](https://github.com/farzher/fuzzysort) under the hood: Simple, q
 
 # Requirements
 
-Strapi Version `>= v4.11.4`
+Strapi Version `>= v5.1.1`
 
 For compatibility with older Strapi versions please use older Versions of this package (<= 1.11.2 and <= 2.0.3)
 

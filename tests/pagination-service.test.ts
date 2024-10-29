@@ -2,11 +2,11 @@ import { describe, expect, it } from 'vitest';
 import {
   PaginatedModelResponse,
   RESTPaginationMeta,
-} from '../server/interfaces/interfaces';
+} from '../server/src/interfaces/interfaces';
 import {
   paginateGraphQlResults,
   paginateRestResults,
-} from '../server/services/pagination-service';
+} from '../server/src/services/pagination-service';
 import { findManyResMock } from './utils/mocks';
 
 const DEFAULT_LIMIT = 25;

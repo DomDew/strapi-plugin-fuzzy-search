@@ -12,7 +12,7 @@ describe('validateQuery', () => {
 
   describe('content type', async () => {
     const validateQuery = (
-      await import('../server/services/validation-service')
+      await import('../server/src/services/validation-service')
     ).validateQuery;
 
     test('validates contentType of kind singleType as invalid', async () => {
@@ -33,7 +33,7 @@ describe('validateQuery', () => {
 
   describe('keys setup', async () => {
     const validateQuery = (
-      await import('../server/services/validation-service')
+      await import('../server/src/services/validation-service')
     ).validateQuery;
 
     test("validates keys setup for model 'test' as valid", async () => {
@@ -63,11 +63,11 @@ describe('validateQuery', () => {
 
   describe('localization', async () => {
     const validateQuery = (
-      await import('../server/services/validation-service')
+      await import('../server/src/services/validation-service')
     ).validateQuery;
 
     const buildStrapiNamespacePlugins = (
-      isLocalizedContentType: Mock<any, any>,
+      isLocalizedContentType: Mock<any>,
     ) => ({
       i18n: {
         services: {
@@ -104,7 +104,7 @@ describe('validateQuery', () => {
 
 describe('validateQueryParams', async () => {
   const validateQueryParams = (
-    await import('../server/services/validation-service')
+    await import('../server/src/services/validation-service')
   ).validateQueryParams;
 
   beforeAll(() => {
