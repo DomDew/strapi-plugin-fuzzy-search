@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Strapi } from '@strapi/strapi';
+import { Core } from '@strapi/strapi';
 import {
   ContentType,
   PaginationArgs,
@@ -10,7 +10,7 @@ import getResult from '../services/fuzzySearch-service';
 import { buildGraphqlResponse } from '../services/response-transformation-service';
 import settingsService from '../services/settings-service';
 
-const getCustomTypes = (strapi: Strapi, nexus: any) => {
+const getCustomTypes = (strapi: Core.Strapi, nexus: any) => {
   const { service: getService } = strapi.plugin('graphql');
   const { naming } = getService('utils');
   const { utils } = getService('builders');

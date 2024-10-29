@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/no-require-imports, no-undef */
 const fs = require('fs');
 const path = require('path');
 
@@ -27,6 +27,6 @@ try {
   fs.writeFileSync(readmePath, newReadme);
 
   console.log('Updated the coverage badge');
-} catch (error) {
+} catch {
   console.log('An error ocurred while updating the readme');
 }
