@@ -19,11 +19,11 @@ jobs:
       - name: Install deps
         run: npm ci
 
+      - name: Build
+        run: npm run build
+
       - name: Verify Plugin
         run: npm run verify
-
-      - name: Transpile Typescript
-        run: npm run build
 
       - name: Release to NPM
         env:
