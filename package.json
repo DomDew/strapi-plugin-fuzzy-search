@@ -29,7 +29,7 @@
     "watch:link": "strapi-plugin watch:link",
     "verify": "strapi-plugin verify",
     "test:ts:back": "run -T tsc -p server/tsconfig.json",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit -p server/tsconfig.json",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
     "test:coverage:json": "vitest run --coverage.enabled --coverage.reporter=json-summary",

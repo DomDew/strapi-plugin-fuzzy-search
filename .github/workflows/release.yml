@@ -19,6 +19,9 @@ jobs:
       - name: Install deps
         run: npm ci
 
+      - name: Verify Plugin
+        run: npm run verify
+
       - name: Transpile Typescript
         run: npm run build
 
