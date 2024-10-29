@@ -33,10 +33,8 @@ const limitCharacters = (
   keys: string[],
 ) =>
   entries.map((entry) =>
-    transformEntry(
-      entry,
-      keys,
-      (value) => value?.toString().slice(0, characterLimit),
+    transformEntry(entry, keys, (value) =>
+      value?.toString().slice(0, characterLimit),
     ),
   );
 
