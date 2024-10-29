@@ -21,11 +21,11 @@ jobs:
       - name: Install deps
         run: npm ci
 
+      - name: Build
+        run: npm run build
+
       - name: Verify Plugin
         run: npm run verify
-
-      - name: Check Types
-        run: npm run typecheck
 
       - name: 'Lint'
         run: npm run lint && npm run prettier:check
