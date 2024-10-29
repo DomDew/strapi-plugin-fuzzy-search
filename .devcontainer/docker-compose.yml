@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  devcontainer:
+    container_name: strapi-plugin-fuzzy-search-devcontainer
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ../..:/workspaces:cached
+      - ~/.cache:/root/.cache
+    command: sleep infinity
