@@ -22,13 +22,13 @@
     ]
   },
   "dependencies": {
-    "fuzzysort": "3.0.2",
+    "fuzzysort": "3.1.0",
     "transliteration": "2.3.5"
   },
   "peerDependencies": {
-    "@strapi/strapi": "^4.25.0",
-    "@strapi/utils": "^4.25.0",
-    "yup": "^0.32.9"
+    "@strapi/strapi": "^5.1.1",
+    "@strapi/utils": "^5.1.1",
+    "yup": "1.4.0"
   },
   "author": "@DomDew (https://github.com/DomDew)",
   "maintainers": [
@@ -55,10 +55,10 @@
     "eslint-plugin-prettier": "^5.1.3",
     "eslint-plugin-promise": "^6.1.1",
     "eslint": "8.56.0",
-    "prettier": "3.3.2",
+    "prettier": "3.3.3",
     "semantic-release": "^24.0.0",
     "typescript": "^5.2.2",
-    "vitest": "^1.6.0"
+    "vitest": "2.1.4"
   },
   "scripts": {
     "semantic-release": "semantic-release",
