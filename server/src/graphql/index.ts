@@ -1,8 +1,8 @@
-import { Strapi } from '@strapi/strapi';
+import { Core } from '@strapi/strapi';
 import getResolversConfig from './resolvers-config';
 import getCustomTypes from './types';
 
-const registerGraphlQLQuery = (strapi: Strapi) => {
+const registerGraphlQLQuery = (strapi: Core.Strapi) => {
   // build plugins schema extension
   const extension = ({ nexus }: { nexus: unknown }) => ({
     types: getCustomTypes(strapi, nexus),
