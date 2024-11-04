@@ -9,10 +9,10 @@ export interface SettingsService {
 
 const settingsService = (): SettingsService => ({
   get() {
-    return strapi.config.get(`plugin.${pluginId}`);
+    return strapi.config.get(`plugin::${pluginId}`);
   },
   set(settings: Config) {
-    return strapi.config.set(`plugin.${pluginId}`, settings);
+    return strapi.config.set(`plugin::${pluginId}`, settings);
   },
   build(settings: Config) {
     return {
