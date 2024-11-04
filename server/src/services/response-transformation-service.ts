@@ -1,4 +1,3 @@
-import { sanitize } from '@strapi/utils';
 import { Model } from '@strapi/utils/dist/types';
 import { PaginationBaseQuery } from '../config/query.schema';
 import {
@@ -13,10 +12,10 @@ import {
   paginateRestResults,
 } from './pagination-service';
 
+const { sanitize } = strapi.contentAPI;
+
 const sanitizeOutput = (data: unknown, schema: Model, auth: unknown) =>
-  sanitize
-    .createAPISanitizers({ getModel: () => schema })
-    .output(data, schema, { auth });
+  sanitize.output(data, schema, { auth });
 
 // Destructure search results and return them in appropriate/sanitized format
 export const buildGraphqlResponse = async (
