@@ -16,6 +16,7 @@ export default () => ({
       filters: filtersQuery,
       locale,
       populate,
+      status: statusQuery,
     } = ctx.query;
     const { auth } = ctx.state;
 
@@ -57,6 +58,7 @@ export default () => ({
             populate: populate?.[contentType.info.pluralName],
             locale:
               filtersQuery?.[contentType.info.pluralName]?.locale || locale,
+            status: statusQuery?.[contentType.info.pluralName] || "published",
           }),
       ),
     );

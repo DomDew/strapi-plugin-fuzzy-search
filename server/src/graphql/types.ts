@@ -20,7 +20,7 @@ const getCustomTypes = (strapi: Core.Strapi, nexus: any) => {
     getFindQueryName,
     getFiltersInputTypeName,
   } = naming;
-  const { transformArgs } = utils;
+  const { transformArgs, getContentTypeArgs } = utils;
 
   // Extend the SearchResponse type for each registered model
   const extendSearchType = (nexus: any, model: ContentType) => {
@@ -29,26 +29,24 @@ const getCustomTypes = (strapi: Core.Strapi, nexus: any) => {
       definition(t: any) {
         t.field(getFindQueryName(model), {
           type: getEntityResponseCollectionName(model),
-          args: {
-            pagination: nexus.arg({ type: 'PaginationArg' }),
-            filters: nexus.arg({ type: getFiltersInputTypeName(model) }),
-            locale: nexus.arg({ type: 'I18NLocaleCode' }),
-          },
+          args: getContentTypeArgs(model, { multiple: true }),
           async resolve(
             parent: SearchResponseReturnType,
             args: {
               pagination?: PaginationArgs;
               filters?: Record<string, unknown>;
               locale?: string;
+              status?: 'published' | 'draft';
             },
             ctx: any,
-            auth: Record<string, unknown>,
+            info
           ) {
             const { query, locale: parentLocaleQuery } = parent;
             const {
               pagination,
               filters,
               locale: contentTypeLocaleQuery,
+              status: contentTypeStatusQuery,
             } = args;
 
             const locale = contentTypeLocaleQuery || parentLocaleQuery;
@@ -77,12 +75,13 @@ const getCustomTypes = (strapi: Core.Strapi, nexus: any) => {
               filters: transformedFilters,
               populate: undefined,
               locale,
+              status: contentTypeStatusQuery,
             });
 
             const resultsResponse = await buildGraphqlResponse(
               results.fuzzysortResults,
               contentType,
-              auth,
+              ctx.state?.auth,
               { start: transformedStart, limit: transformedLimit },
             );
 
