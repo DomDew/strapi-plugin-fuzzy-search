@@ -156,20 +156,23 @@ export default async function getResult({
   filters,
   populate,
   locale,
+  status,
 }: {
   contentType: ContentType;
   query: string;
   filters?: WhereQuery;
   populate?: string;
   locale?: string;
+  status?: 'published' | 'draft';
 }): Promise<Result> {
   const buildFilteredEntries = async () => {
     await validateQuery(contentType, locale);
 
-    return (await strapi.entityService.findMany(contentType.uid, {
+    return (await strapi.documents(contentType.uid).findMany({
       ...(filters && { filters }),
       ...(locale && { locale }),
       ...(populate && { populate }),
+      status: status ?? 'published',
     })) as unknown as Entry[];
   };
 
