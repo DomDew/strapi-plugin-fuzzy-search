@@ -12,10 +12,15 @@
     [
       "@semantic-release/npm",
       {
-        "npmPublish": true,
-        "provenance": true
+        "npmPublish": false
       }
     ],
-    "@semantic-release/github"
+    "@semantic-release/github",
+    [
+      "@semantic-release/exec",
+      {
+        "publishCmd": "npm publish --provenance --access public"
+      }
+    ]
   ]
 }
