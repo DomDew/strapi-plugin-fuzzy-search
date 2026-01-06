@@ -15,11 +15,7 @@ const getCustomTypes = (strapi: Core.Strapi, nexus: any) => {
   const { naming } = getService('utils');
   const { utils } = getService('builders');
   const { contentTypes } = settingsService().get();
-  const {
-    getEntityResponseCollectionName,
-    getFindQueryName,
-    getFiltersInputTypeName,
-  } = naming;
+  const { getEntityResponseCollectionName, getFindQueryName } = naming;
   const { transformArgs, getContentTypeArgs } = utils;
 
   // Extend the SearchResponse type for each registered model
@@ -39,7 +35,6 @@ const getCustomTypes = (strapi: Core.Strapi, nexus: any) => {
               status?: 'published' | 'draft';
             },
             ctx: any,
-            info
           ) {
             const { query, locale: parentLocaleQuery } = parent;
             const {
