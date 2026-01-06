@@ -3,9 +3,18 @@ on:
   push:
     branches: [1.x, main, beta]
   workflow_dispatch:
+
+permissions:
+  contents: read # for checkout
+
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # to be able to publish a GitHub release
+      issues: write # to be able to comment on released issues
+      pull-requests: write # to be able to comment on released pull requests
+      id-token: write # to enable use of OIDC for trusted publishing and npm provenance
     steps:
       - name: Checkout project
         uses: actions/checkout@v4
@@ -27,6 +36,5 @@ jobs:
 
       - name: Release to NPM
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
