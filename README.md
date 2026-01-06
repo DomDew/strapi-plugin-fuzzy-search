@@ -3,7 +3,7 @@
 # Strapi-plugin-fuzzy-search <!-- omit from toc -->
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-18-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-19-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ![Github CI](https://img.shields.io/github/actions/workflow/status/domdew/strapi-plugin-fuzzy-search/release.yml) ![Npm release](https://img.shields.io/npm/v/strapi-plugin-fuzzy-search?label=release) ![Npm monthly downloads](https://img.shields.io/npm/dm/strapi-plugin-fuzzy-search) ![License](https://img.shields.io/github/license/domdew/strapi-plugin-fuzzy-search) ![Coverage](https://img.shields.io/badge/Coverage-78.88%25-brightgreen.svg)
@@ -568,6 +568,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://www.pavelglac.com/"><img src="https://avatars.githubusercontent.com/u/42679661?v=4?s=100" width="100px;" alt="Pavel Glac"/><br /><sub><b>Pavel Glac</b></sub></a><br /><a href="https://github.com/DomDew/strapi-plugin-fuzzy-search/commits?author=pavelglac" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://sauer.dev"><img src="https://avatars.githubusercontent.com/u/126874219?v=4?s=100" width="100px;" alt="Leon Sauer"/><br /><sub><b>Leon Sauer</b></sub></a><br /><a href="https://github.com/DomDew/strapi-plugin-fuzzy-search/commits?author=Lon3035" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/lsarni"><img src="https://avatars.githubusercontent.com/u/15196342?v=4?s=100" width="100px;" alt="Lucia Sarni"/><br /><sub><b>Lucia Sarni</b></sub></a><br /><a href="#question-lsarni" title="Answering Questions">💬</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Moonlight63"><img src="https://avatars.githubusercontent.com/u/7518189?v=4?s=100" width="100px;" alt="Dalen Catt"/><br /><sub><b>Dalen Catt</b></sub></a><br /><a href="https://github.com/DomDew/strapi-plugin-fuzzy-search/commits?author=Moonlight63" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
