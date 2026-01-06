@@ -39,7 +39,8 @@
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
-    "tag": "latest"
+    "tag": "latest",
+    "provenance": true
   },
   "dependencies": {
     "fuzzysort": "3.1.0",
