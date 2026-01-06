@@ -13,15 +13,13 @@ describe('getResult', () => {
   beforeAll(() => {
     const findMany = vi.fn().mockResolvedValue(findManyResMock);
 
-    const entityService = {
-      findMany,
-    };
-
     global.strapi = {
       contentTypes: {
         'api::test.test': contentTypeMock,
       },
-      entityService,
+      documents: vi.fn().mockReturnValue({
+        findMany,
+      }),
     } as any;
   });
 
@@ -120,6 +118,153 @@ describe('getResult', () => {
     expect(result.fuzzysortResults[0].obj.name).toBe('tes');
     expect(result.fuzzysortResults[0].score).toBe(1);
   }, 10000);
+
+  test('get result with status "published" (default)', async () => {
+    const findMany = vi.fn().mockResolvedValue(findManyResMock);
+
+    global.strapi = {
+      contentTypes: {
+        'api::test.test': contentTypeMock,
+      },
+      documents: vi.fn().mockReturnValue({
+        findMany,
+      }),
+    } as any;
+
+    const result = await getResult({
+      contentType: contentTypeMock,
+      query: TEST_QUERY,
+    });
+
+    expect(findMany).toHaveBeenCalledWith({
+      status: 'published',
+    });
+    expect(result.fuzzysortResults.length).toBe(2);
+  }, 10000);
+
+  test('get result with explicit status "published"', async () => {
+    const findMany = vi.fn().mockResolvedValue(findManyResMock);
+
+    global.strapi = {
+      contentTypes: {
+        'api::test.test': contentTypeMock,
+      },
+      documents: vi.fn().mockReturnValue({
+        findMany,
+      }),
+    } as any;
+
+    const result = await getResult({
+      contentType: contentTypeMock,
+      query: TEST_QUERY,
+      status: 'published',
+    });
+
+    expect(findMany).toHaveBeenCalledWith({
+      status: 'published',
+    });
+    expect(result.fuzzysortResults.length).toBe(2);
+  }, 10000);
+
+  test('get result with status "draft"', async () => {
+    const draftEntriesMock = [
+      {
+        id: 4,
+        name: 'draft test',
+        createdAt: '2022-09-21T16:15:15.981Z',
+        updatedAt: '2023-07-24T12:00:26.427Z',
+        locale: 'en',
+      },
+    ];
+
+    const findMany = vi.fn().mockResolvedValue(draftEntriesMock);
+
+    global.strapi = {
+      contentTypes: {
+        'api::test.test': contentTypeMock,
+      },
+      documents: vi.fn().mockReturnValue({
+        findMany,
+      }),
+    } as any;
+
+    const result = await getResult({
+      contentType: contentTypeMock,
+      query: TEST_QUERY,
+      status: 'draft',
+    });
+
+    expect(findMany).toHaveBeenCalledWith({
+      status: 'draft',
+    });
+    expect(result.fuzzysortResults.length).toBe(1);
+    expect(result.fuzzysortResults[0].obj.name).toBe('draft test');
+  }, 10000);
+
+  test('get result with status and filters combined', async () => {
+    const findMany = vi.fn().mockResolvedValue(findManyResMock);
+
+    global.strapi = {
+      contentTypes: {
+        'api::test.test': contentTypeMock,
+      },
+      documents: vi.fn().mockReturnValue({
+        findMany,
+      }),
+    } as any;
+
+    const filters = { name: { $eq: 'test' } };
+
+    const result = await getResult({
+      contentType: contentTypeMock,
+      query: TEST_QUERY,
+      status: 'draft',
+      filters,
+    });
+
+    expect(findMany).toHaveBeenCalledWith({
+      filters,
+      status: 'draft',
+    });
+    expect(result.fuzzysortResults.length).toBe(2);
+  }, 10000);
+
+  test('get result with status, locale, and populate combined', async () => {
+    const findMany = vi.fn().mockResolvedValue(findManyResMock);
+
+    global.strapi = {
+      contentTypes: {
+        'api::test.test': contentTypeMock,
+      },
+      documents: vi.fn().mockReturnValue({
+        findMany,
+      }),
+      plugins: {
+        i18n: {
+          services: {
+            'content-types': {
+              isLocalizedContentType: vi.fn().mockResolvedValue(true),
+            },
+          },
+        },
+      },
+    } as any;
+
+    const result = await getResult({
+      contentType: contentTypeMock,
+      query: TEST_QUERY,
+      status: 'published',
+      locale: 'en',
+      populate: 'author',
+    });
+
+    expect(findMany).toHaveBeenCalledWith({
+      locale: 'en',
+      populate: 'author',
+      status: 'published',
+    });
+    expect(result.fuzzysortResults.length).toBe(2);
+  }, 10000);
 });
 
 describe('transliteration', () => {
@@ -128,15 +273,13 @@ describe('transliteration', () => {
   beforeAll(() => {
     const findMany = vi.fn().mockResolvedValue(findManyLocalizedResMock);
 
-    const entityService = {
-      findMany,
-    };
-
     global.strapi = {
       contentTypes: {
         'api::test.test': contentTypeMock,
       },
-      entityService,
+      documents: vi.fn().mockReturnValue({
+        findMany,
+      }),
     } as any;
   });
 
