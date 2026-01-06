@@ -41,44 +41,35 @@
     "registry": "https://registry.npmjs.org/",
     "tag": "latest"
   },
-  "release": {
-    "branches": [
-      "main",
-      {
-        "name": "beta",
-        "prerelease": true
-      }
-    ]
-  },
   "dependencies": {
     "fuzzysort": "3.1.0",
     "transliteration": "2.3.5"
   },
   "peerDependencies": {
-    "@strapi/sdk-plugin": "^5.2.7",
-    "@strapi/strapi": "^5.1.1",
-    "@strapi/utils": "^5.1.1",
+    "@strapi/sdk-plugin": "5.2.7",
+    "@strapi/strapi": "5.1.1",
+    "@strapi/utils": "5.1.1",
     "yup": "1.4.0"
   },
   "devDependencies": {
-    "@eslint/compat": "^1.2.2",
-    "@eslint/eslintrc": "^3.1.0",
-    "@eslint/js": "^9.13.0",
-    "@strapi/sdk-plugin": "^5.2.7",
-    "@strapi/strapi": "^5.1.1",
-    "@strapi/typescript-utils": "^5.1.1",
+    "@eslint/compat": "1.2.2",
+    "@eslint/eslintrc": "3.1.0",
+    "@eslint/js": "9.13.0",
+    "@strapi/sdk-plugin": "5.2.7",
+    "@strapi/strapi": "5.1.1",
+    "@strapi/typescript-utils": "5.1.1",
     "@typescript-eslint/eslint-plugin": "8.12.1",
     "@typescript-eslint/parser": "8.12.1",
     "@vitest/coverage-v8": "2.1.4",
-    "all-contributors-cli": "^6.20.0",
-    "eslint": "^9.13.0",
+    "all-contributors-cli": "6.20.0",
+    "eslint": "9.13.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-import": "2.31.0",
     "eslint-plugin-prettier": "5.2.1",
     "eslint-plugin-promise": "7.1.0",
-    "globals": "^15.11.0",
+    "globals": "15.11.0",
     "prettier": "3.3.3",
-    "semantic-release": "^24.0.0",
+    "semantic-release": "24.2.9",
     "typescript": "^5.6.3",
     "typescript-eslint": "^8.12.1",
     "vitest": "2.1.4"
