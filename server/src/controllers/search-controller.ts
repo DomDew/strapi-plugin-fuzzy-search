@@ -58,7 +58,7 @@ export default () => ({
             populate: populate?.[contentType.info.pluralName],
             locale:
               filtersQuery?.[contentType.info.pluralName]?.locale || locale,
-            status: statusQuery?.[contentType.info.pluralName] || "published",
+            status: statusQuery?.[contentType.info.pluralName] || 'published',
           }),
       ),
     );
