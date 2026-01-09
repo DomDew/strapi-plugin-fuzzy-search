@@ -47,10 +47,9 @@
     "transliteration": "2.3.5"
   },
   "peerDependencies": {
-    "@strapi/sdk-plugin": "5",
-    "@strapi/strapi": "5",
-    "@strapi/utils": "5",
-    "yup": "1.4.0"
+    "@strapi/strapi": ">=5.1.1",
+    "@strapi/utils": ">=5.1.1",
+    "yup": ">=1.4.0"
   },
   "devDependencies": {
     "@eslint/compat": "1.2.2",
@@ -81,7 +80,7 @@
     "@wfproductions (https://github.com/wfproductions)"
   ],
   "engines": {
-    "node": ">=18.x.x <=20.x.x",
+    "node": ">=18.x.x <=24.x.x",
     "npm": ">=6.0.0"
   },
   "license": "MIT",

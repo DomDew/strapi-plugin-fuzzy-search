@@ -24,10 +24,6 @@ export const buildGraphqlResponse = async (
   auth: Record<string, unknown>,
   pagination: TransformedPagination,
 ) => {
-  const { service: getService } = strapi.plugin('graphql');
-  const { returnTypes } = getService('format');
-  const { toEntityResponseCollection } = returnTypes;
-
   const results = await Promise.all(
     searchResult.map(
       async (fuzzyRes) => await sanitizeOutput(fuzzyRes.obj, schema, auth),
