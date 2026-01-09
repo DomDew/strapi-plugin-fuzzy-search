@@ -128,5 +128,6 @@ describe('paginateGraphQlResults', () => {
     expect((paginatedGraphQlResults.data[0] as any).id).toBe(3);
     expect(paginatedGraphQlResults.meta.start).toBe(2);
     expect(paginatedGraphQlResults.meta.limit).toBe(3);
+    expect(paginatedGraphQlResults.meta.total).toBe(3);
   });
 });
