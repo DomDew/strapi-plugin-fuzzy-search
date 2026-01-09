@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Core } from '@strapi/strapi';
+import { pagination } from '@strapi/utils';
 import {
   ContentType,
   PaginationArgs,
@@ -18,7 +19,35 @@ const getCustomTypes = (strapi: Core.Strapi, nexus: any) => {
   const { getEntityResponseCollectionName, getFindQueryName } = naming;
   const { transformArgs, getContentTypeArgs } = utils;
 
-  // Extend the SearchResponse type for each registered model
+  // Override pageInfo resolver for EntityResponseCollection to use search results total
+  const extendEntityResponseCollection = (nexus: any, model: ContentType) => {
+    const collectionTypeName = getEntityResponseCollectionName(model);
+
+    return nexus.extendType({
+      type: collectionTypeName,
+      definition(t: any) {
+        t.nonNull.field('pageInfo', {
+          type: 'Pagination',
+          resolve: (parent: any) => {
+            const { args, searchResultsTotal } = parent.info || {};
+
+            const { config } = strapi.plugin('graphql');
+            const defaultLimit = config('defaultLimit') || 10;
+            const { start = 0, limit = defaultLimit } = args || {};
+
+            const total = searchResultsTotal ?? 0;
+
+            // Use Strapi's internal pagination utility for consistent calculation
+            return pagination.transformPagedPaginationInfo(
+              { start, limit },
+              total,
+            );
+          },
+        });
+      },
+    });
+  };
+
   const extendSearchType = (nexus: any, model: ContentType) => {
     return nexus.extendType({
       type: 'SearchResponse',
@@ -120,6 +149,7 @@ const getCustomTypes = (strapi: Core.Strapi, nexus: any) => {
 
   contentTypes.forEach((type) => {
     returnTypes.unshift(extendSearchType(nexus, type));
+    returnTypes.unshift(extendEntityResponseCollection(nexus, type));
   });
 
   return returnTypes;
