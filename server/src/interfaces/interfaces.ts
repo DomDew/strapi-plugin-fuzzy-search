@@ -42,6 +42,7 @@ export interface Entry {
 export interface PaginationMeta {
   start: number;
   limit: number;
+  total?: number;
 }
 
 export interface RESTPaginationMeta {

@@ -35,10 +35,16 @@ export const buildGraphqlResponse = async (
   );
 
   const { data: nodes, meta } = paginateGraphQlResults(results, pagination);
-  return toEntityResponseCollection(nodes, {
-    args: meta,
-    resourceUID: schema.uid,
-  });
+
+  // Build response manually to preserve searchResultsTotal
+  return {
+    nodes,
+    info: {
+      args: meta,
+      resourceUID: schema.uid,
+      searchResultsTotal: meta.total,
+    },
+  };
 };
 
 export const buildRestResponse = async (

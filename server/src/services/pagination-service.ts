@@ -77,11 +77,11 @@ export const paginateGraphQlResults = (
 
   const data = resultsCopy.slice(start, start + limit);
 
-  // Strapi only accepts start and limit at meta args
-  // and calculates values in toEntityResponseCollection() util
+  // Include total count of search results for custom pageInfo resolver
   const meta: PaginationMeta = {
     start,
     limit,
+    total: results.length,
   };
 
   return { data, meta };

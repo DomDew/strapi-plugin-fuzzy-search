@@ -47,9 +47,9 @@
     "transliteration": "2.3.5"
   },
   "peerDependencies": {
-    "@strapi/sdk-plugin": "5.2.7",
-    "@strapi/strapi": "5.1.1",
-    "@strapi/utils": "5.1.1",
+    "@strapi/sdk-plugin": "5",
+    "@strapi/strapi": "5",
+    "@strapi/utils": "5",
     "yup": "1.4.0"
   },
   "devDependencies": {
