@@ -30,6 +30,7 @@ Uses [fuzzysort](https://github.com/farzher/fuzzysort) under the hood: Simple, q
     - [Example Responses](#example-responses)
       - [REST](#rest-1)
       - [GraphQl](#graphql-1)
+  - [Search Metadata](#search-metadata)
   - [Pagination](#pagination)
     - [REST](#rest-2)
     - [GraphQL](#graphql-2)
@@ -47,7 +48,7 @@ Uses [fuzzysort](https://github.com/farzher/fuzzysort) under the hood: Simple, q
 
 # Roadmap 🏗️
 
-- Return indices/highlights of matches
+- ✅ Return indices/highlights of matches (via `includeMatches` config)
 - Improve response performance
 - Include option to hide unpublished content by default
 - Allow single types as content types
@@ -77,6 +78,7 @@ The plugin requires several configurations to be set in the `.config/plugins.js`
 | Key            | Type             | Notes                                                                                                                                                                                                                                                                                                                               |
 | -------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | contentTypes\* | Array of Objects | List the content types you want to register for fuzzysort. Each object requires the `uid: string` and `modelName: string` to be set for a content type                                                                                                                                                                              |
+| includeMatches | boolean          | Global setting to include search metadata (score and match indexes) in the response. Can be overridden per content type. Default: `false`.                                                                                                                                                                                         |
 | transliterate  | boolean          | If this is set to true the search will additionally run against transliterated versions of the content for the keys specified in the keys array for a given content type. E.g. `你好` will match for `ni hao`. Note that activating this feature for a content type comes at a performance cost and may increase the response time. |
 
 **IMPORTANT:** Please note that as of now, only collectionTypes are supported as contentTypes.
@@ -101,11 +103,15 @@ module.exports = ({ env }) => ({
   "fuzzy-search": {
     enabled: true,
     config: {
+      // Global setting (optional, default: false)
+      includeMatches: true,
       contentTypes: [
         {
           uid: "api::author.author",
           modelName: "author",
           transliterate: true,
+          // Override global includeMatches for this content type (optional)
+          includeMatches: false,
           fuzzysortOptions: {
             characterLimit: 300,
             threshold: 0.6,
@@ -254,6 +260,66 @@ query {
   }
 }
 ```
+
+## Search Metadata
+
+When `includeMatches` is enabled (either globally or per content type), each result will include a `searchMeta` object containing:
+
+- **score**: The weighted overall match score (higher is better)
+- **matches**: Per-field match information with `score` and `indexes` for each searchable field
+
+The `indexes` array contains the character positions that matched in the original string, following fuzzysort's native format. This allows you to implement custom highlighting on the client side.
+
+### Example Response with Search Metadata
+
+**REST:**
+
+```json
+{
+  "authors": [
+    {
+      "id": 1,
+      "name": "Любко Дереш",
+      "description": "As an author, Lyubko has had somewhat of a cult-like following...",
+      "searchMeta": {
+        "score": 0.95,
+        "matches": {
+          "name": {
+            "score": 0.95,
+            "indexes": [8, 9, 10, 11, 12]
+          },
+          "description": {
+            "score": null,
+            "indexes": null
+          }
+        }
+      }
+    }
+  ]
+}
+```
+
+**GraphQL:**
+
+```graphql
+query {
+  search(query: "deresh") {
+    authors {
+      data {
+        attributes {
+          name
+        }
+        searchMeta {
+          score
+          matches
+        }
+      }
+    }
+  }
+}
+```
+
+**Note**: If a field doesn't match the query, its `score` and `indexes` will be `null`.
 
 ## Pagination
 

@@ -10,12 +10,14 @@ import {
 import getResult from '../services/fuzzySearch-service';
 import { buildGraphqlResponse } from '../services/response-transformation-service';
 import settingsService from '../services/settings-service';
+import { shouldIncludeMatches } from '../utils/shouldIncludeMatches';
 
 const getCustomTypes = (strapi: Core.Strapi, nexus: any) => {
   const { service: getService } = strapi.plugin('graphql');
   const { naming } = getService('utils');
   const { utils } = getService('builders');
-  const { contentTypes } = settingsService().get();
+  const config = settingsService().get();
+  const { contentTypes } = config;
   const { getEntityResponseCollectionName, getFindQueryName } = naming;
   const { transformArgs, getContentTypeArgs } = utils;
 
@@ -47,6 +49,40 @@ const getCustomTypes = (strapi: Core.Strapi, nexus: any) => {
       },
     });
   };
+
+  const fieldMatchResultType = nexus.objectType({
+    name: 'FieldMatchResult',
+    definition(t: any) {
+      t.float('score');
+      t.list.int('indexes');
+    },
+  });
+
+  const fuzzySearchMetaType = nexus.objectType({
+    name: 'FuzzySearchMeta',
+    definition(t: any) {
+      t.nonNull.float('score');
+      t.nonNull.field('matches', { type: 'JSON' });
+    },
+  });
+
+  // Only extend entity types that have includeMatches enabled
+  const extendEntityTypes = contentTypes
+    .filter((contentType) => shouldIncludeMatches(contentType))
+    .map((contentType) => {
+      const entityResponseName = getEntityResponseCollectionName(
+        contentType,
+      ).replace('EntityResponseCollection', 'EntityResponse');
+
+      return nexus.extendType({
+        type: entityResponseName,
+        definition(t: any) {
+          t.field('searchMeta', {
+            type: 'FuzzySearchMeta',
+          });
+        },
+      });
+    });
 
   const extendSearchType = (nexus: any, model: ContentType) => {
     return nexus.extendType({
@@ -145,7 +181,12 @@ const getCustomTypes = (strapi: Core.Strapi, nexus: any) => {
     },
   });
 
-  const returnTypes = [searchResponseType];
+  const returnTypes = [
+    searchResponseType,
+    fieldMatchResultType,
+    fuzzySearchMetaType,
+    ...extendEntityTypes,
+  ];
 
   contentTypes.forEach((type) => {
     returnTypes.unshift(extendSearchType(nexus, type));
