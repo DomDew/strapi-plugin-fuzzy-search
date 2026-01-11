@@ -2,11 +2,13 @@ import * as yup from 'yup';
 
 const pluginConfigSchema = yup
   .object({
+    includeMatches: yup.boolean(),
     contentTypes: yup.array().of(
       yup.object({
         uid: yup.string().required(),
         modelName: yup.string().required(),
         transliterate: yup.boolean(),
+        includeMatches: yup.boolean(),
         fuzzysortOptions: yup
           .object({
             threshold: yup.number(),

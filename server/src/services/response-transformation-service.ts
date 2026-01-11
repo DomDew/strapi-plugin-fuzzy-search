@@ -3,19 +3,40 @@ import { PaginationBaseQuery } from '../config/query.schema';
 import {
   ContentType,
   Entry,
+  FieldMatchResult,
   Result,
   ResultsResponse,
+  SearchMeta,
   TransformedPagination,
 } from '../interfaces/interfaces';
+import { shouldIncludeMatches } from '../utils/shouldIncludeMatches';
 import {
   paginateGraphQlResults,
   paginateRestResults,
 } from './pagination-service';
 
-const { sanitize } = strapi.contentAPI;
-
 const sanitizeOutput = (data: unknown, schema: Model, auth: unknown) =>
-  sanitize.output(data, schema, { auth });
+  strapi.contentAPI.sanitize.output(data, schema, { auth });
+
+const extractSearchMeta = (
+  fuzzyRes: Fuzzysort.KeysResult<Entry>,
+  contentType: ContentType,
+): SearchMeta => {
+  const matches: Record<string, FieldMatchResult> = {};
+
+  contentType.fuzzysortOptions.keys.forEach((key, index) => {
+    const keyResult = fuzzyRes[index];
+    matches[key.name] = {
+      score: keyResult ? keyResult.score : null,
+      indexes: keyResult ? keyResult.indexes : null,
+    };
+  });
+
+  return {
+    score: fuzzyRes.score,
+    matches,
+  };
+};
 
 // Destructure search results and return them in appropriate/sanitized format
 export const buildGraphqlResponse = async (
@@ -24,10 +45,23 @@ export const buildGraphqlResponse = async (
   auth: Record<string, unknown>,
   pagination: TransformedPagination,
 ) => {
+  const includeMatches = shouldIncludeMatches(schema);
+
   const results = await Promise.all(
-    searchResult.map(
-      async (fuzzyRes) => await sanitizeOutput(fuzzyRes.obj, schema, auth),
-    ),
+    searchResult.map(async (fuzzyRes) => {
+      const sanitized = (await sanitizeOutput(
+        fuzzyRes.obj,
+        schema,
+        auth,
+      )) as Record<string, unknown>;
+
+      if (includeMatches) {
+        const searchMeta = extractSearchMeta(fuzzyRes, schema);
+        return { ...sanitized, searchMeta };
+      }
+
+      return sanitized;
+    }),
   );
 
   const { data: nodes, meta } = paginateGraphQlResults(results, pagination);
@@ -52,8 +86,21 @@ export const buildRestResponse = async (
   const resultsResponse: ResultsResponse = {};
 
   for (const res of searchResults) {
+    const includeMatches = shouldIncludeMatches(res.schema);
+
     const sanitizeEntry = async (fuzzyRes: Fuzzysort.KeysResult<Entry>) => {
-      return await sanitizeOutput(fuzzyRes.obj, res.schema, auth);
+      const sanitized = (await sanitizeOutput(
+        fuzzyRes.obj,
+        res.schema,
+        auth,
+      )) as Record<string, unknown>;
+
+      if (includeMatches) {
+        const searchMeta = extractSearchMeta(fuzzyRes, res.schema);
+        return { ...sanitized, searchMeta };
+      }
+
+      return sanitized;
     };
 
     const buildSanitizedEntries = async () =>

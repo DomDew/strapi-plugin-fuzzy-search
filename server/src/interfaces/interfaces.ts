@@ -6,6 +6,7 @@ export type Mutable<T> = {
 };
 
 export interface Config {
+  includeMatches?: boolean;
   contentTypes: ContentType[];
 }
 
@@ -21,6 +22,7 @@ export interface FuzzySortOptions {
 
 export interface ContentType extends Schema.ContentType {
   transliterate?: boolean;
+  includeMatches?: boolean;
   fuzzysortOptions: FuzzySortOptions;
 }
 
@@ -30,11 +32,22 @@ export interface QueryResult extends ContentType {
 
 export interface Result {
   fuzzysortResults: Fuzzysort.KeysResults<Entry>;
-  schema: Schema.ContentType;
+  schema: ContentType;
+}
+
+export interface FieldMatchResult {
+  score: number | null;
+  indexes: readonly number[] | null;
+}
+
+export interface SearchMeta {
+  score: number;
+  matches: Record<string, FieldMatchResult>;
 }
 
 export interface Entry {
   id: string | number;
+  searchMeta?: SearchMeta;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [x: string]: any;
 }

@@ -6,3 +6,4 @@ server/.DS_Store
 yarn.lock
 .npmrc
 coverage
+copilot-instructions.md
