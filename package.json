@@ -55,7 +55,7 @@
     "@eslint/compat": "2.0.0",
     "@eslint/eslintrc": "3.3.3",
     "@eslint/js": "9.39.2",
-    "@strapi/sdk-plugin": "5.4.0",
+    "@strapi/sdk-plugin": "^5.4.0",
     "@strapi/strapi": "5.33.2",
     "@strapi/typescript-utils": "5.33.2",
     "@typescript-eslint/eslint-plugin": "8.52.0",

@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Core } from '@strapi/strapi';
-import { pagination } from '@strapi/utils';
+import { pagination, errors } from '@strapi/utils';
 import {
   ContentType,
   PaginationArgs,
@@ -12,34 +11,97 @@ import { buildGraphqlResponse } from '../services/response-transformation-servic
 import settingsService from '../services/settings-service';
 import { shouldIncludeMatches } from '../utils/shouldIncludeMatches';
 
-const getCustomTypes = (strapi: Core.Strapi, nexus: any) => {
+interface NexusTypeBuilder {
+  nonNull: NexusTypeBuilder;
+  field: (name: string, config: NexusFieldConfig) => void;
+  float: (name: string, config?: NexusFieldConfig) => void;
+  list: NexusTypeBuilder;
+  int: (name: string, config?: NexusFieldConfig) => void;
+}
+
+interface NexusFieldConfig {
+  type?: string;
+  args?: Record<string, unknown>;
+  description?: string;
+  resolve?: (parent: unknown, args: unknown, ctx: GraphQLContext) => unknown;
+}
+
+interface NexusObjectTypeConfig {
+  name: string;
+  description?: string;
+  definition: (t: NexusTypeBuilder) => void;
+}
+
+interface NexusExtendTypeConfig {
+  type: string;
+  definition: (t: NexusTypeBuilder) => void;
+}
+
+interface NexusModule {
+  objectType: (config: NexusObjectTypeConfig) => unknown;
+  extendType: (config: NexusExtendTypeConfig) => unknown;
+  nonNull: (arg: unknown) => unknown;
+  stringArg: (description?: string) => unknown;
+}
+
+interface GraphQLContext {
+  state: {
+    auth?: Record<string, unknown>;
+  };
+  koaContext: {
+    response: {
+      message?: string;
+    };
+  };
+}
+
+interface EntityResponseCollectionParent {
+  info?: {
+    args?: {
+      start?: number;
+      limit?: number;
+    };
+    searchResultsTotal?: number;
+  };
+}
+
+interface ContentTypeSearchArgs {
+  pagination?: PaginationArgs;
+  filters?: Record<string, unknown>;
+  locale?: string;
+  status?: 'published' | 'draft';
+}
+
+const getCustomTypes = (strapi: Core.Strapi, nexus: NexusModule) => {
   const { service: getService } = strapi.plugin('graphql');
   const { naming } = getService('utils');
   const { utils } = getService('builders');
   const config = settingsService().get();
   const { contentTypes } = config;
-  const { getEntityResponseCollectionName, getFindQueryName } = naming;
+  const { getEntityResponseCollectionName, getFindQueryName, getTypeName } =
+    naming;
   const { transformArgs, getContentTypeArgs } = utils;
 
-  // Override pageInfo resolver for EntityResponseCollection to use search results total
-  const extendEntityResponseCollection = (nexus: any, model: ContentType) => {
+  // Override pageInfo to use fuzzy search total instead of DB count
+  const createEntityResponseCollectionExtension = (model: ContentType) => {
     const collectionTypeName = getEntityResponseCollectionName(model);
 
     return nexus.extendType({
       type: collectionTypeName,
-      definition(t: any) {
+      definition(t: NexusTypeBuilder) {
         t.nonNull.field('pageInfo', {
           type: 'Pagination',
-          resolve: (parent: any) => {
-            const { args, searchResultsTotal } = parent.info || {};
+          description: 'Pagination info based on fuzzy search results total',
+          resolve: (parent: EntityResponseCollectionParent) => {
+            const { args, searchResultsTotal } = parent.info ?? {};
 
-            const { config } = strapi.plugin('graphql');
-            const defaultLimit = config('defaultLimit') || 10;
-            const { start = 0, limit = defaultLimit } = args || {};
+            const { config: graphqlConfig } = strapi.plugin('graphql');
+            const defaultLimit: number = graphqlConfig('defaultLimit') ?? 10;
+            const start: number = args?.start ?? 0;
+            const limit: number = args?.limit ?? defaultLimit;
 
             const total = searchResultsTotal ?? 0;
 
-            // Use Strapi's internal pagination utility for consistent calculation
             return pagination.transformPagedPaginationInfo(
               { start, limit },
               total,
@@ -50,73 +112,38 @@ const getCustomTypes = (strapi: Core.Strapi, nexus: any) => {
     });
   };
 
-  const fieldMatchResultType = nexus.objectType({
-    name: 'FieldMatchResult',
-    definition(t: any) {
-      t.float('score');
-      t.list.int('indexes');
-    },
-  });
-
-  const fuzzySearchMetaType = nexus.objectType({
-    name: 'FuzzySearchMeta',
-    definition(t: any) {
-      t.nonNull.float('score');
-      t.nonNull.field('matches', { type: 'JSON' });
-    },
-  });
-
-  // Only extend entity types that have includeMatches enabled
-  const extendEntityTypes = contentTypes
-    .filter((contentType) => shouldIncludeMatches(contentType))
-    .map((contentType) => {
-      const entityResponseName = getEntityResponseCollectionName(
-        contentType,
-      ).replace('EntityResponseCollection', 'EntityResponse');
-
-      return nexus.extendType({
-        type: entityResponseName,
-        definition(t: any) {
-          t.field('searchMeta', {
-            type: 'FuzzySearchMeta',
-          });
-        },
-      });
-    });
-
-  const extendSearchType = (nexus: any, model: ContentType) => {
+  const createSearchTypeExtension = (model: ContentType) => {
     return nexus.extendType({
       type: 'SearchResponse',
-      definition(t: any) {
+      definition(t: NexusTypeBuilder) {
         t.field(getFindQueryName(model), {
           type: getEntityResponseCollectionName(model),
           args: getContentTypeArgs(model, { multiple: true }),
-          async resolve(
-            parent: SearchResponseReturnType,
-            args: {
-              pagination?: PaginationArgs;
-              filters?: Record<string, unknown>;
-              locale?: string;
-              status?: 'published' | 'draft';
-            },
-            ctx: any,
-          ) {
-            const { query, locale: parentLocaleQuery } = parent;
+          description: `Search results for ${model.modelName}`,
+          resolve: async (
+            parent: unknown,
+            args: unknown,
+            ctx: GraphQLContext,
+          ) => {
+            const typedParent = parent as SearchResponseReturnType;
+            const typedArgs = args as ContentTypeSearchArgs;
+
+            const { query, locale: parentLocaleQuery } = typedParent;
             const {
-              pagination,
+              pagination: paginationArgs,
               filters,
               locale: contentTypeLocaleQuery,
               status: contentTypeStatusQuery,
-            } = args;
+            } = typedArgs;
 
-            const locale = contentTypeLocaleQuery || parentLocaleQuery;
+            const locale = contentTypeLocaleQuery ?? parentLocaleQuery;
 
             const {
               start: transformedStart,
               limit: transformedLimit,
               filters: transformedFilters,
             } = transformArgs(
-              { pagination, filters },
+              { pagination: paginationArgs, filters },
               {
                 contentType: model,
                 usePagination: true,
@@ -124,10 +151,14 @@ const getCustomTypes = (strapi: Core.Strapi, nexus: any) => {
             );
 
             const contentType = contentTypes.find(
-              (contentType) => contentType.modelName === model.modelName,
+              (ct) => ct.modelName === model.modelName,
             );
 
-            if (!contentType) return;
+            if (!contentType) {
+              throw new errors.NotFoundError(
+                `Content type "${model.modelName}" is not configured for fuzzy search`,
+              );
+            }
 
             const results = await getResult({
               contentType,
@@ -145,55 +176,140 @@ const getCustomTypes = (strapi: Core.Strapi, nexus: any) => {
               { start: transformedStart, limit: transformedLimit },
             );
 
-            if (resultsResponse) return resultsResponse;
+            if (resultsResponse) {
+              return resultsResponse;
+            }
 
-            throw new Error(ctx.koaContext.response.message);
+            throw new errors.ApplicationError(
+              'Failed to build search response',
+              {
+                details: ctx.koaContext?.response?.message,
+              },
+            );
           },
         });
       },
     });
   };
 
-  const searchResponseType = nexus.extendType({
+  const fieldMatchResultType = nexus.objectType({
+    name: 'FieldMatchResult',
+    description: 'Match result details for a single searchable field',
+    definition(t: NexusTypeBuilder) {
+      t.float('score', {
+        description:
+          'Match score for this field (lower is better, -Infinity for exact match)',
+      });
+      t.list.int('indexes', {
+        description: 'Character indexes where matches were found',
+      });
+    },
+  });
+
+  // Create matches type and meta type for each content type that has includeMatches enabled
+  const contentTypeMatchesTypes = contentTypes
+    .filter((contentType) => shouldIncludeMatches(contentType))
+    .map((contentType) => {
+      const entityTypeName = getTypeName(contentType);
+      const matchesTypeName = `${entityTypeName}SearchMatches`;
+      const metaTypeName = `${entityTypeName}FuzzySearchMeta`;
+
+      const matchesType = nexus.objectType({
+        name: matchesTypeName,
+        description: `Match details for searchable fields in ${entityTypeName}`,
+        definition(t: NexusTypeBuilder) {
+          contentType.fuzzysortOptions.keys.forEach((key) => {
+            t.field(key.name, {
+              type: 'FieldMatchResult',
+              description: `Match result for ${key.name} field`,
+            });
+          });
+        },
+      });
+
+      const metaType = nexus.objectType({
+        name: metaTypeName,
+        description: `Search metadata for ${entityTypeName}`,
+        definition(t: NexusTypeBuilder) {
+          t.nonNull.float('score', {
+            description: 'Overall match score (lower is better)',
+          });
+          t.field('matches', {
+            type: matchesTypeName,
+            description: 'Per-field match details',
+          });
+        },
+      });
+
+      return { matchesType, metaType, entityTypeName, metaTypeName };
+    });
+
+  const entityTypeExtensions = contentTypeMatchesTypes.map(
+    ({ entityTypeName, metaTypeName }) => {
+      strapi.log.info(
+        `[fuzzy-search] Registering searchMeta field for ${entityTypeName}`,
+      );
+
+      return nexus.extendType({
+        type: entityTypeName,
+        definition(t: NexusTypeBuilder) {
+          t.field('searchMeta', {
+            type: metaTypeName,
+            description:
+              'Fuzzy search match metadata (only present in search results)',
+            resolve: (parent: unknown) => {
+              const typedParent = parent as { searchMeta?: unknown };
+              return typedParent.searchMeta;
+            },
+          });
+        },
+      });
+    },
+  );
+
+  const searchQueryExtension = nexus.extendType({
     type: 'Query',
-    definition(t: any) {
+    definition(t: NexusTypeBuilder) {
       t.field('search', {
         type: 'SearchResponse',
+        description: 'Perform a fuzzy search across configured content types',
         args: {
           query: nexus.nonNull(
-            nexus.stringArg(
-              'The query string by which the models are searched',
-            ),
+            nexus.stringArg('The query string to search for'),
           ),
-          locale: nexus.stringArg('The locale by which to filter the models'),
+          locale: nexus.stringArg('Filter results by locale'),
         },
-        async resolve(
-          _parent: any,
-          args: SearchResponseArgs,
-          ctx: any,
-        ): Promise<SearchResponseReturnType> {
-          const { query, locale } = args;
+        resolve: async (
+          _parent: unknown,
+          args: unknown,
+          ctx: GraphQLContext,
+        ): Promise<SearchResponseReturnType> => {
+          const { query, locale } = args as SearchResponseArgs;
           const { auth } = ctx.state;
 
-          return { query, locale, auth };
+          return { query, locale, auth: auth ?? {} };
         },
       });
     },
   });
 
-  const returnTypes = [
-    searchResponseType,
+  const contentTypeExtensions = contentTypes.flatMap((type) => [
+    createSearchTypeExtension(type),
+    createEntityResponseCollectionExtension(type),
+  ]);
+
+  const allMatchesAndMetaTypes = contentTypeMatchesTypes.flatMap((ct) => [
+    ct.matchesType,
+    ct.metaType,
+  ]);
+
+  return [
     fieldMatchResultType,
-    fuzzySearchMetaType,
-    ...extendEntityTypes,
+    ...allMatchesAndMetaTypes,
+    searchQueryExtension,
+    ...entityTypeExtensions,
+    ...contentTypeExtensions,
   ];
-
-  contentTypes.forEach((type) => {
-    returnTypes.unshift(extendSearchType(nexus, type));
-    returnTypes.unshift(extendEntityResponseCollection(nexus, type));
-  });
-
-  return returnTypes;
 };
 
 export default getCustomTypes;
