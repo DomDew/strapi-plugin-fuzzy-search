@@ -1,10 +1,10 @@
 import { Core } from '@strapi/strapi';
 import getResolversConfig from './resolvers-config';
-import getCustomTypes from './types';
+import getCustomTypes, { type NexusModule } from './types';
 
-const registerGraphlQLQuery = (strapi: Core.Strapi) => {
+const registerGraphQLQuery = (strapi: Core.Strapi) => {
   // build plugins schema extension
-  const extension = ({ nexus }: { nexus: unknown }) => ({
+  const extension = ({ nexus }: { nexus: NexusModule }) => ({
     types: getCustomTypes(strapi, nexus),
     resolversConfig: getResolversConfig(),
   });
@@ -12,4 +12,4 @@ const registerGraphlQLQuery = (strapi: Core.Strapi) => {
   strapi.plugin('graphql').service('extension').use(extension);
 };
 
-export default registerGraphlQLQuery;
+export default registerGraphQLQuery;
