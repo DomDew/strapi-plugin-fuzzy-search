@@ -33,7 +33,10 @@ describe('getResult', () => {
     expect(result.fuzzysortResults[0].obj.name).toBe('test');
     expect(result.fuzzysortResults[0].score).toBe(1);
     expect(result.fuzzysortResults[1].obj.name).toBe('a test hit');
-    expect(result.fuzzysortResults[1].score).toBe(0.8839519797824431);
+    // Rounding may result in slightly different results based on node version
+    expect([0.8839519797824431, 0.883951979782443]).toContain(
+      result.fuzzysortResults[1].score,
+    );
   }, 10000);
 
   test('get result with threshold', async () => {

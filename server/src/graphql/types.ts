@@ -37,7 +37,7 @@ interface NexusExtendTypeConfig {
   definition: (t: NexusTypeBuilder) => void;
 }
 
-interface NexusModule {
+export interface NexusModule {
   objectType: (config: NexusObjectTypeConfig) => unknown;
   extendType: (config: NexusExtendTypeConfig) => unknown;
   nonNull: (arg: unknown) => unknown;
