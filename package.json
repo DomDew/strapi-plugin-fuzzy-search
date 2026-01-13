@@ -44,7 +44,7 @@
   },
   "dependencies": {
     "fuzzysort": "3.1.0",
-    "transliteration": "2.3.5"
+    "transliteration": "2.6.0"
   },
   "peerDependencies": {
     "@strapi/strapi": ">=5.1.1",
