@@ -52,15 +52,15 @@
     "yup": ">=1.4.0"
   },
   "devDependencies": {
-    "@eslint/compat": "2.0.0",
+    "@eslint/compat": "2.0.1",
     "@eslint/eslintrc": "3.3.3",
     "@eslint/js": "9.39.2",
     "@strapi/sdk-plugin": "^5.4.0",
-    "@strapi/strapi": "5.33.2",
-    "@strapi/typescript-utils": "5.33.2",
+    "@strapi/strapi": "5.33.3",
+    "@strapi/typescript-utils": "5.33.3",
     "@typescript-eslint/eslint-plugin": "8.52.0",
     "@typescript-eslint/parser": "8.52.0",
-    "@vitest/coverage-v8": "4.0.16",
+    "@vitest/coverage-v8": "4.0.17",
     "all-contributors-cli": "6.26.1",
     "eslint": "9.39.2",
     "eslint-config-prettier": "10.1.8",
@@ -72,7 +72,7 @@
     "semantic-release": "25.0.2",
     "typescript": "^5.6.3",
     "typescript-eslint": "^8.12.1",
-    "vitest": "4.0.16"
+    "vitest": "4.0.17"
   },
   "author": "@DomDew (https://github.com/DomDew)",
   "maintainers": [
